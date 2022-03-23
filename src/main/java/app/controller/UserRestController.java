@@ -2,12 +2,11 @@ package app.controller;
 
 import app.dto.UserDto;
 import app.dto.UserMapper;
-import app.exceptions.DuplicateUsernameException;
+import app.exceptions.user.DuplicateUsernameException;
 import app.exceptions.EntityNotFoundException;
 import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,12 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/user/all")
+    @GetMapping("/all")
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
@@ -30,24 +30,22 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/user/id/{id}")
+    @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Integer id) throws EntityNotFoundException {
         return userRepository.findById(id)
                 .map(UserMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @GetMapping("/user/username")
-    public @ResponseBody UserDto getUserByUsername(@RequestBody UserDto userDto) throws EntityNotFoundException {
-        return userRepository.findByUsername(userDto.getUsername())
+    @GetMapping("/{username}")
+    public UserDto getUserByUsername(@PathVariable String username) throws EntityNotFoundException {
+        return userRepository.findByUsername(username)
                 .map(UserMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = "/user/new",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody UserDto addUser(@RequestBody UserDto userDto) throws DuplicateUsernameException {
+    @PostMapping(value = "/new")
+    public UserDto addUser(@RequestBody UserDto userDto) throws DuplicateUsernameException {
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new DuplicateUsernameException();
         }
