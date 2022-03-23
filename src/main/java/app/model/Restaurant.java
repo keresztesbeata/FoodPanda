@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,15 +21,18 @@ public class Restaurant {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @PrimaryKeyJoinColumn
-    private Address location;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "restaurant_delivery_zones",
             joinColumns = {@JoinColumn(name = "restaurant_id")},
-            inverseJoinColumns = {@JoinColumn(name = "delivery_zone_id")}
+            inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
-    private Set<DeliveryZone> deliveryZones = new HashSet<>();
+    private Set<Zone> deliveryZones;
+
+    @OneToMany(mappedBy = "restaurant")
+    private Set<PlacedOrder> placedOrders;
 }

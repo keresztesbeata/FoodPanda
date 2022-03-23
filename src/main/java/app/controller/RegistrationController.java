@@ -40,7 +40,7 @@ public class RegistrationController {
             }
             User user = UserMapper.toEntity(userDto);
 
-            user.setRole(UserRole.USER);
+            user.setUserRole(UserRole.USER);
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode(user.getPassword());

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,7 +21,14 @@ public class Food {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany(mappedBy = "foods")
+    private Set<PlacedOrder> placedOrders;
+
+    @ManyToMany(mappedBy = "foods")
+    private Set<Cart> cart;
+
 }

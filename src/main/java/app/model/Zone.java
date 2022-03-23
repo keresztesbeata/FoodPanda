@@ -6,25 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    @Column
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Restaurant restaurant;
+    @OneToMany(mappedBy = "zone")
+    private Set<Address> addresses;
 
-    @OneToOne(mappedBy = "orders", fetch = FetchType.EAGER)
-    private Cart cart;
+    @ManyToMany(mappedBy = "deliveryZones")
+    private Set<Restaurant> restaurants;
 }

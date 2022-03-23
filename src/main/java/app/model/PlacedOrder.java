@@ -13,19 +13,27 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class PlacedOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "foods_in_cart",
-            joinColumns = {@JoinColumn(name = "cart_id")},
-            inverseJoinColumns = {@JoinColumn(name = "food_id")}
+    @JoinTable(name = "ordered_foods",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id")
     )
     private Set<Food> foods;
 }

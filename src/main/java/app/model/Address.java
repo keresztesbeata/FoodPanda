@@ -15,14 +15,24 @@ import javax.persistence.*;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "restaurant_id")
     private Integer id;
+
     @Column
     private String city;
+
     @Column
     private String street;
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "restaurant_id")
+
+    @Column
+    private Integer number;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
+
+    @OneToOne(mappedBy = "address")
     private Restaurant restaurant;
+
+    @OneToOne(mappedBy = "address")
+    private User user;
 }
