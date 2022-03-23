@@ -38,8 +38,7 @@ public class RegistrationController {
             if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
                 throw new DuplicateUsernameException();
             }
-            UserMapper userMapper = new UserMapper();
-            User user = userMapper.toEntity(userDto);
+            User user = UserMapper.toEntity(userDto);
 
             user.setRole(UserRole.USER);
 
