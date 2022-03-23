@@ -23,7 +23,7 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(REGISTER_URL)
+    @GetMapping(GOTO_REGISTER_URL)
     public String viewRegistrationPage(Model model) {
         UserDto userDto = new UserDto();
 
@@ -32,7 +32,7 @@ public class RegistrationController {
         return REGISTER_PAGE;
     }
 
-    @PostMapping(REGISTER_URL)
+    @PostMapping(REGISTER_REQUEST)
     public ModelAndView registerUser(@ModelAttribute("user") UserDto userDto) {
         try {
             if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {

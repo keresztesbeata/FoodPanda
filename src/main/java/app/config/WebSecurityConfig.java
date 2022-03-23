@@ -1,6 +1,5 @@
 package app.config;
 
-import app.model.UserRole;
 import app.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,29 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static app.controller.WebPageCatalogue.*;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", HOME_URL, LOGIN_URL, REGISTER_URL).permitAll()
-                .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .usernameParameter("username")
-                .loginPage(LOGIN_URL)
-                .permitAll()
-                .defaultSuccessUrl(HOME_URL, true)
-                .failureUrl(LOGIN_URL + "?error=true")
-                .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .permitAll();
+                .anyRequest().permitAll();
     }
 
     @Override
@@ -61,4 +46,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return authenticationProvider;
     }
+
+    //    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/", GOTO_HOME_URL, GOTO_LOGIN_URL, GOTO_REGISTER_URL, REGISTER_REQUEST).permitAll()
+//                .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .usernameParameter("username")
+//                .loginPage(GOTO_LOGIN_URL)
+//                .permitAll()
+//                .defaultSuccessUrl(GOTO_HOME_URL, true)
+//                .failureUrl(GOTO_LOGIN_URL + "?error=true")
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/")
+//                .permitAll();
+//    }
 }
