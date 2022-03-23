@@ -1,4 +1,4 @@
-package app.exceptions;
+package app.exceptions.user;
 
 public class DuplicateUsernameException extends Exception{
     public DuplicateUsernameException() {

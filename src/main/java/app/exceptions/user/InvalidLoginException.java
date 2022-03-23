@@ -1,4 +1,4 @@
-package app.exceptions;
+package app.exceptions.user;
 
 public class InvalidLoginException extends Exception{
     public InvalidLoginException() {

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,5 +23,5 @@ public class DeliveryZone {
     private String name;
 
     @ManyToMany(mappedBy = "deliveryZones")
-    private Set<Restaurant> restaurants;
+    private List<Restaurant> restaurants;
 }

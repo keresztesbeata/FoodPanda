@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,5 +23,5 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private Set<Food> foods = new HashSet<>();
+    private List<Food> foods;
 }

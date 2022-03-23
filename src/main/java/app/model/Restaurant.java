@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,8 +31,8 @@ public class Restaurant {
             joinColumns = {@JoinColumn(name = "restaurant_id")},
             inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
-    private Set<DeliveryZone> deliveryZones;
+    private List<DeliveryZone> deliveryZones;
 
     @OneToMany(mappedBy = "restaurant")
-    private Set<PlacedOrder> placedOrders;
+    private List<PlacedOrder> placedOrders;
 }

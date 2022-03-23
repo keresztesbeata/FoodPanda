@@ -8,7 +8,6 @@ import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+public class UserRestController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/all")
+    @GetMapping("/user/all")
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
@@ -30,21 +28,21 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/id/{id}")
     public UserDto getUserById(@PathVariable Integer id) throws EntityNotFoundException {
         return userRepository.findById(id)
                 .map(UserMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user/{username}")
     public UserDto getUserByUsername(@PathVariable String username) throws EntityNotFoundException {
         return userRepository.findByUsername(username)
                 .map(UserMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = "/new")
+    @PostMapping(value = "/user/new")
     public UserDto addUser(@RequestBody UserDto userDto) throws DuplicateUsernameException {
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new DuplicateUsernameException();

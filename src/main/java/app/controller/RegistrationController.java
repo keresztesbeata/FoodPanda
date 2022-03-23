@@ -2,7 +2,7 @@ package app.controller;
 
 import app.dto.UserDto;
 import app.dto.UserMapper;
-import app.exceptions.DuplicateUsernameException;
+import app.exceptions.user.DuplicateUsernameException;
 import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
@@ -19,6 +19,8 @@ import static app.controller.WebPageCatalogue.*;
 
 @Controller
 public class RegistrationController {
+
+    // todo : validate credentials
 
     @Autowired
     private UserRepository userRepository;
