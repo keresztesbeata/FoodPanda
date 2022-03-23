@@ -29,9 +29,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(nullable = false)
+    private String address;
 
     @OneToOne(mappedBy = "user")
     private Cart cart;

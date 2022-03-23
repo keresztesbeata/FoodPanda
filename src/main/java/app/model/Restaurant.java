@@ -21,9 +21,8 @@ public class Restaurant {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(nullable = false)
+    private String address;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -31,7 +30,7 @@ public class Restaurant {
             joinColumns = {@JoinColumn(name = "restaurant_id")},
             inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
-    private Set<Zone> deliveryZones;
+    private Set<DeliveryZone> deliveryZones;
 
     @OneToMany(mappedBy = "restaurant")
     private Set<PlacedOrder> placedOrders;

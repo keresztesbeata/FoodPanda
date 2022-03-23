@@ -13,16 +13,13 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Zone {
+public class DeliveryZone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "zone")
-    private Set<Address> addresses;
 
     @ManyToMany(mappedBy = "deliveryZones")
     private Set<Restaurant> restaurants;
