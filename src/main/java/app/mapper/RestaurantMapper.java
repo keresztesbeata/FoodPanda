@@ -1,17 +1,20 @@
-package app.dto;
+package app.mapper;
 
+import app.dto.RestaurantDto;
 import app.model.DeliveryZone;
 import app.model.Restaurant;
-import app.repository.ZoneRepository;
+import app.repository.DeliveryZoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
-public class RestaurantMapper {
+public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
     @Autowired
-    private ZoneRepository zoneRepository;
+    private DeliveryZoneRepository deliveryZoneRepository;
 
+    private DeliveryZoneMapper deliveryZoneMapper = new DeliveryZoneMapper();
+
+    @Override
     public RestaurantDto toDto(Restaurant restaurant) {
         RestaurantDto restaurantDto = new RestaurantDto();
 
@@ -19,22 +22,22 @@ public class RestaurantMapper {
         restaurantDto.setAddress(restaurant.getAddress());
         restaurantDto.setDeliveryZones(restaurant.getDeliveryZones()
                 .stream()
-                .map(DeliveryZone::getName)
+                .map(deliveryZone -> deliveryZoneMapper.toDto(deliveryZone))
                 .collect(Collectors.toList()));
 
         return restaurantDto;
     }
 
+    @Override
     public Restaurant toEntity(RestaurantDto restaurantDto) {
         Restaurant restaurant = new Restaurant();
 
         restaurant.setName(restaurantDto.getName());
         restaurant.setAddress(restaurantDto.getAddress());
-        List<DeliveryZone> availableZones = zoneRepository.findAll();
         restaurant.setDeliveryZones(restaurantDto.getDeliveryZones()
                 .stream()
-                .flatMap(zone -> availableZones.stream()
-                        .filter(availableZone -> availableZone.getName().equals(zone)))
+                .map(zone -> deliveryZoneRepository.findByName(zone.getName())
+                        .orElseGet(DeliveryZone::new))
                 .collect(Collectors.toList()));
 
         return restaurant;

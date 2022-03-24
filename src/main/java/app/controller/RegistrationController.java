@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.dto.UserDto;
-import app.dto.UserMapper;
-import app.exceptions.user.DuplicateUsernameException;
+import app.mapper.UserMapper;
+import app.exceptions.DuplicateDataException;
 import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
@@ -22,8 +22,11 @@ public class RegistrationController {
 
     // todo : validate credentials
 
+    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\n This username is already taken!";
+
     @Autowired
     private UserRepository userRepository;
+    private UserMapper userMapper = new UserMapper();
 
     @GetMapping(GOTO_REGISTER_URL)
     public String viewRegistrationPage(Model model) {
@@ -38,9 +41,9 @@ public class RegistrationController {
     public ModelAndView registerUser(@ModelAttribute("user") UserDto userDto) {
         try {
             if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
-                throw new DuplicateUsernameException();
+                throw new DuplicateDataException(DUPLICATE_USERNAME_ERROR_MESSAGE);
             }
-            User user = UserMapper.toEntity(userDto);
+            User user = userMapper.toEntity(userDto);
 
             user.setUserRole(UserRole.USER);
 
@@ -51,7 +54,7 @@ public class RegistrationController {
             userRepository.save(user);
 
             return new ModelAndView(HOME_PAGE, "user", userDto);
-        } catch (DuplicateUsernameException e) {
+        } catch (DuplicateDataException e) {
             return new ModelAndView(REGISTER_PAGE, "error", e.getMessage());
         }
     }

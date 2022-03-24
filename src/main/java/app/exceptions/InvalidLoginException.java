@@ -1,6 +1,6 @@
-package app.exceptions.user;
+package app.exceptions;
 
-public class InvalidLoginException extends Exception{
+public class InvalidLoginException extends RuntimeException{
     public InvalidLoginException() {
         super("Invalid username or password!");
     }

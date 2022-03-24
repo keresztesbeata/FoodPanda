@@ -7,18 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 @Component
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestaurantDto {
+public class DeliveryZoneDto {
     @NotNull
     private String name;
-
-    @NotNull
-    private String address;
-
-    private List<DeliveryZoneDto> deliveryZones;
 }

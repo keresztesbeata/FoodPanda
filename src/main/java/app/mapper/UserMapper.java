@@ -1,9 +1,12 @@
-package app.dto;
+package app.mapper;
 
+import app.dto.UserDto;
 import app.model.User;
 
-public class UserMapper {
-    public static UserDto toDto(User user) {
+public class UserMapper implements Mapper<User, UserDto>{
+
+    @Override
+    public UserDto toDto(User user) {
         UserDto userDto = new UserDto();
 
         userDto.setUsername(user.getUsername());
@@ -12,7 +15,8 @@ public class UserMapper {
         return userDto;
     }
 
-    public static User toEntity(UserDto userDto) {
+    @Override
+    public User toEntity(UserDto userDto) {
         User user = new User();
 
         user.setUsername(userDto.getUsername());

@@ -1,6 +1,6 @@
 package app.config;
 
-import app.service.UserDetailsServiceImpl;
+import app.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
