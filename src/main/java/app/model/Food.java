@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -28,6 +27,10 @@ public class Food {
 
     @ManyToMany(mappedBy = "foods")
     private List<PlacedOrder> placedOrders;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
     @ManyToMany(mappedBy = "foods")
     private List<Cart> cart;

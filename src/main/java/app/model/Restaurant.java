@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -35,4 +34,7 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant")
     private List<PlacedOrder> placedOrders;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Food> menu;
 }
