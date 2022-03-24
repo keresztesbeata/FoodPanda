@@ -21,6 +21,9 @@ public class Food {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column
+    private Double price;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;

@@ -1,11 +1,8 @@
 package app.controller;
 
-import app.dto.DeliveryZoneDto;
 import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
-import app.mapper.DeliveryZoneMapper;
-import app.repository.DeliveryZoneRepository;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +14,6 @@ public class RestaurantRestController {
 
     @Autowired
     private RestaurantService restaurantService;
-
 
     @GetMapping("/restaurant/all")
     public List<RestaurantDto> getAllRestaurants() {
