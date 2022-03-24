@@ -4,6 +4,8 @@ import app.dto.DeliveryZoneDto;
 import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
+import app.mapper.DeliveryZoneMapper;
+import app.repository.DeliveryZoneRepository;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +29,14 @@ public class RestaurantRestController {
         return restaurantService.getRestaurantById(id);
     }
 
-    @GetMapping("/restaurant/{name}")
-    public RestaurantDto getRestaurantByName(@PathVariable String name) throws EntityNotFoundException {
+    @GetMapping("/restaurant/name")
+    public RestaurantDto getRestaurantByName(@RequestParam String name) throws EntityNotFoundException {
         return restaurantService.getRestaurantByName(name);
     }
 
-    @GetMapping("/restaurant/delivery_zone/{deliveryZoneName}")
-    public List<RestaurantDto> getRestaurantByDeliveryZone(@PathVariable String deliveryZoneName) throws EntityNotFoundException {
-        DeliveryZoneDto deliveryZoneDto = new DeliveryZoneDto();
-        deliveryZoneDto.setName(deliveryZoneName);
-        return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneDto);
+    @GetMapping("/restaurant/delivery_zone")
+    public List<RestaurantDto> getRestaurantByDeliveryZone(@RequestParam String deliveryZoneName) throws EntityNotFoundException {
+        return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
     }
 
     @PostMapping(value = "/restaurant/new")

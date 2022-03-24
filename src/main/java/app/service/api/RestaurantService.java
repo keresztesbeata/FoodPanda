@@ -15,7 +15,7 @@ public interface RestaurantService {
 
     RestaurantDto getRestaurantByName(String name) throws EntityNotFoundException;
 
-    List<RestaurantDto> getRestaurantsByDeliveryZone(DeliveryZoneDto deliveryZoneDto);
+    List<RestaurantDto> getRestaurantsByDeliveryZone(String deliveryZoneName);
 
     void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException;
 }

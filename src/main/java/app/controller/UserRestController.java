@@ -25,8 +25,8 @@ public class UserRestController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/user/{username}")
-    public UserDto getUserByUsername(@PathVariable String username) throws EntityNotFoundException {
+    @GetMapping("/user/username")
+    public UserDto getUserByUsername(@RequestParam String username) throws EntityNotFoundException {
         return userService.getUserByUsername(username);
     }
 

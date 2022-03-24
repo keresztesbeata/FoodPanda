@@ -25,27 +25,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private UserMapper userMapper = new UserMapper();
+    private final UserMapper userMapper = new UserMapper();
 
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(user -> userMapper.toDto(user))
+                .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDto getUserById(Integer id) throws EntityNotFoundException {
         return userRepository.findById(id)
-                .map(user -> userMapper.toDto(user))
+                .map(userMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public UserDto getUserByUsername(String username) throws EntityNotFoundException {
         return userRepository.findByUsername(username)
-                .map(user -> userMapper.toDto(user))
+                .map(userMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 

@@ -1,6 +1,5 @@
 package app.service.impl;
 
-import app.dto.DeliveryZoneDto;
 import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
@@ -23,16 +22,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\n This name is already taken!";
     private static final String INVALID_NAME_ERROR_MESSAGE = "Invalid restaurant name!\n The name cannot be null!";
 
-    private final RestaurantRepository restaurantRepository;
-    private final DeliveryZoneRepository deliveryZoneRepository;
-    private final RestaurantMapper restaurantMapper;
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, DeliveryZoneRepository deliveryZoneRepository) {
-        this.restaurantRepository = restaurantRepository;
-        this.deliveryZoneRepository = deliveryZoneRepository;
-        this.restaurantMapper = new RestaurantMapper();
-    }
+    private DeliveryZoneRepository deliveryZoneRepository;
+
+    private final RestaurantMapper restaurantMapper = new RestaurantMapper();
 
     @Override
     public List<RestaurantDto> getAllRestaurants() {
@@ -58,24 +54,27 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    public List<RestaurantDto> getRestaurantsByDeliveryZone(DeliveryZoneDto deliveryZoneDto) {
-        DeliveryZone deliveryZone = deliveryZoneRepository.findByName(deliveryZoneDto.getName())
-                .orElseThrow(EntityNotFoundException::new);
-        return restaurantRepository.findByDeliveryZone(deliveryZone)
+    public List<RestaurantDto> getRestaurantsByDeliveryZone(String deliveryZoneName) {
+        return restaurantRepository.findByDeliveryZone(deliveryZoneName)
                 .stream()
                 .map(restaurantMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException{
-        if(restaurantDto.getName() == null || restaurantDto.getName().isEmpty()) {
+    public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
+        if (restaurantDto.getName() == null || restaurantDto.getName().isEmpty()) {
             throw new InvalidDataException(INVALID_NAME_ERROR_MESSAGE);
         }
         if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
         Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
+        restaurant.setDeliveryZones(restaurantDto.getDeliveryZones()
+                .stream()
+                .map(zone -> deliveryZoneRepository.findByName(zone)
+                        .orElseGet(DeliveryZone::new))
+                .collect(Collectors.toList()));
 
         restaurantRepository.save(restaurant);
     }

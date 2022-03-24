@@ -20,5 +20,5 @@ public class RestaurantDto {
     @NotNull
     private String address;
 
-    private List<DeliveryZoneDto> deliveryZones;
+    private List<String> deliveryZones;
 }

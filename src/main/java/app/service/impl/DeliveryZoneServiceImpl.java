@@ -12,16 +12,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class DeliveryZoneServiceImpl implements DeliveryZoneService {
+
     @Autowired
     private DeliveryZoneRepository deliveryZoneRepository;
 
-    private DeliveryZoneMapper deliveryZoneMapper = new DeliveryZoneMapper();
+    private final DeliveryZoneMapper deliveryZoneMapper = new DeliveryZoneMapper();
 
     @Override
     public List<DeliveryZoneDto> getAllDeliveryZones() {
         return deliveryZoneRepository.findAll()
                 .stream()
-                .map(deliveryZone -> deliveryZoneMapper.toDto(deliveryZone))
+                .map(deliveryZoneMapper::toDto)
                 .collect(Collectors.toList());
     }
 }
