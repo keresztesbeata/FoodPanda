@@ -3,6 +3,7 @@ package app.controller;
 import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
+import app.exceptions.InvalidDataException;
 import app.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/user/new")
-    public void register(@RequestBody UserDto userDto) throws DuplicateDataException {
+    public void register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         userService.addUser(userDto);
     }
 

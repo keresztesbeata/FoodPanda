@@ -14,6 +14,7 @@ public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
 
         restaurantDto.setName(restaurant.getName());
         restaurantDto.setAddress(restaurant.getAddress());
+        restaurantDto.setAdmin(restaurant.getAdmin().getUsername());
         restaurantDto.setDeliveryZones(restaurant.getDeliveryZones()
                 .stream()
                 .map(DeliveryZone::getName)

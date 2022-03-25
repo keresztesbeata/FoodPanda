@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -37,4 +36,12 @@ public class PlacedOrder {
             inverseJoinColumns = @JoinColumn(name = "food_id")
     )
     private List<Food> foods;
+
+    public void addFood(Food food) {
+        foods.add(food);
+    }
+
+    public void deleteFood(Food food) {
+        foods.remove(food);
+    }
 }

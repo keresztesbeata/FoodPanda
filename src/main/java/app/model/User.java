@@ -38,4 +38,11 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<PlacedOrder> placedOrders;
+
+    @OneToOne(mappedBy = "admin")
+    private Restaurant restaurant;
+
+    public void addPlacedOrder(PlacedOrder placedOrder) {
+        placedOrders.add(placedOrder);
+    }
 }

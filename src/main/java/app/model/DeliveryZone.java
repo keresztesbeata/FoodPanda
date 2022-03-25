@@ -24,4 +24,5 @@ public class DeliveryZone {
 
     @ManyToMany(mappedBy = "deliveryZones")
     private List<Restaurant> restaurants;
+
 }

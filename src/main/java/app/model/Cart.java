@@ -29,4 +29,12 @@ public class Cart {
             inverseJoinColumns = {@JoinColumn(name = "food_id")}
     )
     private List<Food> foods;
+
+    public void addFood(Food food) {
+        foods.add(food);
+    }
+
+    public void deleteFood(Food food) {
+        foods.remove(food);
+    }
 }

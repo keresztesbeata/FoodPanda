@@ -1,6 +1,5 @@
 package app.service.api;
 
-import app.dto.DeliveryZoneDto;
 import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;

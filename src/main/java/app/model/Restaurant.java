@@ -21,6 +21,10 @@ public class Restaurant {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "admin_id")
+    private User admin;
+
     @Column(nullable = false)
     private String address;
 
@@ -37,4 +41,21 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant")
     private List<Food> menu;
+
+    public void addFood(Food food) {
+        menu.add(food);
+    }
+
+    public void deleteFood(Food food) {
+        menu.remove(food);
+    }
+
+    public void addPlacedOrder(PlacedOrder placedOrder) {
+        placedOrders.add(placedOrder);
+    }
+
+    public void deletePlacedOrder(PlacedOrder placedOrder) {
+        placedOrders.remove(placedOrder);
+    }
+
 }

@@ -20,5 +20,8 @@ public class RestaurantDto {
     @NotNull
     private String address;
 
+    @NotNull
+    private String admin;
+
     private List<String> deliveryZones;
 }

@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_USERNAME_ERROR_MESSAGE);
         }
+
         User user = userMapper.toEntity(userDto);
         user.setUserRole(UserRole.USER);
 

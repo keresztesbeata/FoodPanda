@@ -5,10 +5,11 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.RestaurantMapper;
-import app.model.DeliveryZone;
 import app.model.Restaurant;
+import app.model.User;
 import app.repository.DeliveryZoneRepository;
 import app.repository.RestaurantRepository;
+import app.repository.UserRepository;
 import app.service.api.RestaurantService;
 import app.service.validator.RestaurantValidator;
 import app.service.validator.Validator;
@@ -22,12 +23,16 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\n This name is already taken!";
+    private static final String INVALID_DELIVERY_ZONE_ERROR_MESSAGE = "Invalid delivery zone!\n No such delivery zone exists!";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     @Autowired
     private DeliveryZoneRepository deliveryZoneRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final RestaurantMapper restaurantMapper = new RestaurantMapper();
     private final Validator<RestaurantDto> restaurantValidator = new RestaurantValidator();
@@ -70,12 +75,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
+
         Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
         restaurant.setDeliveryZones(restaurantDto.getDeliveryZones()
                 .stream()
                 .map(zone -> deliveryZoneRepository.findByName(zone)
-                        .orElseGet(DeliveryZone::new))
+                        .orElseThrow(() -> new InvalidDataException(INVALID_DELIVERY_ZONE_ERROR_MESSAGE)))
                 .collect(Collectors.toList()));
+        User admin = userRepository.findByUsername(restaurantDto.getAdmin()).orElseThrow(InvalidDataException::new);
+        restaurant.setAdmin(admin);
 
         restaurantRepository.save(restaurant);
     }

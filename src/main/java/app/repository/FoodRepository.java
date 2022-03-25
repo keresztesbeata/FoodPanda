@@ -20,4 +20,8 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     @Transactional
     @Query("SELECT food from Food food left join food.category category where category.name = ?1")
     List<Food> findByCategory(String category);
+
+    @Transactional
+    @Query("SELECT food from Food food left join food.category category left join food.restaurant restaurant where restaurant.name = ?1 and category.name = ?2")
+    List<Food> findByRestaurantAndCategory(String restaurant, String category);
 }

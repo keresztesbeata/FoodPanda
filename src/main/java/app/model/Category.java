@@ -24,4 +24,12 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     private List<Food> foods;
+
+    public void addFood(Food food) {
+        foods.add(food);
+    }
+
+    public void deleteFood(Food food) {
+        foods.remove(food);
+    }
 }

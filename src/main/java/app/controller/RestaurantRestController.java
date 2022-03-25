@@ -3,6 +3,7 @@ package app.controller;
 import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
+import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class RestaurantRestController {
     }
 
     @PostMapping(value = "/restaurant/new")
-    public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws DuplicateDataException {
+    public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
         restaurantService.addRestaurant(restaurantDto);
     }
 
