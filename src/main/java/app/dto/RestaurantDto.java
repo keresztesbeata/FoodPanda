@@ -60,14 +60,18 @@ public class RestaurantDto {
 
         private Double deliveryFee;
 
+        private static final int DEFAULT_OPENING_HOUR = 7;
+        private static final int DEFAULT_CLOSING_HOUR = 23;
+        private static final double DEFAULT_DELIVERY_FEE = 0d;
+
         public RestaurantDtoBuilder(String name, String address, String admin) {
             this.name = name;
             this.address = address;
             this.admin = admin;
             this.deliveryZones = new ArrayList<>();
-            this.openingHour = 6;
-            this.closingHour = 23;
-            this.deliveryFee = 0d;
+            this.openingHour = DEFAULT_OPENING_HOUR;
+            this.closingHour = DEFAULT_CLOSING_HOUR;
+            this.deliveryFee = DEFAULT_DELIVERY_FEE;
         }
 
         public RestaurantDto build() {
