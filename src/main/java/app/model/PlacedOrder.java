@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,12 @@ public class PlacedOrder {
     @Column
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Column(nullable = false)
+    private Date orderDate;
+
+    @Column(nullable = false)
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

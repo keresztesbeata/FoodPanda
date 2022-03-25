@@ -10,17 +10,19 @@ public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
 
     @Override
     public RestaurantDto toDto(Restaurant restaurant) {
-        RestaurantDto restaurantDto = new RestaurantDto();
 
-        restaurantDto.setName(restaurant.getName());
-        restaurantDto.setAddress(restaurant.getAddress());
-        restaurantDto.setAdmin(restaurant.getAdmin().getUsername());
-        restaurantDto.setDeliveryZones(restaurant.getDeliveryZones()
-                .stream()
-                .map(DeliveryZone::getName)
-                .collect(Collectors.toList()));
-
-        return restaurantDto;
+        return new RestaurantDto.RestaurantDtoBuilder(
+                restaurant.getName(),
+                restaurant.getAddress(),
+                restaurant.getAdmin().getUsername())
+                .withOpeningHour(restaurant.getOpeningHour())
+                .withClosingHour(restaurant.getClosingHour())
+                .withDeliveryFee(restaurant.getDeliveryFee())
+                .withDeliveryZones(restaurant.getDeliveryZones()
+                        .stream()
+                        .map(DeliveryZone::getName)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -29,6 +31,9 @@ public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
 
         restaurant.setName(restaurantDto.getName());
         restaurant.setAddress(restaurantDto.getAddress());
+        restaurant.setDeliveryFee(restaurantDto.getDeliveryFee());
+        restaurant.setOpeningHour(restaurantDto.getOpeningHour());
+        restaurant.setClosingHour(restaurantDto.getClosingHour());
 
         return restaurant;
     }

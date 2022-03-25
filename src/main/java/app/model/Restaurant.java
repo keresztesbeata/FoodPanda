@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,15 @@ public class Restaurant {
 
     @Column(nullable = false)
     private String address;
+
+    @Column
+    private Integer openingHour;
+
+    @Column
+    private Integer closingHour;
+
+    @Column
+    private Double deliveryFee;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
