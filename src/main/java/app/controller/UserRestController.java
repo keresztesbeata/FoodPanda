@@ -31,9 +31,13 @@ public class UserRestController {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(value = "/user/new")
+    @PostMapping(value = "/user/register")
     public void register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         userService.addUser(userDto);
     }
 
+    @PostMapping(value = "/user/login")
+    public UserDto login(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
+        return userService.authenticateUser(userDto);
+    }
 }

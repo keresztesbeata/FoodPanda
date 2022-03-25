@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
-    private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\n This name is already taken!";
-    private static final String INVALID_DELIVERY_ZONE_ERROR_MESSAGE = "Invalid delivery zone!\n No such delivery zone exists!";
+    private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\nThis name is already taken!";
+    private static final String INVALID_DELIVERY_ZONE_ERROR_MESSAGE = "Invalid delivery zone!\nNo such delivery zone exists!";
 
     @Autowired
     private RestaurantRepository restaurantRepository;

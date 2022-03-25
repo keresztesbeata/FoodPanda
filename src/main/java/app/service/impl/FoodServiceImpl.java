@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class FoodServiceImpl implements FoodService {
-    private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate food name!\n This name is already taken!";
-    private static final String INVALID_RESTAURANT_ERROR_MESSAGE = "Invalid restaurant!\n No such restaurant exists!";
-    private static final String INVALID_CATEGORY_ERROR_MESSAGE = "Invalid category!\n No such category exists!";
+    private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate food name!\nThis name is already taken!";
+    private static final String INVALID_RESTAURANT_ERROR_MESSAGE = "Invalid restaurant!\nNo such restaurant exists!";
+    private static final String INVALID_CATEGORY_ERROR_MESSAGE = "Invalid category!\nNo such category exists!";
 
     @Autowired
     private FoodRepository foodRepository;

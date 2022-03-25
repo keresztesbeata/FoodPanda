@@ -4,6 +4,7 @@ import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.exceptions.InvalidLoginException;
 import app.mapper.UserMapper;
 import app.model.User;
 import app.model.UserRole;
@@ -21,7 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\n This username is already taken!";
+    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
+    private static final String INVALID_USERNAME_ERROR_MESSAGE = "Invalid username!";
+    private static final String INVALID_PASSWORD_ERROR_MESSAGE = "Invalid password!";
 
     @Autowired
     private UserRepository userRepository;
@@ -67,6 +70,19 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDto authenticateUser(UserDto userDto) throws InvalidLoginException {
+        User existingUser = userRepository
+                .findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new InvalidLoginException(INVALID_USERNAME_ERROR_MESSAGE));
+
+        if(!existingUser.getPassword().equals(userDto.getPassword())) {
+            throw new InvalidLoginException(INVALID_PASSWORD_ERROR_MESSAGE);
+        }
+
+        return userMapper.toDto(existingUser);
     }
 
 }
