@@ -9,6 +9,8 @@ import app.model.Food;
 import app.repository.FoodRepository;
 import app.repository.RestaurantRepository;
 import app.service.api.FoodService;
+import app.service.validator.FoodValidator;
+import app.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class FoodServiceImpl implements FoodService {
     private RestaurantRepository restaurantRepository;
 
     private final FoodMapper foodMapper = new FoodMapper();
+    private final Validator<FoodDto> foodValidator = new FoodValidator();
 
     @Override
     public List<FoodDto> getAllFoods() {
@@ -66,10 +69,11 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
-        // todo: add validator for food data
+        foodValidator.validate(foodDto);
 
         Food food = foodMapper.toEntity(foodDto);
-        food.setRestaurant(restaurantRepository.findByName(foodDto.getRestaurant()).orElseThrow(InvalidDataException::new));
+        food.setRestaurant(restaurantRepository.findByName(foodDto.getRestaurant())
+                .orElseThrow(InvalidDataException::new));
 
         foodRepository.save(food);
     }

@@ -10,6 +10,7 @@ public class FoodMapper implements Mapper<Food,FoodDto> {
 
         food.setName(foodDto.getName());
         food.setPrice(foodDto.getPrice());
+        food.setDescription(foodDto.getDescription());
 
         return food;
     }
@@ -21,6 +22,7 @@ public class FoodMapper implements Mapper<Food,FoodDto> {
         foodDto.setPrice(food.getPrice());
         foodDto.setCategory(food.getCategory().getName());
         foodDto.setRestaurant(food.getRestaurant().getName());
+        foodDto.setDescription(food.getDescription());
 
         return foodDto;
     }

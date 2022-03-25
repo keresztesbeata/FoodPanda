@@ -10,6 +10,8 @@ import app.model.Restaurant;
 import app.repository.DeliveryZoneRepository;
 import app.repository.RestaurantRepository;
 import app.service.api.RestaurantService;
+import app.service.validator.RestaurantValidator;
+import app.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\n This name is already taken!";
-    private static final String INVALID_NAME_ERROR_MESSAGE = "Invalid restaurant name!\n The name cannot be null!";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -29,6 +30,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private DeliveryZoneRepository deliveryZoneRepository;
 
     private final RestaurantMapper restaurantMapper = new RestaurantMapper();
+    private final Validator<RestaurantDto> restaurantValidator = new RestaurantValidator();
 
     @Override
     public List<RestaurantDto> getAllRestaurants() {
@@ -63,9 +65,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
-        if (restaurantDto.getName() == null || restaurantDto.getName().isEmpty()) {
-            throw new InvalidDataException(INVALID_NAME_ERROR_MESSAGE);
-        }
+        restaurantValidator.validate(restaurantDto);
+
         if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }

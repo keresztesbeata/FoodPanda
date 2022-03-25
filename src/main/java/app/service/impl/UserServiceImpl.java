@@ -9,6 +9,8 @@ import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
 import app.service.api.UserService;
+import app.service.validator.UserValidator;
+import app.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String INVALID_USERNAME_ERROR_MESSAGE = "Invalid username!\n The username cannot be null!";
     private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\n This username is already taken!";
 
     @Autowired
     private UserRepository userRepository;
 
     private final UserMapper userMapper = new UserMapper();
+    private final Validator<UserDto> userValidator = new UserValidator();
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -50,10 +52,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(UserDto userDto) throws InvalidDataException, DuplicateDataException{
-        if(userDto.getUsername() == null || userDto.getUsername().isEmpty()) {
-            throw new InvalidDataException(INVALID_USERNAME_ERROR_MESSAGE);
-        }
+    public void addUser(UserDto userDto) throws InvalidDataException, DuplicateDataException {
+        userValidator.validate(userDto);
+
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_USERNAME_ERROR_MESSAGE);
         }
