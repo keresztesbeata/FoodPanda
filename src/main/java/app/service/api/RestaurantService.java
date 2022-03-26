@@ -8,6 +8,7 @@ import app.exceptions.InvalidDataException;
 import java.util.List;
 
 public interface RestaurantService {
+
     List<RestaurantDto> getAllRestaurants();
 
     RestaurantDto getRestaurantById(Integer id) throws EntityNotFoundException;

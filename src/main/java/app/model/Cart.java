@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -19,22 +18,40 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "foods_in_cart",
-            joinColumns = {@JoinColumn(name = "cart_id")},
-            inverseJoinColumns = {@JoinColumn(name = "food_id")}
-    )
-    private List<Food> foods;
+    @OneToOne(mappedBy = "cart")
+    private PlacedOrder placedOrder;
 
-    public void addFood(Food food) {
-        foods.add(food);
+    @ElementCollection
+    @CollectionTable(name = "cart_foods_mapping",
+            joinColumns = {@JoinColumn(name = "cart_id",
+                    referencedColumnName = "food_id")})
+    @MapKeyColumn(name = "name")
+    @Column(name = "quantity")
+    private Map<Food, Integer> foods;
+
+    @Column
+    private Double totalPrice;
+
+    @Column
+    private Boolean completed;
+
+    public void addFoodWithQuantity(Food food, int quantity) {
+        int oldQuantity = foods.get(food);
+        foods.put(food, quantity);
+        totalPrice  = totalPrice + food.getPrice() * (quantity - oldQuantity);
     }
 
-    public void deleteFood(Food food) {
-        foods.remove(food);
+    public void deleteFoodWithQuantity(Food food, int quantity) {
+        int oldQuantity = foods.get(food);
+        if(quantity <= 0) {
+            foods.remove(food);
+        }else{
+            foods.replace(food, quantity);
+        }
+        totalPrice  = totalPrice + food.getPrice() * (oldQuantity - quantity);
     }
 }

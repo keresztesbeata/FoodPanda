@@ -31,30 +31,8 @@ public class Food {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany(mappedBy = "foods")
-    private List<PlacedOrder> placedOrders;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-
-    @ManyToMany(mappedBy = "foods")
-    private List<Cart> carts;
-
-    public void addCart(Cart cart) {
-        carts.add(cart);
-    }
-
-    public void deleteCart(Cart cart) {
-        carts.remove(cart);
-    }
-
-    public void addPlacedOrder(PlacedOrder placedOrder) {
-        placedOrders.add(placedOrder);
-    }
-
-    public void deletePlacedOrder(PlacedOrder placedOrder) {
-        placedOrders.remove(placedOrder);
-    }
 
 }

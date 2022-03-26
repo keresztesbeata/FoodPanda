@@ -9,6 +9,7 @@ import app.exceptions.InvalidLoginException;
 import java.util.List;
 
 public interface UserService {
+
     List<UserDto> getAllUsers();
 
     UserDto getUserById(Integer id)  throws EntityNotFoundException;

@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -30,11 +29,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String address;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     @OneToMany(mappedBy = "user")
     private List<PlacedOrder> placedOrders;

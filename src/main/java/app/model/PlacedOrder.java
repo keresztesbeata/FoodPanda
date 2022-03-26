@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -24,9 +23,9 @@ public class PlacedOrder {
     private OrderStatus orderStatus;
 
     @Column(nullable = false)
-    private Date orderDate;
+    private LocalDate orderDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String address;
 
     @ManyToOne
@@ -37,18 +36,20 @@ public class PlacedOrder {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "ordered_foods",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_id")
-    )
-    private List<Food> foods;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    public void addFood(Food food) {
-        foods.add(food);
-    }
+    @Column(length = 200)
+    private String remark;
 
-    public void deleteFood(Food food) {
-        foods.remove(food);
+    @Column
+    private Boolean withCutlery;
+
+    @Column
+    private Double totalPrice;
+
+    public void computeTotalPrice() {
+        totalPrice = cart.getTotalPrice() + restaurant.getDeliveryFee();
     }
 }
