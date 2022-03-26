@@ -6,8 +6,10 @@ import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidLoginException;
 import app.mapper.UserMapper;
+import app.model.Cart;
 import app.model.User;
 import app.model.UserRole;
+import app.repository.CartRepository;
 import app.repository.UserRepository;
 import app.service.api.UserService;
 import app.service.validator.UserValidator;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     private final UserMapper userMapper = new UserMapper();
     private final Validator<UserDto> userValidator = new UserValidator();
@@ -68,7 +74,12 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        Cart cart = new Cart();
+        cart.setUser(savedUser);
+        cart.setFoods(new HashMap<>());
+        cartRepository.save(cart);
     }
 
     @Override

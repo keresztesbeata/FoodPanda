@@ -9,13 +9,15 @@ import app.service.api.PlacedOrderService;
 import app.service.validator.PlacedOrderValidator;
 import app.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class PlacedOrderServiceImpl implements PlacedOrderService {
 
     private static final String INVALID_USER_ERROR_MESSAGE = "The order cannot be created! Invalid user!";
@@ -99,6 +101,11 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
         restaurant.addPlacedOrder(placedOrder);
 
         placedOrderRepository.save(placedOrder);
+
+        Cart newCart = new Cart();
+        newCart.setUser(user);
+        newCart.setFoods(new HashMap<>());
+        cartRepository.save(newCart);
     }
 
 
