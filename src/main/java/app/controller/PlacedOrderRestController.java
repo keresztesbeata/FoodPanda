@@ -24,6 +24,11 @@ public class PlacedOrderRestController {
         return placedOrderService.getPlacedOrdersOfUserByStatus(username, Optional.empty());
     }
 
+    @GetMapping("/placed_order/id/{id}")
+    public PlacedOrderDto getPlacedOrderByOrderNumber(@PathVariable Integer id) {
+        return placedOrderService.getPlacedOrderByOrderNumber(id);
+    }
+
     @GetMapping("/placed_order/user_status")
     public List<PlacedOrderDto> getAllPlacedOrdersOfUserByStatus(@RequestParam String username, @RequestParam String orderStatus) {
         return placedOrderService.getPlacedOrdersOfUserByStatus(username, Optional.of(orderStatus));

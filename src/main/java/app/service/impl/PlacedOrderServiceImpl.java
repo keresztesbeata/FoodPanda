@@ -1,6 +1,7 @@
 package app.service.impl;
 
 import app.dto.PlacedOrderDto;
+import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.PlacedOrderMapper;
 import app.model.*;
@@ -23,6 +24,7 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
     private static final String INVALID_USER_ERROR_MESSAGE = "The order cannot be created! Invalid user!";
     private static final String INVALID_RESTAURANT_ERROR_MESSAGE = "The order cannot be created! Invalid restaurant!";
     private static final String INEXISTENT_CART_ERROR_MESSAGE = "The order cannot be created! The user has no cart!";
+    private static final String INEXISTENT_ORDER_ERROR_MESSAGE = "No order with the given orderNumber has been found!";
     private static final String EMPTY_CART_ERROR_MESSAGE = "The order cannot be created! No foods are present in the cart!";
 
     @Autowired
@@ -46,6 +48,13 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
                 .stream()
                 .map(placedOrderMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PlacedOrderDto getPlacedOrderByOrderNumber(Integer orderNumber) throws EntityNotFoundException {
+        return placedOrderMapper.toDto(
+                placedOrderRepository.findById(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE)));
     }
 
     @Override
