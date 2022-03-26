@@ -16,27 +16,27 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/all")
+    @GetMapping("/users/all")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/user/id/{id}")
+    @GetMapping("/users/id/{id}")
     public UserDto getUserById(@PathVariable Integer id) throws EntityNotFoundException {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/user/username")
+    @GetMapping("/users/username")
     public UserDto getUserByUsername(@RequestParam String username) throws EntityNotFoundException {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(value = "/user/register")
+    @PostMapping(value = "/register")
     public void register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         userService.addUser(userDto);
     }
 
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/login")
     public UserDto login(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         return userService.authenticateUser(userDto);
     }

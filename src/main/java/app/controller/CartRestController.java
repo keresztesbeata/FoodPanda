@@ -14,22 +14,22 @@ public class CartRestController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/user/cart")
+    @GetMapping("/cart")
     public CartDto getCartOfUser(@RequestParam String username) {
         return cartService.getCartOfUser(username);
     }
 
-    @PostMapping("/user/cart/add_food")
+    @PostMapping("/cart/add_food")
     public void addFoodToCart(@RequestParam String username, @RequestParam String foodName, @RequestParam Integer quantity) {
         cartService.addFoodToCart(username, foodName, quantity);
     }
 
-    @PostMapping("/user/cart/remove_food")
+    @PostMapping("/cart/remove_food")
     public void removeFoodFromCart(@RequestParam String username, @RequestParam String foodName) {
         cartService.removeFoodFromCart(username, foodName);
     }
 
-    @PostMapping("/user/cart/reset")
+    @PostMapping("/cart/reset")
     public void resetCart(@RequestParam String username) {
         cartService.resetCart(username);
     }

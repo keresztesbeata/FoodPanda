@@ -36,7 +36,7 @@ public class RestaurantRestController {
         return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
     }
 
-    @PostMapping(value = "/restaurant/new")
+    @PostMapping(value = "/restaurant/admin/new")
     public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
         restaurantService.addRestaurant(restaurantDto);
     }

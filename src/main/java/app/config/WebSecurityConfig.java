@@ -14,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // TODO: add authorization for each url: control which user can access the given functionality
+    //  + show different view based on userRole
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()

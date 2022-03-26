@@ -42,11 +42,11 @@ public class FoodRestController {
     }
 
     @GetMapping("/food/restaurant/category")
-    public List<FoodDto> getFoodByRestaurant(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
+    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
         return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
     }
 
-    @PostMapping(value = "/food/new")
+    @PostMapping(value = "/food/admin/new")
     public void addFood(@RequestBody FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodService.addFood(foodDto);
     }
