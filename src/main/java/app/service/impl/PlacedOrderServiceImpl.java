@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static app.model.OrderStatus.*;
 
 @Service
 public class PlacedOrderServiceImpl implements PlacedOrderService {
@@ -105,8 +105,41 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
         Cart newCart = new Cart();
         newCart.setUser(user);
         newCart.setFoods(new HashMap<>());
+
         cartRepository.save(newCart);
     }
 
+    @Override
+    public void updateOrderStatus(Integer orderNumber, String orderStatus) {
+        PlacedOrder placedOrder = placedOrderRepository.getById(orderNumber);
+        placedOrder.setOrderStatus(OrderStatus.valueOf(orderStatus));
 
+        placedOrderRepository.save(placedOrder);
+    }
+
+    @Override
+
+    public List<String> getAvailableStatusForOrder(Integer orderNumber) {
+        PlacedOrder placedOrder = placedOrderRepository.getById(orderNumber);
+        return getNextOrderStatuses(placedOrder.getOrderStatus())
+                .stream()
+                .map(OrderStatus::name)
+                .collect(Collectors.toList());
+    }
+
+    private List<OrderStatus> getNextOrderStatuses(OrderStatus currentStatus) {
+        switch(currentStatus){
+            case PENDING: {
+                return Arrays.asList(ACCEPTED, DECLINED);
+            }
+            case ACCEPTED: {
+                return Arrays.asList(IN_DELIVERY);
+            }
+            case IN_DELIVERY: {
+                return Arrays.asList(DELIVERED);
+            }
+            default:
+                return Collections.emptyList();
+        }
+    }
 }

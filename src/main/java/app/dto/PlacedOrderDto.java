@@ -14,6 +14,8 @@ import java.util.Map;
 @Getter
 public class PlacedOrderDto {
 
+    private Integer orderNumber;
+
     private String orderStatus;
 
     private LocalDate orderDate;
@@ -33,7 +35,8 @@ public class PlacedOrderDto {
     private PlacedOrderDto() {
     }
 
-    private PlacedOrderDto(String orderStatus, LocalDate orderDate, String restaurant, String user, CartDto cartDto, boolean withCutlery, String remark) {
+    private PlacedOrderDto(Integer orderNumber, String orderStatus, LocalDate orderDate, String restaurant, String user, CartDto cartDto, boolean withCutlery, String remark) {
+        this.orderNumber = orderNumber;
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.restaurant = restaurant;
@@ -44,6 +47,9 @@ public class PlacedOrderDto {
     }
 
     public static class PlacedOrderDtoBuilder {
+
+        private Integer orderNumber;
+
         private String orderStatus;
 
         private LocalDate orderDate;
@@ -71,7 +77,7 @@ public class PlacedOrderDto {
         }
 
         public PlacedOrderDto build() {
-            return new PlacedOrderDto(orderStatus, orderDate, restaurant, user, cartDto, withCutlery, remark);
+            return new PlacedOrderDto(orderNumber, orderStatus, orderDate, restaurant, user, cartDto, withCutlery, remark);
         }
 
         public PlacedOrderDtoBuilder withCutlery(boolean withCutlery) {
@@ -84,8 +90,8 @@ public class PlacedOrderDto {
             return this;
         }
 
-        public PlacedOrderDtoBuilder withCartDto(CartDto cartDto) {
-            this.cartDto = cartDto;
+        public PlacedOrderDtoBuilder withOrderNumber(Integer orderNumber) {
+            this.orderNumber = orderNumber;
             return this;
         }
 

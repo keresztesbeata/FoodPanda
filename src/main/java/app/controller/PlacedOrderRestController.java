@@ -38,4 +38,14 @@ public class PlacedOrderRestController {
     public List<PlacedOrderDto> getAllPlacedOrdersOfRestaurantByStatus(@RequestParam String restaurant, @RequestParam String orderStatus) {
         return placedOrderService.getPlacedOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus));
     }
+
+    @GetMapping("/placed_order/available_statuses")
+    public List<String> getAvailableOrderStatusesForOrder(@RequestParam Integer orderNumber) {
+        return placedOrderService.getAvailableStatusForOrder(orderNumber);
+    }
+
+    @PostMapping("/placed_order/update_status")
+    public void updateOrderStatus(@RequestParam Integer orderNumber, @RequestParam String orderStatus) {
+        placedOrderService.updateOrderStatus(orderNumber, orderStatus);
+    }
 }

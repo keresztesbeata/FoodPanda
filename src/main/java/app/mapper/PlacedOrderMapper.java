@@ -15,6 +15,9 @@ public class PlacedOrderMapper implements Mapper<PlacedOrder, PlacedOrderDto> {
                 cartMapper.toDto(placedOrder.getCart()))
                 .withCutlery(placedOrder.getWithCutlery())
                 .withRemark(placedOrder.getRemark())
+                .withOrderNumber(placedOrder.getId())
+                .withOrderStatus(placedOrder.getOrderStatus().name())
+                .withOrderDate(placedOrder.getOrderDate())
                 .build();
     }
 
