@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -33,10 +34,10 @@ public class User {
     private String address;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Cart> carts;
+    private Set<Cart> carts;
 
     @OneToMany(mappedBy = "user")
-    private List<PlacedOrder> placedOrders;
+    private Set<PlacedOrder> placedOrders;
 
     @OneToOne(mappedBy = "admin")
     private Restaurant restaurant;

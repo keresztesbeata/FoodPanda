@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.toEntity(userDto);
-        user.setUserRole(UserRole.USER);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());

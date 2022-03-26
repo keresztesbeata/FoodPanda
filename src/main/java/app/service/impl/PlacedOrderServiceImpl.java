@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,6 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @Autowired
-    private FoodRepository foodRepository;
-
     private final PlacedOrderMapper placedOrderMapper = new PlacedOrderMapper();
     private final Validator<PlacedOrderDto> placedOrderValidator = new PlacedOrderValidator();
 
@@ -50,13 +48,11 @@ public class PlacedOrderServiceImpl implements PlacedOrderService {
 
     @Override
     public List<PlacedOrderDto> getPlacedOrdersOfUserByStatus(String username, Optional<String> orderStatus) {
-        List<PlacedOrderDto> placedOrders = orderStatus.map(status -> placedOrderRepository.findPlacedOrderByUserAndStatus(username, status))
+        return orderStatus.map(status -> placedOrderRepository.findPlacedOrderByUserAndStatus(username, status))
                 .orElseGet(() -> placedOrderRepository.findPlacedOrderByUser(username))
                 .stream()
                 .map(placedOrderMapper::toDto)
                 .collect(Collectors.toList());
-        // todo: add foods+quantity map to order
-        return placedOrders;
     }
 
     @Override

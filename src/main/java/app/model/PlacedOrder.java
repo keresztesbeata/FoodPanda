@@ -44,10 +44,10 @@ public class PlacedOrder {
     private String remark;
 
     @Column
-    private Boolean withCutlery;
+    private Boolean withCutlery = false;
 
     @Column
-    private Double totalPrice;
+    private Double totalPrice = 0d;
 
     public void computeTotalPrice() {
         totalPrice = cart.getTotalPrice() + restaurant.getDeliveryFee();

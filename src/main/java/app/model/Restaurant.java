@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,13 +30,13 @@ public class Restaurant {
     private String address;
 
     @Column
-    private Integer openingHour;
+    private Integer openingHour = 0;
 
     @Column
-    private Integer closingHour;
+    private Integer closingHour = 0;
 
     @Column
-    private Double deliveryFee;
+    private Double deliveryFee = 0d;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -43,13 +44,13 @@ public class Restaurant {
             joinColumns = {@JoinColumn(name = "restaurant_id")},
             inverseJoinColumns = {@JoinColumn(name = "zone_id")}
     )
-    private List<DeliveryZone> deliveryZones;
+    private Set<DeliveryZone> deliveryZones;
 
     @OneToMany(mappedBy = "restaurant")
-    private List<PlacedOrder> placedOrders;
+    private Set<PlacedOrder> placedOrders;
 
     @OneToMany(mappedBy = "restaurant")
-    private List<Food> menu;
+    private Set<Food> menu;
 
     public void addFood(Food food) {
         menu.add(food);

@@ -4,23 +4,15 @@ import app.dto.PlacedOrderDto;
 import app.model.OrderStatus;
 import app.model.PlacedOrder;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 public class PlacedOrderMapper implements Mapper<PlacedOrder, PlacedOrderDto> {
 
     @Override
     public PlacedOrderDto toDto(PlacedOrder placedOrder) {
-        Map<String, Integer> orderedFoodsMap = placedOrder.getCart()
-                .getFoods()
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue));
-
+        CartMapper cartMapper = new CartMapper();
         return new PlacedOrderDto.PlacedOrderDtoBuilder(
                 placedOrder.getRestaurant().getName(),
                 placedOrder.getUser().getUsername(),
-                orderedFoodsMap)
+                cartMapper.toDto(placedOrder.getCart()))
                 .withCutlery(placedOrder.getWithCutlery())
                 .withRemark(placedOrder.getRemark())
                 .build();

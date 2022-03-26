@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -25,7 +24,7 @@ public class PlacedOrderDto {
     @NotNull
     private String user;
 
-    private Map<String, Integer> orderedFoods;
+    private CartDto cartDto;
 
     private boolean withCutlery;
 
@@ -34,12 +33,12 @@ public class PlacedOrderDto {
     private PlacedOrderDto() {
     }
 
-    private PlacedOrderDto(String orderStatus, LocalDate orderDate, String restaurant, String user, Map<String, Integer> orderedFoods, boolean withCutlery, String remark) {
+    private PlacedOrderDto(String orderStatus, LocalDate orderDate, String restaurant, String user, CartDto cartDto, boolean withCutlery, String remark) {
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.restaurant = restaurant;
         this.user = user;
-        this.orderedFoods = orderedFoods;
+        this.cartDto = cartDto;
         this.withCutlery = withCutlery;
         this.remark = remark;
     }
@@ -59,20 +58,20 @@ public class PlacedOrderDto {
 
         private String remark;
 
-        private Map<String, Integer> orderedFoods;
+        private CartDto cartDto;
 
-        public PlacedOrderDtoBuilder(String restaurant, String user, Map<String, Integer> foods) {
+        public PlacedOrderDtoBuilder(String restaurant, String user, CartDto cartDto) {
             this.orderStatus = OrderStatus.PENDING.name();
             this.orderDate = LocalDate.now();
             this.restaurant = restaurant;
             this.user = user;
-            this.orderedFoods = foods;
+            this.cartDto = cartDto;
             this.withCutlery = false;
             this.remark = "";
         }
 
         public PlacedOrderDto build() {
-            return new PlacedOrderDto(orderStatus, orderDate, restaurant, user, orderedFoods, withCutlery, remark);
+            return new PlacedOrderDto(orderStatus, orderDate, restaurant, user, cartDto, withCutlery, remark);
         }
 
         public PlacedOrderDtoBuilder withCutlery(boolean withCutlery) {
@@ -84,6 +83,12 @@ public class PlacedOrderDto {
             this.remark = remark;
             return this;
         }
+
+        public PlacedOrderDtoBuilder withCartDto(CartDto cartDto) {
+            this.cartDto = cartDto;
+            return this;
+        }
+
         public PlacedOrderDtoBuilder withOrderDate(LocalDate orderDate) {
             this.orderDate = orderDate;
             return this;

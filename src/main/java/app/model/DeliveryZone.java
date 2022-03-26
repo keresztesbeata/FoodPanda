@@ -23,6 +23,10 @@ public class DeliveryZone {
     private String name;
 
     @ManyToMany(mappedBy = "deliveryZones")
-    private List<Restaurant> restaurants;
+    private Set<Restaurant> restaurants;
+
+    public void addRestaurant(Restaurant restaurant) {
+        restaurants.add(restaurant);
+    }
 
 }

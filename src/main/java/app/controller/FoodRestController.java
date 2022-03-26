@@ -22,12 +22,12 @@ public class FoodRestController {
     }
 
     @GetMapping("/food/id/{id}")
-    public FoodDto getRestaurantById(@PathVariable Integer id) throws EntityNotFoundException {
+    public FoodDto getFoodById(@PathVariable Integer id) throws EntityNotFoundException {
         return foodService.getFoodById(id);
     }
 
     @GetMapping("/food/name")
-    public FoodDto getRestaurantByName(@RequestParam String name) throws EntityNotFoundException {
+    public FoodDto getFoodByName(@RequestParam String name) throws EntityNotFoundException {
         return foodService.getFoodByName(name);
     }
 

@@ -2,6 +2,7 @@ package app.mapper;
 
 import app.dto.UserDto;
 import app.model.User;
+import app.model.UserRole;
 
 public class UserMapper implements Mapper<User, UserDto>{
 
@@ -11,6 +12,7 @@ public class UserMapper implements Mapper<User, UserDto>{
 
         userDto.setUsername(user.getUsername());
         userDto.setAddress(user.getAddress());
+        userDto.setUserRole(user.getUserRole().name());
 
         return userDto;
     }
@@ -22,6 +24,7 @@ public class UserMapper implements Mapper<User, UserDto>{
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setAddress(userDto.getAddress());
+        user.setUserRole(UserRole.valueOf(userDto.getUserRole()));
 
         return user;
     }

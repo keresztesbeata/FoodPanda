@@ -28,30 +28,41 @@ public class Cart {
     @ElementCollection
     @CollectionTable(name = "cart_foods_mapping",
             joinColumns = {@JoinColumn(name = "cart_id",
-                    referencedColumnName = "food_id")})
+                    referencedColumnName = "id")})
     @MapKeyColumn(name = "name")
     @Column(name = "quantity")
     private Map<Food, Integer> foods;
 
     @Column
-    private Double totalPrice;
+    private Double totalPrice = 0d;
 
     @Column
-    private Boolean completed;
+    private Boolean completed = false;
 
     public void addFoodWithQuantity(Food food, int quantity) {
-        int oldQuantity = foods.get(food);
-        foods.put(food, quantity);
+        int oldQuantity = 0;
+        if(foods.containsKey(food)) {
+            oldQuantity = foods.get(food);
+
+            if (quantity <= 0) {
+                foods.remove(food);
+            } else {
+                foods.replace(food, quantity);
+            }
+        }else {
+            foods.put(food, quantity);
+        }
         totalPrice  = totalPrice + food.getPrice() * (quantity - oldQuantity);
     }
 
-    public void deleteFoodWithQuantity(Food food, int quantity) {
+    public void deleteFood(Food food) {
         int oldQuantity = foods.get(food);
-        if(quantity <= 0) {
-            foods.remove(food);
-        }else{
-            foods.replace(food, quantity);
-        }
-        totalPrice  = totalPrice + food.getPrice() * (oldQuantity - quantity);
+        foods.remove(food);
+        totalPrice  = totalPrice - food.getPrice() * oldQuantity;
+    }
+
+    public void deleteAllFood() {
+        foods.clear();
+        totalPrice = 0d;
     }
 }

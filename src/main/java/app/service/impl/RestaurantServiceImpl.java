@@ -5,6 +5,7 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.RestaurantMapper;
+import app.model.DeliveryZone;
 import app.model.Restaurant;
 import app.model.User;
 import app.repository.DeliveryZoneRepository;
@@ -79,9 +80,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
         restaurant.setDeliveryZones(restaurantDto.getDeliveryZones()
                 .stream()
-                .map(zone -> deliveryZoneRepository.findByName(zone)
-                        .orElseThrow(() -> new InvalidDataException(INVALID_DELIVERY_ZONE_ERROR_MESSAGE)))
-                .collect(Collectors.toList()));
+                .map(zone -> {
+                    DeliveryZone deliveryZone = deliveryZoneRepository.findByName(zone)
+                            .orElseThrow(() -> new InvalidDataException(INVALID_DELIVERY_ZONE_ERROR_MESSAGE));
+                    deliveryZone.addRestaurant(restaurant);
+                    return deliveryZone;
+                })
+                .collect(Collectors.toSet()));
         User admin = userRepository.findByUsername(restaurantDto.getAdmin()).orElseThrow(InvalidDataException::new);
         restaurant.setAdmin(admin);
 

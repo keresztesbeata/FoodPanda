@@ -23,7 +23,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private List<Food> foods;
+    private Set<Food> foods;
 
     public void addFood(Food food) {
         foods.add(food);
