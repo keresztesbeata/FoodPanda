@@ -4,9 +4,13 @@ import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.model.User;
 import app.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -31,13 +35,15 @@ public class UserRestController {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(value = "/register")
-    public void register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
+    @PostMapping(value = "/process_register")
+    public ModelAndView register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         userService.addUser(userDto);
+        return new ModelAndView("home", "user", userDto);
     }
 
-    @PostMapping(value = "/login")
-    public UserDto login(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
-        return userService.authenticateUser(userDto);
+    @PostMapping(value = "/process_login")
+    public ModelAndView login(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
+        UserDto loggedInUser = userService.authenticateUser(userDto);
+        return new ModelAndView("home", "user", loggedInUser);
     }
 }

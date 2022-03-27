@@ -46,7 +46,7 @@ public class FoodRestController {
         return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
     }
 
-    @PostMapping(value = "/food/admin/new")
+    @PostMapping(value = "/admin/food/new")
     public void addFood(@RequestBody FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodService.addFood(foodDto);
     }

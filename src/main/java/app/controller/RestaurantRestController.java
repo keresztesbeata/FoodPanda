@@ -6,6 +6,7 @@ import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class RestaurantRestController {
         return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
     }
 
-    @PostMapping(value = "/restaurant/admin/new")
+    @PostMapping(value = "/admin/restaurant/new")
     public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
         restaurantService.addRestaurant(restaurantDto);
     }

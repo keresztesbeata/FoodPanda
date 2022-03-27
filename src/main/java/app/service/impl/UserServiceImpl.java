@@ -1,5 +1,6 @@
 package app.service.impl;
 
+import app.config.UserDetailsImpl;
 import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
@@ -15,6 +16,9 @@ import app.service.api.UserService;
 import app.service.validator.UserValidator;
 import app.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
     private static final String INVALID_USERNAME_ERROR_MESSAGE = "Invalid username!";
@@ -88,11 +92,19 @@ public class UserServiceImpl implements UserService {
                 .findByUsername(userDto.getUsername())
                 .orElseThrow(() -> new InvalidLoginException(INVALID_USERNAME_ERROR_MESSAGE));
 
-        if(!existingUser.getPassword().equals(userDto.getPassword())) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(userDto.getPassword(), existingUser.getPassword())) {
             throw new InvalidLoginException(INVALID_PASSWORD_ERROR_MESSAGE);
         }
 
         return userMapper.toDto(existingUser);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME_ERROR_MESSAGE));
+
+        return new UserDetailsImpl(user);
+    }
 }

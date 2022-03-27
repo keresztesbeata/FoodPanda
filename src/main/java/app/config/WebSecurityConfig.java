@@ -1,5 +1,7 @@
 package app.config;
 
+import app.model.UserRole;
+import app.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,13 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // TODO: add authorization for each url: control which user can access the given functionality
-    //  + show different view based on userRole
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/","/register","/login").permitAll()
+                .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll();
     }
 
@@ -42,5 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return authenticationProvider;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserServiceImpl();
     }
 }
