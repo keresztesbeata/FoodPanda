@@ -11,15 +11,13 @@ import java.util.Optional;
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Integer> {
-    Optional<Food> findByName(String name);
+    @Transactional
+    @Query("SELECT food from Food food left join food.restaurant restaurant where food.name = ?1 and restaurant.name = ?2")
+    Optional<Food> findByNameAndRestaurant(String name, String restaurant);
 
     @Transactional
     @Query("SELECT food from Food food left join food.restaurant restaurant where restaurant.name = ?1")
-    List<Food> findByRestaurant(String restaurant);
-
-    @Transactional
-    @Query("SELECT food from Food food left join food.category category where category.name = ?1")
-    List<Food> findByCategory(String category);
+    List<Food> findAllByRestaurant(String restaurant);
 
     @Transactional
     @Query("SELECT food from Food food left join food.category category left join food.restaurant restaurant where restaurant.name = ?1 and category.name = ?2")

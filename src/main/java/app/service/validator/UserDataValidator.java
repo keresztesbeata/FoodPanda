@@ -2,8 +2,10 @@ package app.service.validator;
 
 import app.dto.UserDto;
 import app.exceptions.InvalidDataException;
+import org.springframework.stereotype.Component;
 
-public class UserValidator implements Validator<UserDto> {
+@Component
+public class UserDataValidator implements DataValidator<UserDto> {
     private static final String MISSING_USERNAME_ERROR_MESSAGE = "The username cannot be missing!";
     private static final String MISSING_PASSWORD_ERROR_MESSAGE = "The password cannot be missing!";
 

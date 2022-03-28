@@ -5,14 +5,14 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidLoginException;
+import app.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<UserDto> getAllUsers();
-
-    UserDto getUserById(Integer id)  throws EntityNotFoundException;
+    User getCurrentUser();
 
     UserDto getUserByUsername(String username)  throws EntityNotFoundException;
 

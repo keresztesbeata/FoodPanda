@@ -1,6 +1,5 @@
 package app.dto;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,15 +12,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    @NotNull
     private String username;
-
-    @NotNull
     private String password;
-
-    @NotNull
-    private String address;
-
-    @NotNull
     private String userRole;
 }

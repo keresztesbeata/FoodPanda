@@ -14,5 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartDto {
+    private String customerName;
     private Map<String, Integer> foods;
+    private Double totalPrice;
 }

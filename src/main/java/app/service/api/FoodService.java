@@ -8,17 +8,12 @@ import app.exceptions.InvalidDataException;
 import java.util.List;
 
 public interface FoodService {
-    List<FoodDto> getAllFoods();
 
-    List<FoodDto> getFoodsByCategory(String category);
-
-    List<FoodDto> getFoodsByRestaurant(String restaurant);
+    List<FoodDto> getAllFoodsByRestaurant(String restaurant);
 
     List<FoodDto> getFoodsByRestaurantAndCategory(String restaurant, String category);
 
-    FoodDto getFoodById(Integer id) throws EntityNotFoundException;
-
-    FoodDto getFoodByName(String name) throws EntityNotFoundException;
+    FoodDto getFoodByNameAndRestaurant(String name, String restaurant) throws EntityNotFoundException;
 
     void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException;
 }

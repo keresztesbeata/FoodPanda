@@ -16,6 +16,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     Optional<Restaurant> findByName(String name);
 
     @Transactional
+    @Query("SELECT restaurant from Restaurant restaurant left join restaurant.admin user where user.username = ?1")
+    Optional<Restaurant> findByAdmin(String admin);
+
+    @Transactional
     @Query("SELECT restaurant from Restaurant restaurant left join restaurant.deliveryZones deliveryZone where deliveryZone.name = ?1")
     List<Restaurant> findByDeliveryZone(String deliveryZone);
 }

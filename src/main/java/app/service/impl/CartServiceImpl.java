@@ -2,6 +2,7 @@ package app.service.impl;
 
 import app.dto.CartDto;
 import app.exceptions.EntityNotFoundException;
+import app.exceptions.InvalidDataException;
 import app.mapper.CartMapper;
 import app.model.Cart;
 import app.model.Food;
@@ -12,14 +13,14 @@ import app.service.api.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-
 @Service
 public class CartServiceImpl implements CartService {
 
-    private static final String INEXISTENT_CART_ERROR_MESSAGE = "The food cannot be added to the cart! The user has no cart!";
+    private static final String CART_NOT_FOUND_ERROR_MESSAGE = "The user has no cart!";
     private static final String INEXISTENT_FOOD_ERROR_MESSAGE = "The food cannot be added to the cart! No such food!";
     private static final String INEXISTENT_USER_ERROR_MESSAGE = "The cart cannot be fetched! No such user exists!";
+    private static final String INEXISTENT_FOOD_IN_CART_ERROR_MESSAGE = "The food cannot be removed from the cart, because the cart doesn't contain it!";
+    private static final String NEGATIVE_QUANTITY_ERROR_MESSAGE = "The new quantity of food should be positive!";
 
     @Autowired
     private CartRepository cartRepository;
@@ -30,45 +31,52 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private UserRepository userRepository;
 
-    private final CartMapper cartMapper = new CartMapper();
+    @Autowired
+    private CartMapper cartMapper;
 
     @Override
-    public CartDto getCartOfUser(String username) throws EntityNotFoundException {
+    public CartDto getCartOfCustomer(String username) throws EntityNotFoundException {
         return cartMapper.toDto(
-                cartRepository.findByUserNotCompleted(username).orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setFoods(new HashMap<>());
-                    newCart.setUser(userRepository.findByUsername(username)
-                            .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_USER_ERROR_MESSAGE)));
-                    return cartRepository.save(newCart);
-                })
+                cartRepository.findByCustomer(username)
+                        .orElseGet(() -> {
+                            Cart newCart = new Cart();
+                            newCart.setCustomer(userRepository.findByUsername(username)
+                                    .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_USER_ERROR_MESSAGE)));
+                            return cartRepository.save(newCart);
+                        })
         );
     }
 
     @Override
     public void resetCart(String username) throws EntityNotFoundException {
-        Cart cart = cartRepository.findByUserNotCompleted(username)
-                        .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_CART_ERROR_MESSAGE));
+        Cart cart = cartRepository.findByCustomer(username)
+                .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         cart.deleteAllFood();
         cartRepository.save(cart);
     }
 
     @Override
     public void addFoodToCart(String username, String foodName, int quantity) throws EntityNotFoundException {
-        Cart cart = cartRepository.findByUserNotCompleted(username)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_CART_ERROR_MESSAGE));
+        Cart cart = cartRepository.findByCustomer(username)
+                .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         Food food = foodRepository.findByName(foodName)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_FOOD_ERROR_MESSAGE));
+        if (quantity <= 0) {
+            throw new InvalidDataException(NEGATIVE_QUANTITY_ERROR_MESSAGE);
+        }
         cart.addFoodWithQuantity(food, quantity);
         cartRepository.save(cart);
     }
 
     @Override
     public void removeFoodFromCart(String username, String foodName) throws EntityNotFoundException {
-        Cart cart = cartRepository.findByUserNotCompleted(username)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_CART_ERROR_MESSAGE));
+        Cart cart = cartRepository.findByCustomer(username)
+                .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         Food food = foodRepository.findByName(foodName)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_FOOD_ERROR_MESSAGE));
+        if (!cart.getFoods().containsKey(food)) {
+            throw new InvalidDataException(INEXISTENT_FOOD_IN_CART_ERROR_MESSAGE);
+        }
         cart.deleteFood(food);
 
         cartRepository.save(cart);

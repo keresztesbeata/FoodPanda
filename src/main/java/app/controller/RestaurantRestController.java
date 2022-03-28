@@ -6,7 +6,6 @@ import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +21,6 @@ public class RestaurantRestController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping("/restaurant/id/{id}")
-    public RestaurantDto getRestaurantById(@PathVariable Integer id) throws EntityNotFoundException {
-        return restaurantService.getRestaurantById(id);
-    }
-
     @GetMapping("/restaurant/name")
     public RestaurantDto getRestaurantByName(@RequestParam String name) throws EntityNotFoundException {
         return restaurantService.getRestaurantByName(name);
@@ -35,6 +29,11 @@ public class RestaurantRestController {
     @GetMapping("/restaurant/delivery_zone")
     public List<RestaurantDto> getRestaurantByDeliveryZone(@RequestParam String deliveryZoneName) throws EntityNotFoundException {
         return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
+    }
+
+    @GetMapping("/admin/restaurant")
+    public RestaurantDto getRestaurantOfAdmin(@RequestParam String admin) throws EntityNotFoundException {
+        return restaurantService.getRestaurantOfAdmin(admin);
     }
 
     @PostMapping(value = "/admin/restaurant/new")

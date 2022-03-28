@@ -7,6 +7,7 @@ import app.exceptions.InvalidDataException;
 import java.util.List;
 
 public interface DeliveryZoneService {
-
     List<DeliveryZoneDto> getAllDeliveryZones();
+
+    List<DeliveryZoneDto> getDeliveryZonesOfRestaurant(String restaurantName);
 }

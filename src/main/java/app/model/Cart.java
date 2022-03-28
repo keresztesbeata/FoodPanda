@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -18,12 +19,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToOne(mappedBy = "cart")
-    private PlacedOrder placedOrder;
+    private User customer;
 
     @ElementCollection
     @CollectionTable(name = "cart_foods_mapping",
@@ -31,27 +29,17 @@ public class Cart {
                     referencedColumnName = "id")})
     @MapKeyColumn(name = "name")
     @Column(name = "quantity")
-    private Map<Food, Integer> foods;
+    private Map<Food, Integer> foods = new HashMap<>();
 
     @Column
     private Double totalPrice = 0d;
-
-    @Column
-    private Boolean completed = false;
 
     public void addFoodWithQuantity(Food food, int quantity) {
         int oldQuantity = 0;
         if(foods.containsKey(food)) {
             oldQuantity = foods.get(food);
-
-            if (quantity <= 0) {
-                foods.remove(food);
-            } else {
-                foods.replace(food, quantity);
-            }
-        }else {
-            foods.put(food, quantity);
         }
+        foods.put(food, quantity);
         totalPrice  = totalPrice + food.getPrice() * (quantity - oldQuantity);
     }
 

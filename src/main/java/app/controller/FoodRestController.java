@@ -16,37 +16,22 @@ public class FoodRestController {
     @Autowired
     private FoodService foodService;
 
-    @GetMapping("/food/all")
-    public List<FoodDto> getAllFoods() {
-        return foodService.getAllFoods();
+    @GetMapping("/restaurant/food")
+    public List<FoodDto> getMenuOfRestaurant(@RequestParam String restaurant) throws EntityNotFoundException {
+        return foodService.getAllFoodsByRestaurant(restaurant);
     }
 
-    @GetMapping("/food/id/{id}")
-    public FoodDto getFoodById(@PathVariable Integer id) throws EntityNotFoundException {
-        return foodService.getFoodById(id);
-    }
-
-    @GetMapping("/food/name")
-    public FoodDto getFoodByName(@RequestParam String name) throws EntityNotFoundException {
-        return foodService.getFoodByName(name);
-    }
-
-    @GetMapping("/food/category")
-    public List<FoodDto> getFoodByCategory(@RequestParam String category) throws EntityNotFoundException {
-        return foodService.getFoodsByCategory(category);
-    }
-
-    @GetMapping("/food/restaurant")
-    public List<FoodDto> getFoodByRestaurant(@RequestParam String restaurant) throws EntityNotFoundException {
-        return foodService.getFoodsByRestaurant(restaurant);
-    }
-
-    @GetMapping("/food/restaurant/category")
+    @GetMapping("/restaurant/food/category")
     public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
         return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
     }
 
-    @PostMapping(value = "/admin/food/new")
+    @GetMapping("/restaurant/food/name")
+    public FoodDto getFoodByName(@RequestParam String name, @RequestParam String restaurant) throws EntityNotFoundException {
+        return foodService.getFoodByNameAndRestaurant(name, restaurant);
+    }
+
+    @PostMapping(value = "/restaurant/food/admin/new")
     public void addFood(@RequestBody FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodService.addFood(foodDto);
     }

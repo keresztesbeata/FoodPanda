@@ -18,7 +18,7 @@ public class CartRestController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/user/cart")
     public CartDto getCartOfUser(@RequestParam String username) {
-        return cartService.getCartOfUser(username);
+        return cartService.getCartOfCustomer(username);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

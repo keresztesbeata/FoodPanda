@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,19 +29,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(nullable = false, length = 100)
-    private String address;
+    @OneToOne(mappedBy = "customer")
+    private Cart cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Cart> carts;
-
-    @OneToMany(mappedBy = "user")
-    private Set<PlacedOrder> placedOrders;
+    @OneToMany(mappedBy = "customer")
+    private Set<RestaurantOrder> restaurantOrders;
 
     @OneToOne(mappedBy = "admin")
     private Restaurant restaurant;
 
-    public void addPlacedOrder(PlacedOrder placedOrder) {
-        placedOrders.add(placedOrder);
+    public void addOrder(RestaurantOrder restaurantOrder) {
+        restaurantOrders.add(restaurantOrder);
     }
 }

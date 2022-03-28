@@ -3,7 +3,7 @@ package app.service.validator;
 import app.dto.FoodDto;
 import app.exceptions.InvalidDataException;
 
-public class FoodValidator implements Validator<FoodDto> {
+public class FoodDataValidator implements DataValidator<FoodDto> {
     private static final String MISSING_NAME_ERROR_MESSAGE = "The name of the food cannot be empty!";
     private static final String MISSING_RESTAURANT_ERROR_MESSAGE = "The restaurant cannot be missing!";
     private static final String INVALID_PRICE_ERROR_MESSAGE = "The price cannot have a negative value";

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,7 +46,7 @@ public class Restaurant {
     private Set<DeliveryZone> deliveryZones;
 
     @OneToMany(mappedBy = "restaurant")
-    private Set<PlacedOrder> placedOrders;
+    private Set<RestaurantOrder> restaurantOrders;
 
     @OneToMany(mappedBy = "restaurant")
     private Set<Food> menu;
@@ -56,16 +55,8 @@ public class Restaurant {
         menu.add(food);
     }
 
-    public void deleteFood(Food food) {
-        menu.remove(food);
-    }
-
-    public void addPlacedOrder(PlacedOrder placedOrder) {
-        placedOrders.add(placedOrder);
-    }
-
-    public void deletePlacedOrder(PlacedOrder placedOrder) {
-        placedOrders.remove(placedOrder);
+    public void addOrder(RestaurantOrder restaurantOrder) {
+        restaurantOrders.add(restaurantOrder);
     }
 
 }

@@ -10,10 +10,10 @@ import app.model.Food;
 import app.model.Restaurant;
 import app.repository.FoodRepository;
 import app.repository.RestaurantRepository;
-import app.service.api.CategoryRepository;
+import app.repository.CategoryRepository;
 import app.service.api.FoodService;
-import app.service.validator.FoodValidator;
-import app.service.validator.Validator;
+import app.service.validator.FoodDataValidator;
+import app.service.validator.DataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,40 +23,16 @@ import java.util.stream.Collectors;
 @Service
 public class FoodServiceImpl implements FoodService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate food name!\nThis name is already taken!";
-    private static final String INVALID_RESTAURANT_ERROR_MESSAGE = "Invalid restaurant!\nNo such restaurant exists!";
-    private static final String INVALID_CATEGORY_ERROR_MESSAGE = "Invalid category!\nNo such category exists!";
 
     @Autowired
     private FoodRepository foodRepository;
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
     private final FoodMapper foodMapper = new FoodMapper();
-    private final Validator<FoodDto> foodValidator = new FoodValidator();
+    private final DataValidator<FoodDto> foodDataValidator = new FoodDataValidator();
 
     @Override
-    public List<FoodDto> getAllFoods() {
-        return foodRepository.findAll()
-                .stream()
-                .map(foodMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<FoodDto> getFoodsByCategory(String category) {
-        return foodRepository.findByCategory(category)
-                .stream()
-                .map(foodMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<FoodDto> getFoodsByRestaurant(String restaurant) {
-        return foodRepository.findByRestaurant(restaurant)
+    public List<FoodDto> getAllFoodsByRestaurant(String restaurant) {
+        return foodRepository.findAllByRestaurant(restaurant)
                 .stream()
                 .map(foodMapper::toDto)
                 .collect(Collectors.toList());
@@ -71,37 +47,23 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public FoodDto getFoodById(Integer id) throws EntityNotFoundException {
-        return foodRepository.findById(id)
-                .map(foodMapper::toDto)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    @Override
-    public FoodDto getFoodByName(String name) throws EntityNotFoundException {
-        return foodRepository.findByName(name)
+    public FoodDto getFoodByNameAndRestaurant(String name, String restaurant) throws EntityNotFoundException {
+        return foodRepository.findByNameAndRestaurant(name, restaurant)
                 .map(foodMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
-        foodValidator.validate(foodDto);
+        foodDataValidator.validate(foodDto);
 
-        if (foodRepository.findByName(foodDto.getName()).isPresent()) {
+        if (foodRepository.findByNameAndRestaurant(foodDto.getName(), foodDto.getRestaurant()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 
         Food food = foodMapper.toEntity(foodDto);
-        Restaurant restaurant = restaurantRepository.findByName(foodDto.getRestaurant())
-                .orElseThrow(() -> new InvalidDataException(INVALID_RESTAURANT_ERROR_MESSAGE));
-        food.setRestaurant(restaurant);
-        restaurant.addFood(food);
-
-        Category category = categoryRepository.getCategoryByName(foodDto.getCategory())
-                .orElseThrow(() -> new InvalidDataException(INVALID_CATEGORY_ERROR_MESSAGE));
-        food.setCategory(category);
-        category.addFood(food);
+        food.getRestaurant().addFood(food);
+        food.getCategory().addFood(food);
 
         foodRepository.save(food);
     }

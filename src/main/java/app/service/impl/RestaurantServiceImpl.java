@@ -5,15 +5,10 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.RestaurantMapper;
-import app.model.DeliveryZone;
 import app.model.Restaurant;
-import app.model.User;
-import app.repository.DeliveryZoneRepository;
 import app.repository.RestaurantRepository;
-import app.repository.UserRepository;
 import app.service.api.RestaurantService;
-import app.service.validator.RestaurantValidator;
-import app.service.validator.Validator;
+import app.service.validator.RestaurantDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\nThis name is already taken!";
-    private static final String INVALID_DELIVERY_ZONE_ERROR_MESSAGE = "Invalid delivery zone!\nNo such delivery zone exists!";
+    private static final String INVALID_ADMIN_ERROR_MESSAGE = "The admin has no associated restaurant!";
+    private static final String INVALID_NAME_ERROR_MESSAGE = "No restaurant with the given name exists!";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     @Autowired
-    private DeliveryZoneRepository deliveryZoneRepository;
+    private RestaurantMapper restaurantMapper;
 
     @Autowired
-    private UserRepository userRepository;
-
-    private final RestaurantMapper restaurantMapper = new RestaurantMapper();
-    private final Validator<RestaurantDto> restaurantValidator = new RestaurantValidator();
+    private RestaurantDataValidator restaurantDataValidator;
 
     @Override
     public List<RestaurantDto> getAllRestaurants() {
@@ -47,17 +40,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto getRestaurantById(Integer id) throws EntityNotFoundException {
-        return restaurantRepository.findById(id)
+    public RestaurantDto getRestaurantOfAdmin(String admin) throws EntityNotFoundException {
+        return restaurantRepository.findByAdmin(admin)
                 .map(restaurantMapper::toDto)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(INVALID_ADMIN_ERROR_MESSAGE));
     }
 
     @Override
     public RestaurantDto getRestaurantByName(String name) throws EntityNotFoundException {
         return restaurantRepository.findByName(name)
                 .map(restaurantMapper::toDto)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(INVALID_NAME_ERROR_MESSAGE));
     }
 
     @Override
@@ -71,25 +64,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
-        restaurantValidator.validate(restaurantDto);
+        restaurantDataValidator.validate(restaurantDto);
 
         if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 
         Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
-        restaurant.setDeliveryZones(restaurantDto.getDeliveryZones()
-                .stream()
-                .map(zone -> {
-                    DeliveryZone deliveryZone = deliveryZoneRepository.findByName(zone)
-                            .orElseThrow(() -> new InvalidDataException(INVALID_DELIVERY_ZONE_ERROR_MESSAGE));
-                    deliveryZone.addRestaurant(restaurant);
-                    return deliveryZone;
-                })
-                .collect(Collectors.toSet()));
-        User admin = userRepository.findByUsername(restaurantDto.getAdmin()).orElseThrow(InvalidDataException::new);
-        restaurant.setAdmin(admin);
-
+        restaurant.getDeliveryZones().forEach(deliveryZone -> deliveryZone.addRestaurant(restaurant));
         restaurantRepository.save(restaurant);
     }
 }
