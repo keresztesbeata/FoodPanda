@@ -10,7 +10,7 @@ public class RestaurantOrderDataValidator implements DataValidator<RestaurantOrd
 
     private static final String MISSING_USER_ERROR_MESSAGE = "Invalid data! No user specified!";
     private static final String MISSING_RESTAURANT_ERROR_MESSAGE = "Invalid data! No restaurant selected!";
-    private static final String MULTIPLE_RESTAURANT_ERROR_MESSAGE = "Invalid data! Cannot order from multiple restaurants at the same time!";
+    private static final String MISSING_ADDRESS_ERROR_MESSAGE = "Missing delivery address!";
 
     @Override
     public void validate(RestaurantOrderDto restaurantOrderDto) throws InvalidDataException {
@@ -21,14 +21,9 @@ public class RestaurantOrderDataValidator implements DataValidator<RestaurantOrd
             throw new InvalidDataException(MISSING_RESTAURANT_ERROR_MESSAGE);
         }
 
-        long nrOfDifferentRestaurants = restaurantOrderDto.getOrderedFoods()
-                .keySet()
-                .stream()
-                .distinct()
-                .count();
+        if(restaurantOrderDto.getDeliveryAddress() == null || restaurantOrderDto.getDeliveryAddress().isEmpty()) {
+            throw new InvalidDataException(MISSING_ADDRESS_ERROR_MESSAGE);
 
-         if(nrOfDifferentRestaurants != 1) {
-             throw new InvalidDataException(MULTIPLE_RESTAURANT_ERROR_MESSAGE);
-         }
+        }
     }
 }

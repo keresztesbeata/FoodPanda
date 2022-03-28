@@ -9,6 +9,7 @@ import app.exceptions.InvalidLoginException;
 import app.mapper.UserMapper;
 import app.model.Cart;
 import app.model.User;
+import app.model.UserRole;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
 import app.service.api.UserService;
@@ -56,20 +57,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new DuplicateDataException(DUPLICATE_USERNAME_ERROR_MESSAGE);
         }
         User user = userMapper.toEntity(userDto);
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+
         User savedUser = userRepository.save(user);
-        Cart cart = new Cart();
-        cart.setCustomer(savedUser);
-        cartRepository.save(cart);
+
+        if(user.getUserRole().equals(UserRole.CUSTOMER)) {
+            // create cart for new customers
+            Cart cart = new Cart();
+            cart.setCustomer(savedUser);
+            cartRepository.save(cart);
+        }
     }
 
     @Override
     public UserDto authenticateUser(UserDto userDto) throws InvalidLoginException {
-        if (getCurrentUser().getUsername().equals(userDto.getUsername())) {
-            throw new InvalidLoginException(ALREADY_LOGGED_IN_ERROR_MESSAGE);
-        }
+        System.out.println("authenticate");
 
         User existingUser = userRepository
                 .findByUsername(userDto.getUsername())

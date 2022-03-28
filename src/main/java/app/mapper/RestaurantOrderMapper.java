@@ -53,10 +53,8 @@ public class RestaurantOrderMapper implements Mapper<RestaurantOrder, Restaurant
         restaurantOrder.setRestaurant(restaurantRepository.findByName(restaurantOrderDto.getRestaurant())
                 .orElseThrow(() -> new InvalidDataException(INEXISTENT_RESTAURANT_ERROR_MESSAGE)));
         restaurantOrder.setDeliveryAddress(restaurantOrderDto.getDeliveryAddress());
-        restaurantOrder.setOrderStatus(OrderStatus.valueOf(restaurantOrderDto.getOrderStatus()));
-        restaurantOrder.setDateCreated(restaurantOrderDto.getDateCreated());
-        restaurantOrder.setRemark(restaurantOrder.getRemark());
-        restaurantOrder.setWithCutlery(restaurantOrder.getWithCutlery());
+        restaurantOrder.setRemark(restaurantOrderDto.getRemark());
+        restaurantOrder.setWithCutlery(restaurantOrderDto.getWithCutlery());
 
         return restaurantOrder;
     }

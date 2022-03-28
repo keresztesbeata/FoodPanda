@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -14,6 +15,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="restaurant_order")
 public class RestaurantOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +41,7 @@ public class RestaurantOrder {
                     referencedColumnName = "id")})
     @MapKeyColumn(name = "name")
     @Column(name = "quantity")
-    private Map<Food, Integer> orderedFoods;
+    private Map<Food, Integer> orderedFoods = new HashMap<>();
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -68,4 +70,9 @@ public class RestaurantOrder {
                 .reduce(Double::sum)
                 .orElse(0d);
     }
+
+    public void addOrderedFoods(Map<Food, Integer> orderedFoods) {
+        this.orderedFoods.putAll(orderedFoods);
+    }
+
 }

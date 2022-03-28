@@ -21,18 +21,15 @@ public class UserRestController {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(value = "/process_register")
+    @PostMapping(value = "/register")
     public ModelAndView register(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         userService.addUser(userDto);
-        return new ModelAndView("home", "user", userDto);
+        return new ModelAndView("login", "user", userDto);
     }
 
-    @PostMapping(value = "/process_login")
+    @PostMapping(value = "/login")
     public ModelAndView login(@RequestBody UserDto userDto) throws InvalidDataException, DuplicateDataException {
         UserDto loggedInUser = userService.authenticateUser(userDto);
-        if (loggedInUser.getUserRole().equals(UserRole.ADMIN.name())) {
-            return new ModelAndView("home", "admin", loggedInUser);
-        }
-        return new ModelAndView("home", "customer", loggedInUser);
+        return new ModelAndView("home", "user", loggedInUser);
     }
 }

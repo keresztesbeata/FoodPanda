@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

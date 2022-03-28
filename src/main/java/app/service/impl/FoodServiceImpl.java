@@ -5,12 +5,8 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.FoodMapper;
-import app.model.Category;
 import app.model.Food;
-import app.model.Restaurant;
 import app.repository.FoodRepository;
-import app.repository.RestaurantRepository;
-import app.repository.CategoryRepository;
 import app.service.api.FoodService;
 import app.service.validator.FoodDataValidator;
 import app.service.validator.DataValidator;
@@ -27,8 +23,11 @@ public class FoodServiceImpl implements FoodService {
     @Autowired
     private FoodRepository foodRepository;
 
-    private final FoodMapper foodMapper = new FoodMapper();
-    private final DataValidator<FoodDto> foodDataValidator = new FoodDataValidator();
+    @Autowired
+    private FoodMapper foodMapper;
+
+    @Autowired
+    private FoodDataValidator foodDataValidator;
 
     @Override
     public List<FoodDto> getAllFoodsByRestaurant(String restaurant) {
@@ -47,8 +46,8 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public FoodDto getFoodByNameAndRestaurant(String name, String restaurant) throws EntityNotFoundException {
-        return foodRepository.findByNameAndRestaurant(name, restaurant)
+    public FoodDto getFoodByNameAndRestaurant(String name) throws EntityNotFoundException {
+        return foodRepository.findByName(name)
                 .map(foodMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
@@ -57,7 +56,7 @@ public class FoodServiceImpl implements FoodService {
     public void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodDataValidator.validate(foodDto);
 
-        if (foodRepository.findByNameAndRestaurant(foodDto.getName(), foodDto.getRestaurant()).isPresent()) {
+        if (foodRepository.findByName(foodDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 

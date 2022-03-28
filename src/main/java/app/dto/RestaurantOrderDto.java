@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -16,8 +17,8 @@ public class RestaurantOrderDto {
     private String customer;
     private String orderStatus;
     private LocalDate dateCreated;
-    private Map<String, Integer> orderedFoods;
+    private Map<String, Integer> orderedFoods = new HashMap<>();
     private String deliveryAddress;
-    private Boolean withCutlery;
+    private Boolean withCutlery = false;
     private String remark;
 }

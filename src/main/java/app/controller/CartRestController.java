@@ -15,26 +15,22 @@ public class CartRestController {
     @Autowired
     private CartService cartService;
 
-    @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/user/cart")
+    @GetMapping("/customer/cart")
     public CartDto getCartOfUser(@RequestParam String username) {
         return cartService.getCartOfCustomer(username);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/cart/add_food")
+    @PostMapping("/customer/cart/add_food")
     public void addFoodToCart(@RequestParam String username, @RequestParam String foodName, @RequestParam Integer quantity) {
         cartService.addFoodToCart(username, foodName, quantity);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/cart/remove_food")
+    @PostMapping("/customer/cart/remove_food")
     public void removeFoodFromCart(@RequestParam String username, @RequestParam String foodName) {
         cartService.removeFoodFromCart(username, foodName);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/cart/reset")
+    @PostMapping("/customer/cart/reset")
     public void resetCart(@RequestParam String username) {
         cartService.resetCart(username);
     }

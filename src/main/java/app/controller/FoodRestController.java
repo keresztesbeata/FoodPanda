@@ -27,8 +27,8 @@ public class FoodRestController {
     }
 
     @GetMapping("/restaurant/food/name")
-    public FoodDto getFoodByName(@RequestParam String name, @RequestParam String restaurant) throws EntityNotFoundException {
-        return foodService.getFoodByNameAndRestaurant(name, restaurant);
+    public FoodDto getFoodByName(@RequestParam String name) throws EntityNotFoundException {
+        return foodService.getFoodByNameAndRestaurant(name);
     }
 
     @PostMapping(value = "/restaurant/food/admin/new")

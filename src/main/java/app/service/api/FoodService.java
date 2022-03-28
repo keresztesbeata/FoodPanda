@@ -13,7 +13,7 @@ public interface FoodService {
 
     List<FoodDto> getFoodsByRestaurantAndCategory(String restaurant, String category);
 
-    FoodDto getFoodByNameAndRestaurant(String name, String restaurant) throws EntityNotFoundException;
+    FoodDto getFoodByNameAndRestaurant(String name) throws EntityNotFoundException;
 
     void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException;
 }

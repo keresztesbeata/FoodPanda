@@ -31,12 +31,12 @@ public class RestaurantRestController {
         return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
     }
 
-    @GetMapping("/admin/restaurant")
+    @GetMapping("/restaurant/admin")
     public RestaurantDto getRestaurantOfAdmin(@RequestParam String admin) throws EntityNotFoundException {
         return restaurantService.getRestaurantOfAdmin(admin);
     }
 
-    @PostMapping(value = "/admin/restaurant/new")
+    @PostMapping(value = "/restaurant/admin/new")
     public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
         restaurantService.addRestaurant(restaurantDto);
     }

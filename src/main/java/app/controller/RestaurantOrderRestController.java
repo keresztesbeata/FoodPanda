@@ -14,17 +14,17 @@ public class RestaurantOrderRestController {
     @Autowired
     private RestaurantOrderService restaurantOrderService;
 
-    @PostMapping("/restaurant/order/user/new")
+    @PostMapping("/restaurant/order/customer/new")
     public void addOrder(@RequestBody RestaurantOrderDto restaurantOrderDto) {
         restaurantOrderService.addOrder(restaurantOrderDto);
     }
 
-    @GetMapping("/restaurant/order/user/all")
+    @GetMapping("/restaurant/order/customer/all")
     public List<RestaurantOrderDto> getAllOrdersOfUser(@RequestParam String username) {
         return restaurantOrderService.getOrdersOfUserByStatus(username, Optional.empty());
     }
 
-    @GetMapping("/restaurant/order/user/status")
+    @GetMapping("/restaurant/order/customer/status")
     public List<RestaurantOrderDto> getAllOrdersOfUserByStatus(@RequestParam String username, @RequestParam String orderStatus) {
         return restaurantOrderService.getOrdersOfUserByStatus(username, Optional.of(orderStatus));
     }

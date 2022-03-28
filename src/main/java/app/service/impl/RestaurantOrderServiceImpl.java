@@ -11,6 +11,7 @@ import app.service.validator.RestaurantOrderDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private static final String INEXISTENT_CART_ERROR_MESSAGE = "The order cannot be created! The user has no cart!";
     private static final String INEXISTENT_ORDER_ERROR_MESSAGE = "No order with the given orderNumber has been found!";
     private static final String EMPTY_CART_ERROR_MESSAGE = "The order cannot be created! No foods are present in the cart!";
+    private static final String MULTIPLE_RESTAURANT_ERROR_MESSAGE = "Invalid data! Cannot order from multiple restaurants at the same time!";
 
     @Autowired
     private RestaurantOrderRepository restaurantOrderRepository;
@@ -77,7 +79,20 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         RestaurantOrder restaurantOrder = restaurantOrderMapper.toEntity(restaurantOrderDto);
         String orderNumber = String.valueOf(new Random().nextInt(900000) + 100000);
         restaurantOrder.setOrderNumber(orderNumber);
-        restaurantOrder.setOrderedFoods(cart.getFoods());
+        restaurantOrder.setOrderStatus(PENDING);
+        restaurantOrder.setDateCreated(LocalDate.now());
+
+        long nrOfDifferentRestaurants = cart.getFoods()
+                .keySet()
+                .stream()
+                .distinct()
+                .count();
+
+        if(nrOfDifferentRestaurants != 1) {
+            throw new InvalidDataException(MULTIPLE_RESTAURANT_ERROR_MESSAGE);
+        }
+
+        restaurantOrder.addOrderedFoods(cart.getFoods());
         restaurantOrder.computeTotalPrice();
 
         restaurantOrder.getCustomer().addOrder(restaurantOrder);

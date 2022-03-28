@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="food")
 public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

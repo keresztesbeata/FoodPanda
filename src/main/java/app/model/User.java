@@ -33,12 +33,12 @@ public class User {
     private Cart cart;
 
     @OneToMany(mappedBy = "customer")
-    private Set<RestaurantOrder> restaurantOrders;
+    private Set<RestaurantOrder> orders;
 
     @OneToOne(mappedBy = "admin")
     private Restaurant restaurant;
 
     public void addOrder(RestaurantOrder restaurantOrder) {
-        restaurantOrders.add(restaurantOrder);
+        orders.add(restaurantOrder);
     }
 }

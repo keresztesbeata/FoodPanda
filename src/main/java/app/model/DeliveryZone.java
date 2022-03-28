@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="delivery_zones")
 public class DeliveryZone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

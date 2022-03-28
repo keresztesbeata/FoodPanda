@@ -14,6 +14,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="cart")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +25,7 @@ public class Cart {
     private User customer;
 
     @ElementCollection
-    @CollectionTable(name = "cart_foods_mapping",
+    @CollectionTable(name = "foods_in_cart",
             joinColumns = {@JoinColumn(name = "cart_id",
                     referencedColumnName = "id")})
     @MapKeyColumn(name = "name")

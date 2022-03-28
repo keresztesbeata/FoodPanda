@@ -2,7 +2,9 @@ package app.service.validator;
 
 import app.dto.FoodDto;
 import app.exceptions.InvalidDataException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FoodDataValidator implements DataValidator<FoodDto> {
     private static final String MISSING_NAME_ERROR_MESSAGE = "The name of the food cannot be empty!";
     private static final String MISSING_RESTAURANT_ERROR_MESSAGE = "The restaurant cannot be missing!";
