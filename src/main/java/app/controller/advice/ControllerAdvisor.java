@@ -1,10 +1,8 @@
 package app.controller.advice;
 
-import app.exceptions.DuplicateDataException;
-import app.exceptions.EntityNotFoundException;
-import app.exceptions.InvalidDataException;
-import app.exceptions.InvalidLoginException;
+import app.exceptions.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +14,15 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(InvalidLoginException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
     String invalidLoginExceptionHandler(InvalidLoginException e) {
+        return e.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidOperationException.class)
+    @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
+    String invalidOperationExceptionHandler(InvalidOperationException e) {
         return e.getMessage();
     }
 

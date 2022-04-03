@@ -2,19 +2,19 @@ package app.service.impl;
 
 import app.config.UserDetailsImpl;
 import app.dto.UserDto;
-import app.exceptions.DuplicateDataException;
-import app.exceptions.EntityNotFoundException;
-import app.exceptions.InvalidDataException;
-import app.exceptions.InvalidLoginException;
+import app.exceptions.*;
 import app.mapper.UserMapper;
 import app.model.Cart;
 import app.model.User;
 import app.model.UserRole;
+import app.model.UserSession;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
+import app.repository.UserSessionRepository;
 import app.service.api.UserService;
 import app.service.validator.UserDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,16 +22,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+import java.util.Optional;
 
-    private static final String ALREADY_LOGGED_IN_ERROR_MESSAGE = "You are already logged in into the application!";
+@Service
+public class UserServiceImpl implements UserService {
+
     private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
     private static final String INVALID_USERNAME_ERROR_MESSAGE = "Invalid username!";
     private static final String INVALID_PASSWORD_ERROR_MESSAGE = "Invalid password!";
+    private static final String NO_SIGNED_IN_USER_ERROR_MESSAGE = "Cannot log out! There is no currently logged in user!";
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserSessionRepository userSessionRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -74,32 +79,42 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto authenticateUser(UserDto userDto) throws InvalidLoginException {
-        System.out.println("authenticate");
-
         User existingUser = userRepository
                 .findByUsername(userDto.getUsername())
                 .orElseThrow(() -> new InvalidLoginException(INVALID_USERNAME_ERROR_MESSAGE));
+
+        Optional<UserSession> alreadyLoggedInUser = userSessionRepository.findByUsername(userDto.getUsername());
+        if(alreadyLoggedInUser.isPresent()) {
+            return userMapper.toDto(alreadyLoggedInUser.get().getUser());
+        }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(userDto.getPassword(), existingUser.getPassword())) {
             throw new InvalidLoginException(INVALID_PASSWORD_ERROR_MESSAGE);
         }
 
+        UserSession userSession = new UserSession();
+        userSession.setUser(existingUser);
+
+        existingUser.setUserSession(userSession);
+        userSessionRepository.save(userSession);
+
         return userMapper.toDto(existingUser);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME_ERROR_MESSAGE));
+    public void logout(String username) throws InvalidOperationException {
+        UserSession currentUserSession = userSessionRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new InvalidOperationException(NO_SIGNED_IN_USER_ERROR_MESSAGE));
 
-        return new UserDetailsImpl(user);
+        userSessionRepository.delete(currentUserSession);
     }
 
-    @Override
-    public User getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(INVALID_USERNAME_ERROR_MESSAGE));
-    }
+//    @Override
+//    public Optional<UserDto> getCurrentUser() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        return userRepository.findByUsername(((UserDetailsImpl) auth.getPrincipal()).getUsername())
+//                .map(userMapper::toDto);
+//    }
 }

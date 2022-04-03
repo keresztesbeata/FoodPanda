@@ -60,6 +60,7 @@ public class FoodServiceImpl implements FoodService {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 
+        //todo: add builder pattern here or at the order!
         Food food = foodMapper.toEntity(foodDto);
         food.getRestaurant().addFood(food);
         food.getCategory().addFood(food);

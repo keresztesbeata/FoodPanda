@@ -106,6 +106,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public void updateOrderStatus(String orderNumber, String orderStatus) {
+        // TODO validate correct sequence of updates: hint** use Strategy pattern here
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
         restaurantOrder.setOrderStatus(OrderStatus.valueOf(orderStatus));
