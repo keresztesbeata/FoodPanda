@@ -13,21 +13,19 @@ class Home extends React.Component {
             const userSession = GetCurrentUser();
             console.log("Home of : " + userSession.username);
             return (
-                <>
-                    <Header />
-                    <h1>
+                <div className="background-container-home bg-image d-flex justify-content-center align-items-center">
+                    <h1 className="text-white">
                         Welcome {userSession.username} !
                     </h1>
-                </>
+                </div>
             )
         }catch(e) {
             return (
-                <>
-                    <Header />
-                    <h1>
+                <div className="background-container-home bg-image d-flex justify-content-center align-items-center">
+                    <h1 className="text-white">
                         Welcome stranger !
                     </h1>
-                </>
+                </div>
             )
         }
     };

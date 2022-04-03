@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
+import Header from "./components/Header";
 
 class App extends Component {
     constructor(props) {
@@ -14,6 +15,8 @@ class App extends Component {
 
     render() {
         return (
+            <>
+                <Header/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -22,6 +25,7 @@ class App extends Component {
                     <Route path="/logout" element={<Logout />} />
                 </Routes>
             </BrowserRouter>
+            </>
         );
     }
 }

@@ -49,7 +49,7 @@ export function RegisterUser(username, password) {
 
     return fetch(BASE_URL + '/perform_register',requestOptions)
         .then(response => {
-            if(!response.created) {
+            if(!response.ok) {
                 return response.json()
                     .then(function(err) {
                         throw new Error(err.message);
@@ -58,8 +58,8 @@ export function RegisterUser(username, password) {
                 return response.json();
             }
         })
-        .then(() => {
-            console.log("Successfully registered! ");
+        .then(data => {
+            console.log("Successfully registered: " + data);
             window.location.href = "/login"
         });
 }

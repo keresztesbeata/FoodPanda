@@ -42,7 +42,7 @@ public class UserRestController {
         try {
             userDto.setUserRole(UserRole.CUSTOMER.name());
             userService.addUser(userDto);
-            return ResponseEntity.created(URI.create("/register")).build();
+            return ResponseEntity.ok().body(userDto);
         }catch (InvalidDataException | DuplicateDataException e){
             return ResponseEntity.badRequest().body(e);
         }

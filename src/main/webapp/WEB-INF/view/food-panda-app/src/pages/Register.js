@@ -43,9 +43,10 @@ class Register extends React.Component {
 
     render() {
         return (
-            <>
-                <Header />
-                <form onSubmit={this.handleSubmit}>
+            <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
+                <div className="card col-sm-3 border-dark text-left">
+                    <form onSubmit={this.handleSubmit} className="card-body">
+                        <h3 className="card-title">Register</h3>
                     {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Username</FormLabel>
@@ -55,11 +56,12 @@ class Register extends React.Component {
                         <FormLabel>Password</FormLabel>
                         <FormControl type="password" placeholder="Password" name="password" onChange={this.handleInputChange}/>
                     </FormGroup>
-                    <Button variant="primary" type="submit">
+                    <Button variant="secondary" type="submit">
                         Register
                     </Button>
                 </form>
-            </>
+                </div>
+            </div>
         )
     }
 }

@@ -38,3 +38,29 @@
 }
 
 
+.background-container-login {
+  background-image: url("https://www.9-elephants.co.uk/wp-content/uploads/thai-food.jpg");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.background-container-register {
+  background-image: url("https://efoodstation.com/assets/images/banner.jpg");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.background-container-home {
+  background-image: url("https://images.creativemarket.com/0.1.0/ps/7353023/1820/965/m1/fpnw/wm1/vhrcurpyvsoca7tmdjup4bikwr9tluqqycqknbt49gitoe9diuggdrpujsqselgd-.jpg?1574572825&s=b8b0de343dc1ee5ba264e82e37b1047e");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
+
+
+

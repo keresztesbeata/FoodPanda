@@ -15,7 +15,6 @@ class Logout extends React.Component {
     render() {
         return (
             <>
-                <Header />
                 Logging out...
             </>
         )
