@@ -79,10 +79,11 @@ export function LogoutUser() {
     fetch(url,requestOptions)
         .then(response => {
             console.log(response)
-            if(response.ok === false) {
-                throw Error(JSON.stringify(response))
-            }else{
-                return response;
+            if(!response.ok) {
+                return response.json()
+                    .then(function(err) {
+                        throw new Error(err.message);
+                    });
             }
         })
         .then(() => {
@@ -91,7 +92,7 @@ export function LogoutUser() {
             window.location.href = "/"
         })
         .catch(error => {
-            console.log("Failed to log out user!" + error.body);
+            console.log("Failed to log out user!" + error.message);
         });
 }
 

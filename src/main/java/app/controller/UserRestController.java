@@ -64,10 +64,8 @@ public class UserRestController {
             userService.logout(username);
             return ResponseEntity.ok().build();
         }catch(InvalidOperationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e);
         }
-
     }
-
 
 }
