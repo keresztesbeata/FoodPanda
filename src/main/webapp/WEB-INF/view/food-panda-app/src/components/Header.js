@@ -47,7 +47,8 @@ class Header extends React.Component {
                 <div>
                     <Navbar bg="dark" variant="dark">
                         <Container>
-                            <img src="https://www.gran-turismo.com/gtsport/decal/8296285827061809168_1.png" alt="Foodpanda icon" width="5%"/>
+                            {/*<img src="https://www.gran-turismo.com/gtsport/decal/8296285827061809168_1.png" alt="Foodpanda icon" width="5%"/>*/}
+                            <img src={require("../images/food-panda-logo.png")} alt="Foodpanda icon" width="5%"/>
                             <Navbar.Brand href="/">foodpanda</Navbar.Brand>
                             <Nav className="me-auto">
                                 <Nav.Link href="/login">Log in</Nav.Link>
