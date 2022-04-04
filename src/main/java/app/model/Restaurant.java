@@ -23,7 +23,7 @@ public class Restaurant {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;
 

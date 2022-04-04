@@ -20,9 +20,8 @@ export function LoginUser(username, password) {
                     .then(function(err) {
                         throw new Error(err.message);
                     });
-            }else{
-                return response.json();
             }
+            return response.json();
         })
         .then(data => {
             console.log("Successfully logged in: " + data);
@@ -53,9 +52,8 @@ export function RegisterUser(username, password) {
                     .then(function(err) {
                         throw new Error(err.message);
                     });
-            }else{
-                return response.json();
             }
+            return response.json();
         })
         .then(data => {
             console.log("Successfully registered: " + data);
@@ -79,7 +77,7 @@ export function LogoutUser() {
         .then(response => {
             console.log(response)
             if(!response.ok) {
-                return response.json()
+                response.json()
                     .then(function(err) {
                         throw new Error(err.message);
                     });

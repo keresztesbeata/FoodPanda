@@ -1,5 +1,7 @@
 import React from 'react'
-import {Button, Card, Col, ListGroup, Row} from 'react-bootstrap'
+import {Alert, Button, Card, Col, ListGroup, Row} from 'react-bootstrap'
+import {GetCurrentUser} from "../actions/UserActions";
+import {AddFoodToCart} from "../actions/CustomerActions";
 
 class MenuItem extends React.Component {
     constructor(props, context) {
@@ -10,10 +12,13 @@ class MenuItem extends React.Component {
             restaurant: props.data.restaurant,
             category: props.data.category,
             price: props.data.price,
-            quantity: 1
+            quantity: 1,
+            showError: false,
+            errorMessage: "",
         }
         this.incrementQuantity = this.incrementQuantity.bind(this);
         this.decrementQuantity = this.decrementQuantity.bind(this);
+        this.onAddFoodToCart = this.onAddFoodToCart.bind(this);
     }
 
     incrementQuantity() {
@@ -30,10 +35,22 @@ class MenuItem extends React.Component {
         })
     }
 
+    onAddFoodToCart() {
+        const userSession = GetCurrentUser();
+        AddFoodToCart(userSession.username, this.state.name, this.state.quantity)
+            .catch(error => {
+                this.setState({
+                    showError: true,
+                    errorMessage: error.message,
+                })
+            });
+    }
+
     render() {
         return (
           <Card>
               <Card.Body>
+                  {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
                   <Row>
                   <Col>
                   <Card.Title className="card-title">
@@ -75,7 +92,7 @@ class MenuItem extends React.Component {
                                   </Button>
                               </ListGroup.Item>
                               <ListGroup.Item>
-                                  <Button variant="outline-secondary" type="submit">
+                                  <Button variant="outline-secondary" onClick={this.onAddFoodToCart}>
                                       Add to cart
                                   </Button>
                               </ListGroup.Item>

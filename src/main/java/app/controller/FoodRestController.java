@@ -5,12 +5,10 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.FoodService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class FoodRestController {
@@ -24,22 +22,39 @@ public class FoodRestController {
     }
 
     @GetMapping("/restaurant/menu")
-    public ResponseEntity getMenuOfRestaurant(@RequestParam String restaurant) throws EntityNotFoundException {
-        return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(restaurant));
+    public ResponseEntity getMenuOfRestaurant(@RequestParam String restaurant) {
+        try {
+            return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(restaurant));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @GetMapping("/restaurant/menu/category")
-    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
-        return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
+    public ResponseEntity getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) {
+        try {
+            return ResponseEntity.ok().body(foodService.getFoodsByRestaurantAndCategory(restaurant, category));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @GetMapping("/restaurant/food")
-    public FoodDto getFoodByNameAndRestaurant(@RequestParam String food, @RequestParam String restaurant) throws EntityNotFoundException {
-        return foodService.getFoodByNameAndRestaurant(food, restaurant);
+    public ResponseEntity getFoodByNameAndRestaurant(@RequestParam String food, @RequestParam String restaurant) {
+        try {
+            return ResponseEntity.ok().body(foodService.getFoodByNameAndRestaurant(food, restaurant));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @PostMapping(value = "/restaurant/food/admin/new")
-    public void addFood(@RequestBody FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
-        foodService.addFood(foodDto);
+    public ResponseEntity addFood(@RequestBody FoodDto foodDto) {
+        try {
+            foodService.addFood(foodDto);
+            return ResponseEntity.ok().build();
+        }catch(InvalidDataException | DuplicateDataException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+        }
     }
 }

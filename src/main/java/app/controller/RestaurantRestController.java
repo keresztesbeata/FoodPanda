@@ -6,6 +6,8 @@ import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,28 +19,45 @@ public class RestaurantRestController {
     private RestaurantService restaurantService;
 
     @GetMapping("/restaurant/all")
-    public List<RestaurantDto> getAllRestaurants() {
-        return restaurantService.getAllRestaurants();
+    public ResponseEntity getAllRestaurants() {
+        return ResponseEntity.ok().body(restaurantService.getAllRestaurants());
     }
 
     @GetMapping("/restaurant")
-    public RestaurantDto getRestaurantByName(@RequestParam String name) throws EntityNotFoundException {
-        return restaurantService.getRestaurantByName(name);
+    public ResponseEntity getRestaurantByName(@RequestParam String name) {
+        try {
+            return ResponseEntity.ok().body(restaurantService.getRestaurantByName(name));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @GetMapping("/restaurant/delivery_zone")
-    public List<RestaurantDto> getRestaurantByDeliveryZone(@RequestParam String deliveryZoneName) throws EntityNotFoundException {
-        return restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName);
+    public ResponseEntity getRestaurantByDeliveryZone(@RequestParam String deliveryZoneName) {
+        try {
+            return ResponseEntity.ok().body(restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @GetMapping("/restaurant/admin")
-    public RestaurantDto getRestaurantOfAdmin(@RequestParam String admin) throws EntityNotFoundException {
-        return restaurantService.getRestaurantOfAdmin(admin);
+    public ResponseEntity getRestaurantOfAdmin(@RequestParam String admin) {
+        try {
+            return ResponseEntity.ok().body(restaurantService.getRestaurantOfAdmin(admin));
+        }catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @PostMapping(value = "/restaurant/admin/new")
-    public void addRestaurant(@RequestBody RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
-        restaurantService.addRestaurant(restaurantDto);
+    public ResponseEntity addRestaurant(@RequestBody RestaurantDto restaurantDto) {
+        try{
+            restaurantService.addRestaurant(restaurantDto);
+            return ResponseEntity.ok().build();
+        }catch(InvalidDataException | DuplicateDataException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+        }
     }
 
 }
