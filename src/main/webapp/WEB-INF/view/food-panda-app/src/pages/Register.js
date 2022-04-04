@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, Button, Alert, FormGroup, FormLabel, FormControl} from 'react-bootstrap'
 import Header from "../components/Header";
-import {RegisterUser} from "../components/UserSession";
+import {RegisterUser} from "../actions/UserActions";
 
 class Register extends React.Component {
     constructor(props) {

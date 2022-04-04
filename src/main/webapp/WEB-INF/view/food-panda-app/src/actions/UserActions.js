@@ -1,6 +1,5 @@
-import logout from "../pages/Logout";
+import {BASE_URL} from "./Utils";
 
-export const BASE_URL = 'http://localhost:8080/foodpanda';
 const SESSION_KEY = 'userSession'
 
 export function LoginUser(username, password) {

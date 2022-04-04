@@ -5,7 +5,9 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.FoodService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,17 +18,17 @@ public class FoodRestController {
     @Autowired
     private FoodService foodService;
 
+    @GetMapping("/restaurant/menu")
+    public ResponseEntity getMenuOfRestaurant(@RequestParam String name) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(name));
+    }
+
+    @GetMapping("/restaurant/menu/category")
+    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String name, @RequestParam String category) throws EntityNotFoundException {
+        return foodService.getFoodsByRestaurantAndCategory(name, category);
+    }
+
     @GetMapping("/restaurant/food")
-    public List<FoodDto> getMenuOfRestaurant(@RequestParam String restaurant) throws EntityNotFoundException {
-        return foodService.getAllFoodsByRestaurant(restaurant);
-    }
-
-    @GetMapping("/restaurant/food/category")
-    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
-        return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
-    }
-
-    @GetMapping("/restaurant/food/name")
     public FoodDto getFoodByName(@RequestParam String name) throws EntityNotFoundException {
         return foodService.getFoodByNameAndRestaurant(name);
     }

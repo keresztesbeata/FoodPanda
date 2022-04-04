@@ -59,6 +59,11 @@
   background-size: cover;
 }
 
+.header-image-home {
+  background-image: url("./images/home-background.jpg");
+  height:250px;
+  width:100%;
+}
 
 
 

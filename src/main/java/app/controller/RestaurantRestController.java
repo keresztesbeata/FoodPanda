@@ -21,7 +21,7 @@ public class RestaurantRestController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping("/restaurant/name")
+    @GetMapping("/restaurant")
     public RestaurantDto getRestaurantByName(@RequestParam String name) throws EntityNotFoundException {
         return restaurantService.getRestaurantByName(name);
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import {FormControl, FormLabel, FormGroup, Button, Alert, Image} from 'react-bootstrap'
 import Header from "../components/Header";
-import {LoginUser} from "../components/UserSession";
+import {LoginUser} from "../actions/UserActions";
 
 class Login extends React.Component {
     constructor(props, context) {

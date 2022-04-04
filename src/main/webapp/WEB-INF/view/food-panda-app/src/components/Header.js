@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, Navbar, Nav, Image} from 'react-bootstrap'
-import {GetCurrentUser} from "./UserSession";
+import {GetCurrentUser} from "../actions/UserActions";
 
 class Header extends React.Component {
     constructor(props) {
@@ -34,6 +34,7 @@ class Header extends React.Component {
                         <Container>
                             <Navbar.Brand href="/customer">foodpanda</Navbar.Brand>
                             <Nav className="me-auto">
+                                <Nav.Link href="/customer/menu">Menu</Nav.Link>
                                 <Nav.Link href="/customer/cart">My Cart</Nav.Link>
                                 <Nav.Link href="/customer/orders_history">Orders History</Nav.Link>
                                 <Nav.Link href="/logout">Logout</Nav.Link>

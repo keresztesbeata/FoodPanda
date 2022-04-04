@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, Button} from 'react-bootstrap'
 import Header from "../components/Header";
-import {GetCurrentUser} from "../components/UserSession";
+import {GetCurrentUser} from "../actions/UserActions";
 
 class Home extends React.Component {
     constructor(props) {
