@@ -1,7 +1,7 @@
 import React from 'react'
 import MenuItem from "../components/MenuItem";
 import {Alert, Button, Container, Form, FormControl, FormLabel, ListGroup, Nav, Navbar} from "react-bootstrap";
-import {LoadMenuForRestaurant} from "../actions/MenuActions";
+import {LoadFoodCategories, LoadMenuForRestaurant, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
 
 class MenuView extends React.Component {
     constructor(props, context) {
@@ -9,28 +9,22 @@ class MenuView extends React.Component {
         this.state = {
             restaurant: "",
             menu: [],
+            selectedCategory: "",
+            categories: [],
             showError: false,
             errorMessage: "",
         };
         this.loadRestaurantMenu = this.loadRestaurantMenu.bind(this);
+        this.loadFoodCategories = this.loadFoodCategories.bind(this);
+        this.selectCategory = this.selectCategory.bind(this);
     }
 
-    loadRestaurantMenu() {
-        const restaurantName = document.getElementById("search-restaurant").value;
-
-        LoadMenuForRestaurant(restaurantName)
-            .then(restaurantMenu => {
-                if(restaurantMenu.length > 0) {
-                    this.setState({
-                        restaurant: restaurantName,
-                        menu: restaurantMenu
-                    });
-                }else{
-                    this.setState({
-                        restaurant: "",
-                        menu: []
-                    });
-                }
+    loadFoodCategories() {
+        LoadFoodCategories()
+            .then(data => {
+                this.setState({
+                    categories: data
+                });
             })
             .catch(error => {
                 this.setState({
@@ -40,8 +34,65 @@ class MenuView extends React.Component {
             });
     }
 
+    loadRestaurantMenu() {
+        const restaurantName = document.getElementById("search-restaurant").value;
+        const selectedCategory = document.getElementById("select-category").value;
+
+        if(selectedCategory === "All") {
+            LoadMenuForRestaurant(restaurantName)
+                .then(restaurantMenu => {
+                    if (restaurantMenu.length > 0) {
+                        this.setState({
+                            restaurant: restaurantName,
+                            menu: restaurantMenu
+                        });
+                    } else {
+                        this.setState({
+                            restaurant: "",
+                            menu: []
+                        });
+                    }
+                })
+                .catch(error => {
+                    this.setState({
+                        showError: true,
+                        errorMessage: error.message,
+                    })
+                });
+        }else {
+            LoadMenuForRestaurantByCategory(restaurantName, selectedCategory)
+                .then(restaurantMenu => {
+                    if (restaurantMenu.length > 0) {
+                        this.setState({
+                            restaurant: restaurantName,
+                            menu: restaurantMenu
+                        });
+                    } else {
+                        this.setState({
+                            restaurant: "",
+                            menu: []
+                        });
+                    }
+                })
+                .catch(error => {
+                    this.setState({
+                        showError: true,
+                        errorMessage: error.message,
+                    })
+                });
+        }
+    }
+
+    selectCategory(e) {
+        e.preventDefault();
+        this.setState({
+            selectedCategory: e.target.value
+        });
+    }
+
     componentDidMount() {
-       this.loadRestaurantMenu();
+        this.loadFoodCategories();
+        this.loadRestaurantMenu();
     }
 
     render() {
@@ -65,6 +116,18 @@ class MenuView extends React.Component {
                 <div className="header-image-home d-flex justify-content-center align-items-center">
                     <h1 className="text-white">{this.state.restaurant}</h1>
                 </div>
+                <Navbar className="justify-content-center">
+                    <Form className="d-flex">
+                    <Form.Select aria-label="Food Category" className="me-2" onSelect={this.selectCategory} id="select-category">
+                        <option value="All" key="All">All</option>
+                        {
+                            this.state.categories.map(category =>
+                                <option value={category} key={category}>{category}</option>
+                            )
+                        }
+                    </Form.Select>
+                    </Form>
+                </Navbar>
                 <Container className="fluid">
                     <ListGroup variant="flush">
                         {this.state.menu.map(item =>

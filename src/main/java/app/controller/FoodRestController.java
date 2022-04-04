@@ -18,19 +18,24 @@ public class FoodRestController {
     @Autowired
     private FoodService foodService;
 
+    @GetMapping("/category")
+    public ResponseEntity getAllFoodCategories() {
+        return ResponseEntity.ok().body(foodService.getAllFoodCategories());
+    }
+
     @GetMapping("/restaurant/menu")
-    public ResponseEntity getMenuOfRestaurant(@RequestParam String name) throws EntityNotFoundException {
-        return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(name));
+    public ResponseEntity getMenuOfRestaurant(@RequestParam String restaurant) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(restaurant));
     }
 
     @GetMapping("/restaurant/menu/category")
-    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String name, @RequestParam String category) throws EntityNotFoundException {
-        return foodService.getFoodsByRestaurantAndCategory(name, category);
+    public List<FoodDto> getFoodByRestaurantAndCategory(@RequestParam String restaurant, @RequestParam String category) throws EntityNotFoundException {
+        return foodService.getFoodsByRestaurantAndCategory(restaurant, category);
     }
 
     @GetMapping("/restaurant/food")
-    public FoodDto getFoodByName(@RequestParam String name) throws EntityNotFoundException {
-        return foodService.getFoodByNameAndRestaurant(name);
+    public FoodDto getFoodByNameAndRestaurant(@RequestParam String food, @RequestParam String restaurant) throws EntityNotFoundException {
+        return foodService.getFoodByNameAndRestaurant(food, restaurant);
     }
 
     @PostMapping(value = "/restaurant/food/admin/new")

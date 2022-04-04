@@ -5,7 +5,9 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.FoodMapper;
+import app.model.Category;
 import app.model.Food;
+import app.repository.CategoryRepository;
 import app.repository.FoodRepository;
 import app.service.api.FoodService;
 import app.service.validator.FoodDataValidator;
@@ -22,6 +24,9 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodRepository foodRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private FoodMapper foodMapper;
@@ -46,8 +51,8 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public FoodDto getFoodByNameAndRestaurant(String name) throws EntityNotFoundException {
-        return foodRepository.findByName(name)
+    public FoodDto getFoodByNameAndRestaurant(String food, String restaurant) throws EntityNotFoundException {
+        return foodRepository.findByNameAndRestaurant(food, restaurant)
                 .map(foodMapper::toDto)
                 .orElseThrow(EntityNotFoundException::new);
     }
@@ -56,15 +61,22 @@ public class FoodServiceImpl implements FoodService {
     public void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodDataValidator.validate(foodDto);
 
-        if (foodRepository.findByName(foodDto.getName()).isPresent()) {
+        if (foodRepository.findByNameAndRestaurant(foodDto.getName(), foodDto.getRestaurant()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 
-        //todo: add builder pattern here or at the order!
         Food food = foodMapper.toEntity(foodDto);
         food.getRestaurant().addFood(food);
         food.getCategory().addFood(food);
 
         foodRepository.save(food);
+    }
+
+    @Override
+    public List<String> getAllFoodCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(Category::getName)
+                .collect(Collectors.toList());
     }
 }
