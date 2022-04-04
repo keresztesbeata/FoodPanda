@@ -85,6 +85,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         long nrOfDifferentRestaurants = cart.getFoods()
                 .keySet()
                 .stream()
+                .map(Food::getRestaurant)
+                .map(Restaurant::getName)
                 .distinct()
                 .count();
 
@@ -92,6 +94,14 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
             throw new InvalidDataException(MULTIPLE_RESTAURANT_ERROR_MESSAGE);
         }
 
+        Restaurant restaurant = cart.getFoods()
+                .keySet()
+                .stream()
+                .map(Food::getRestaurant)
+                .findFirst()
+                .get();
+
+        restaurantOrder.setRestaurant(restaurant);
         restaurantOrder.addOrderedFoods(cart.getFoods());
         restaurantOrder.computeTotalPrice();
 

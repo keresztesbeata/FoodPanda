@@ -39,6 +39,11 @@ public class FoodRestController {
         }
     }
 
+    @GetMapping("/food")
+    public ResponseEntity getFoodByName(@RequestParam String food) {
+        return ResponseEntity.of(foodService.getFoodByName(food));
+    }
+
     @GetMapping("/restaurant/food")
     public ResponseEntity getFoodByNameAndRestaurant(@RequestParam String food, @RequestParam String restaurant) {
         try {

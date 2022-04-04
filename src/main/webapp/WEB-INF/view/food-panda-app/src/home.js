@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import MenuView from './pages/MenuView';
+import CustomerMenuView from './pages/CustomerMenuView';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
-        <MenuView />
+        <CustomerMenuView />
     </React.StrictMode>,
     document.getElementById('root')
 );

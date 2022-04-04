@@ -1,18 +1,21 @@
 import {BASE_URL} from "./Utils";
 
 export function AddFoodToCart(username, foodName, quantity) {
-    const data = {
+    const url = new URL(BASE_URL + "/customer/cart/add_food")
+    const params = {
         username: username,
         foodName: foodName,
         quantity: quantity
     }
+    url.search = new URLSearchParams(params).toString();
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(params)
     };
 
-    return fetch(BASE_URL + '/customer/cart/add_food',requestOptions)
+    return fetch(url,requestOptions)
         .then(response => {
             if(!response.ok) {
                 response.json()
@@ -20,9 +23,98 @@ export function AddFoodToCart(username, foodName, quantity) {
                         throw new Error(err.message);
                     });
             }
-        })
-        .then(data => {
-            console.log("Successfully registered: " + data);
-            window.location.href = "/login"
+        });
+}
+
+export function RemoveFoodFromCart(username, foodName) {
+    const url = new URL(BASE_URL + "/customer/cart/remove_food")
+    const params = {
+        username: username,
+        foodName: foodName
+    }
+    url.search = new URLSearchParams(params).toString();
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(url,requestOptions)
+        .then(response => {
+            if(!response.ok) {
+                response.json()
+                    .then(function(err) {
+                        throw new Error(err.message);
+                    });
+            }
+        });
+}
+
+export function PlaceOrder(orderDetails) {
+    const url = BASE_URL + "/customer/order/new";
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderDetails)
+    };
+
+    return fetch(url,requestOptions)
+        .then(response => {
+            if(!response.ok) {
+                response.json()
+                    .then(function(err) {
+                        throw new Error(err.message);
+                    });
+            }
+        });
+}
+
+export function LoadCustomerCart(username) {
+    const url = new URL(BASE_URL + "/customer/cart")
+    const params = {
+        username: username,
+    }
+    url.search = new URLSearchParams(params).toString();
+
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(url,requestOptions)
+        .then(response => {
+            if(!response.ok) {
+                return response.json()
+                    .then(function(err) {
+                        throw new Error(err.message);
+                    });
+            }
+            return response.json();
+        });
+}
+
+export function LoadFoodDetails(foodName) {
+    const url = new URL(BASE_URL + "/food")
+    const params = {
+        food: foodName,
+    }
+    url.search = new URLSearchParams(params).toString();
+
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(url,requestOptions)
+        .then(response => {
+            if(!response.ok) {
+                return response.json()
+                    .then(function(err) {
+                        throw new Error(err.message);
+                    });
+            }
+            return response.json();
         });
 }

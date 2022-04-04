@@ -36,13 +36,14 @@ class MenuItem extends React.Component {
     }
 
     onAddFoodToCart() {
-        const userSession = GetCurrentUser();
+        const userSession = GetCurrentUser()
         AddFoodToCart(userSession.username, this.state.name, this.state.quantity)
             .catch(error => {
                 this.setState({
                     showError: true,
                     errorMessage: error.message,
                 })
+                this.props.showCartContent = true;
             });
     }
 
@@ -67,37 +68,26 @@ class MenuItem extends React.Component {
                   </Card.Text>
                   </Col>
                   <Col>
-                  {
-                      (this.props.isEditable) ?
-                          <ListGroup horizontal>
-                              <ListGroup.Item>
-                                  <Button variant="secondary" type="submit">
-                                      Edit
-                                  </Button>
-                              </ListGroup.Item>
-                          </ListGroup>
-                          :
-                          <ListGroup horizontal>
-                              <ListGroup.Item>
-                                  <Button variant="outline-danger" onClick={this.decrementQuantity} disabled={this.state.quantity <= 1}>
-                                      -
-                                  </Button>
-                              </ListGroup.Item>
-                              <ListGroup.Item>
-                                  {this.state.quantity}
-                              </ListGroup.Item>
-                              <ListGroup.Item>
-                                  <Button variant="outline-success" onClick={this.incrementQuantity}>
-                                      +
-                                  </Button>
-                              </ListGroup.Item>
-                              <ListGroup.Item>
-                                  <Button variant="outline-secondary" onClick={this.onAddFoodToCart}>
-                                      Add to cart
-                                  </Button>
-                              </ListGroup.Item>
-                          </ListGroup>
-                  }
+                      <ListGroup horizontal>
+                          <ListGroup.Item>
+                              <Button variant="outline-danger" onClick={this.decrementQuantity} disabled={this.state.quantity <= 1}>
+                                  -
+                              </Button>
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                              {this.state.quantity}
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                              <Button variant="outline-success" onClick={this.incrementQuantity}>
+                                  +
+                              </Button>
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                              <Button variant="outline-secondary" onClick={this.onAddFoodToCart}>
+                                  Add to cart
+                              </Button>
+                          </ListGroup.Item>
+                      </ListGroup>
                   </Col>
                   </Row>
               </Card.Body>

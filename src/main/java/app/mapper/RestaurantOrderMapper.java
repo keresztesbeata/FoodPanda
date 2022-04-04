@@ -50,8 +50,6 @@ public class RestaurantOrderMapper implements Mapper<RestaurantOrder, Restaurant
 
         restaurantOrder.setCustomer(userRepository.findByUsername(restaurantOrderDto.getCustomer())
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_USER_ERROR_MESSAGE)));
-        restaurantOrder.setRestaurant(restaurantRepository.findByName(restaurantOrderDto.getRestaurant())
-                .orElseThrow(() -> new InvalidDataException(INEXISTENT_RESTAURANT_ERROR_MESSAGE)));
         restaurantOrder.setDeliveryAddress(restaurantOrderDto.getDeliveryAddress());
         restaurantOrder.setRemark(restaurantOrderDto.getRemark());
         restaurantOrder.setWithCutlery(restaurantOrderDto.getWithCutlery());

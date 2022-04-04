@@ -7,7 +7,9 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Header from "./components/Header";
-import MenuView from "./pages/MenuView";
+import CustomerMenuView from "./pages/CustomerMenuView";
+import AdminMenuView from "./pages/AdminMenuView";
+import CartContent from "./components/CartContent";
 
 class App extends Component {
     constructor(props) {
@@ -24,8 +26,9 @@ class App extends Component {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register/>} />
                     <Route path="/logout" element={<Logout />} />
-                    <Route path="/customer/menu" element={<MenuView isAdmin={false}/>} />
-                    <Route path="/admin/menu" element={<MenuView isAdmin={true}/>} />
+                    <Route path="/customer/menu" element={<CustomerMenuView />} />
+                    <Route path="/customer/cart" element={<CartContent />} />
+                    <Route path="/admin/menu" element={<AdminMenuView />} />
                 </Routes>
             </BrowserRouter>
             </>

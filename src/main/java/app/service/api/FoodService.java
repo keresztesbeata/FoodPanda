@@ -6,8 +6,11 @@ import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FoodService {
+
+    Optional<FoodDto> getFoodByName(String food);
 
     List<FoodDto> getAllFoodsByRestaurant(String restaurant);
 

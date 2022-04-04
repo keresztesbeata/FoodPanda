@@ -8,19 +8,23 @@ import {
     Container,
     Form,
     FormControl,
-    ListGroup,
-    Navbar, Row
+    ListGroup, Nav,
+    Navbar, Offcanvas, Row
 } from "react-bootstrap";
 import {
     FindRestaurant,
-    LoadFoodCategories, LoadMenuForRestaurant,
+    LoadFoodCategories,
     LoadMenuForRestaurantByCategory
 } from "../actions/MenuActions";
+import {LoadCustomerCart} from "../actions/CustomerActions";
+import {GetCurrentUser} from "../actions/UserActions";
+import CartItem from "../components/CartItem";
 
-class MenuView extends React.Component {
+class CustomerMenuView extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            restaurantName: "",
             restaurant: {
                 name: "",
                 address: "",
@@ -32,6 +36,7 @@ class MenuView extends React.Component {
             },
             menu: [],
             categories: [],
+            selectedCategory: "",
             showError: false,
             errorMessage: "",
         };
@@ -39,6 +44,11 @@ class MenuView extends React.Component {
         this.loadFoodCategories = this.loadFoodCategories.bind(this);
         this.loadRestaurant = this.loadRestaurant.bind(this);
         this.resetRestaurantInformation = this.resetRestaurantInformation.bind(this);
+        this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
+        this.onHideCartContent = this.onHideCartContent.bind(this);
+        this.onShowCartContent = this.onShowCartContent.bind(this);
+        this.onFinalizeOrder = this.onFinalizeOrder.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     loadFoodCategories() {
@@ -87,32 +97,29 @@ class MenuView extends React.Component {
     }
 
     onLoadRestaurantMenu() {
-        let restaurantName = document.getElementById("search-restaurant").value;
-        const selectedCategory = document.getElementById("select-category").value;
-
-        FindRestaurant(restaurantName)
+        FindRestaurant(this.state.restaurantName)
             .then(restaurantData => {
-                LoadMenuForRestaurantByCategory(restaurantName, selectedCategory)
-                        .then(restaurantMenu => {
-                            if (restaurantMenu.length > 0) {
-                                this.setState({
-                                    restaurant: restaurantData,
-                                    menu: restaurantMenu,
-                                    showError: false,
-                                });
-                            } else {
-                                this.setState({
-                                    menu: [],
-                                    showError: false,
-                                });
-                            }
-                        })
-                        .catch(error => {
+                LoadMenuForRestaurantByCategory(this.state.restaurantName, this.state.selectedCategory)
+                    .then(restaurantMenu => {
+                        if (restaurantMenu.length > 0) {
                             this.setState({
-                                showError: true,
-                                errorMessage: error.message,
-                            })
-                        });
+                                restaurant: restaurantData,
+                                menu: restaurantMenu,
+                                showError: false,
+                            });
+                        } else {
+                            this.setState({
+                                menu: [],
+                                showError: false,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        this.setState({
+                            showError: true,
+                            errorMessage: error.message,
+                        })
+                    });
             })
             .catch(error => {
                 this.setState({
@@ -127,6 +134,42 @@ class MenuView extends React.Component {
         this.loadFoodCategories();
     }
 
+    onHideCartContent() {
+        this.setState({
+            showCartContent: false
+        })
+    }
+
+    onShowCartContent() {
+        const userSession = GetCurrentUser();
+        LoadCustomerCart(userSession.username, this.state.name)
+            .then(data => {
+                this.setState({
+                    cartItems: data
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    showError: true,
+                    errorMessage: error.message,
+                });
+            });
+    }
+
+    handleInputChange(event) {
+        // prevent page from reloading
+        event.preventDefault();
+        const target = event.target
+        this.setState({
+            [target.name]: target.value,
+            showError: false
+        });
+    }
+
+    onFinalizeOrder() {
+        window.location.href = "customer/cart"
+    }
+
     render() {
         return (
             <div>
@@ -138,14 +181,17 @@ class MenuView extends React.Component {
                         placeholder="Search restaurant..."
                         className="me-2"
                         aria-label="Search"
-                        id="search-restaurant"
+                        name="restaurantName"
+                        onChange={this.handleInputChange}
                     />
                     <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Search</Button>
                 </Form>
                 </Navbar>
             <div className="flex justify-content-center">
-                <div className="header-image-home d-flex justify-content-center align-items-center">
-                    <Card className={(this.state.restaurant.name !== "")?"visible transparent-background" : "invisible"}>
+                <Container >
+                    {/*className="header-image-home d-flex justify-content-center align-items-center">*/}
+                    {/*<Card className={(this.state.restaurant.name !== "")?"visible transparent-background" : "invisible"}>*/}
+                    <Card className={(this.state.restaurant.name !== "")?"visible" : "invisible"}>
                         <Card.Title className="text-center">
                             {this.state.restaurant.name}
                         </Card.Title>
@@ -179,10 +225,10 @@ class MenuView extends React.Component {
                             </Row>
                         </Card.Body>
                     </Card>
-                </div>
+                </Container>
                 <Navbar className="justify-content-center">
                     <Form className="d-flex">
-                    <Form.Select aria-label="Food Category" className="me-2" id="select-category">
+                    <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory" onChange={this.handleInputChange}>
                         <option value="All" key="All">All</option>
                         {
                             this.state.categories.map(category =>
@@ -190,21 +236,34 @@ class MenuView extends React.Component {
                             )
                         }
                     </Form.Select>
+                        <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Filter</Button>
                     </Form>
                 </Navbar>
                 <Container className="fluid">
                     <ListGroup variant="flush">
                         {this.state.menu.map(item =>
                             <ListGroup.Item key={item.name}>
-                                <MenuItem isEditable={this.props.isAdmin} data={item}/>
+                                <MenuItem data={item} showCartContent={this.state.showCartContent}/>
                             </ListGroup.Item>
                         )}
                     </ListGroup>
                 </Container>
             </div>
+
+                <Offcanvas show={this.state.showCartContent} placement="end" onShow={this.onShowCartContent} onHide={this.onHideCartContent}>
+                    <Offcanvas.Header closeButton>
+                        <Offcanvas.Title>My Cart</Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                        {this.state.cartItems.map(cartItem =>
+                            <CartItem data={cartItem}/>
+                        )}
+                        <Button variant="outline-success" onClick={this.onFinalizeOrder}>Finalize Order</Button>
+                    </Offcanvas.Body>
+                </Offcanvas>
             </div>
         );
     }
 }
 
-export default MenuView;
+export default CustomerMenuView;

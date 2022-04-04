@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,12 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodDataValidator foodDataValidator;
+
+    @Override
+    public Optional<FoodDto> getFoodByName(String food) {
+        return foodRepository.findByName(food)
+                .map(foodMapper::toDto);
+    }
 
     @Override
     public List<FoodDto> getAllFoodsByRestaurant(String restaurant) {
