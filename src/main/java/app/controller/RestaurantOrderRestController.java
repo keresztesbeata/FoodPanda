@@ -1,11 +1,14 @@
 package app.controller;
 
 import app.dto.RestaurantOrderDto;
+import app.exceptions.EntityNotFoundException;
+import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,42 +18,60 @@ public class RestaurantOrderRestController {
     private RestaurantOrderService restaurantOrderService;
 
     @PostMapping("/customer/order/new")
-    public void addOrder(@RequestBody RestaurantOrderDto orderDetails) {
-        restaurantOrderService.addOrder(orderDetails);
+    public ResponseEntity addOrder(@RequestBody RestaurantOrderDto orderDetails) {
+        try {
+            restaurantOrderService.addOrder(orderDetails);
+            return ResponseEntity.ok().build();
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+        }
     }
 
     @GetMapping("/customer/order/all")
-    public List<RestaurantOrderDto> getAllOrdersOfUser(@RequestParam String username) {
-        return restaurantOrderService.getOrdersOfUserByStatus(username, Optional.empty());
+    public ResponseEntity getAllOrdersOfUser(@RequestParam String username) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfUserByStatus(username, Optional.empty()));
     }
 
     @GetMapping("/customer/order/status")
-    public List<RestaurantOrderDto> getAllOrdersOfUserByStatus(@RequestParam String username, @RequestParam String orderStatus) {
-        return restaurantOrderService.getOrdersOfUserByStatus(username, Optional.of(orderStatus));
+    public ResponseEntity getAllOrdersOfUserByStatus(@RequestParam String username, @RequestParam String orderStatus) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfUserByStatus(username, Optional.of(orderStatus)));
     }
 
     @GetMapping("/restaurant/order/admin/orderNumber")
-    public RestaurantOrderDto getOrderByOrderNumber(@RequestParam String orderNumber) {
-        return restaurantOrderService.getOrderByOrderNumber(orderNumber);
+    public ResponseEntity getOrderByOrderNumber(@RequestParam String orderNumber) {
+        try {
+            return ResponseEntity.ok().body(restaurantOrderService.getOrderByOrderNumber(orderNumber));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @GetMapping("/restaurant/order/admin/all")
-    public List<RestaurantOrderDto> getAllOrdersOfRestaurant(@RequestParam String restaurant) {
-        return restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.empty());
+    public ResponseEntity getAllOrdersOfRestaurant(@RequestParam String restaurant) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.empty()));
     }
 
     @GetMapping("/restaurant/order/admin/status")
-    public List<RestaurantOrderDto> getAllOrdersOfRestaurantByStatus(@RequestParam String restaurant, @RequestParam String orderStatus) {
-        return restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus));
+    public ResponseEntity getAllOrdersOfRestaurantByStatus(@RequestParam String restaurant, @RequestParam String orderStatus) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus)));
     }
 
     @GetMapping("/restaurant/order/admin/orderNumber/available_statuses")
-    public List<String> getAvailableOrderStatusesForOrder(@RequestParam String orderNumber) {
-        return restaurantOrderService.getAvailableStatusForOrder(orderNumber);
+    public ResponseEntity getAvailableOrderStatusesForOrder(@RequestParam String orderNumber) {
+        try {
+            return ResponseEntity.ok().body(restaurantOrderService.getAvailableStatusForOrder(orderNumber));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 
     @PostMapping("/restaurant/order/admin/orderNumber/update_status")
-    public void updateOrderStatus(@RequestParam String orderNumber, @RequestParam String orderStatus) {
-        restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
+    public ResponseEntity updateOrderStatus(@RequestParam String orderNumber, @RequestParam String orderStatus) {
+        try {
+            restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        }
     }
 }
