@@ -2,6 +2,7 @@ import React from 'react'
 import {Alert, Button, Card, Col, ListGroup, Row} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 import {AddFoodToCart} from "../actions/CustomerActions";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class MenuItem extends React.Component {
     constructor(props, context) {
@@ -13,12 +14,16 @@ class MenuItem extends React.Component {
             category: props.data.category,
             price: props.data.price,
             quantity: 1,
-            showError: false,
-            errorMessage: "",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         }
         this.incrementQuantity = this.incrementQuantity.bind(this);
         this.decrementQuantity = this.decrementQuantity.bind(this);
         this.onAddFoodToCart = this.onAddFoodToCart.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     incrementQuantity() {
@@ -38,20 +43,46 @@ class MenuItem extends React.Component {
     onAddFoodToCart() {
         const userSession = GetCurrentUser()
         AddFoodToCart(userSession.username, this.state.name, this.state.quantity)
+            .then(() => {
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: this.state.quantity + " x " + this.state.name +" has been added to the cart!",
+                        type: SUCCESS
+                    }
+                });
+            })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                })
-                this.props.showCartContent = true;
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
             });
+    }
+
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     render() {
         return (
           <Card>
               <Card.Body>
-                  {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                  {
+                      (this.state.notification.show) ?
+                          <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                              {this.state.notification.message}
+                          </Alert>
+                          :
+                          <div/>
+                  }
                   <Row>
                   <Col>
                   <Card.Title className="card-title">

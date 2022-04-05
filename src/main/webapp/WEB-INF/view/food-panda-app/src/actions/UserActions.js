@@ -30,7 +30,6 @@ export function LoginUser(username, password) {
                 username: data.username
             });
             localStorage.setItem(SESSION_KEY, sessionData);
-            window.location.href = "/"
         });
 }
 
@@ -57,7 +56,6 @@ export function RegisterUser(username, password) {
         })
         .then(data => {
             console.log("Successfully registered: " + data);
-            window.location.href = "/login"
         });
 }
 

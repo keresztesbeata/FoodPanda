@@ -16,9 +16,7 @@ import {
     LoadFoodCategories,
     LoadMenuForRestaurantByCategory
 } from "../actions/MenuActions";
-import {LoadCustomerCart} from "../actions/CustomerActions";
-import {GetCurrentUser} from "../actions/UserActions";
-import CartItem from "../components/CartItem";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class CustomerMenuView extends React.Component {
     constructor(props, context) {
@@ -36,19 +34,20 @@ class CustomerMenuView extends React.Component {
             },
             menu: [],
             categories: [],
-            selectedCategory: "",
-            showError: false,
-            errorMessage: "",
+            selectedCategory: "All",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.loadFoodCategories = this.loadFoodCategories.bind(this);
         this.loadRestaurant = this.loadRestaurant.bind(this);
         this.resetRestaurantInformation = this.resetRestaurantInformation.bind(this);
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
-        this.onHideCartContent = this.onHideCartContent.bind(this);
-        this.onShowCartContent = this.onShowCartContent.bind(this);
-        this.onFinalizeOrder = this.onFinalizeOrder.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     loadFoodCategories() {
@@ -60,9 +59,12 @@ class CustomerMenuView extends React.Component {
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                })
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
             });
     }
 
@@ -73,7 +75,9 @@ class CustomerMenuView extends React.Component {
             .then(data => {
                 this.setState({
                     restaurant: data,
-                    showError: false,
+                    notification: {
+                        show: false,
+                    }
                 });
             })
             .catch(error => {
@@ -99,32 +103,44 @@ class CustomerMenuView extends React.Component {
     onLoadRestaurantMenu() {
         FindRestaurant(this.state.restaurantName)
             .then(restaurantData => {
+                this.setState({
+                    restaurant: restaurantData
+                });
                 LoadMenuForRestaurantByCategory(this.state.restaurantName, this.state.selectedCategory)
                     .then(restaurantMenu => {
                         if (restaurantMenu.length > 0) {
                             this.setState({
-                                restaurant: restaurantData,
                                 menu: restaurantMenu,
-                                showError: false,
+                                notification: {
+                                    show: false,
+                                }
                             });
                         } else {
                             this.setState({
                                 menu: [],
-                                showError: false,
+                                notification: {
+                                    show: false,
+                                }
                             });
                         }
                     })
                     .catch(error => {
                         this.setState({
-                            showError: true,
-                            errorMessage: error.message,
-                        })
+                            notification: {
+                                show: true,
+                                message: error.message,
+                                type: ERROR
+                            }
+                        });
                     });
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
                 this.resetRestaurantInformation();
             });
@@ -134,46 +150,36 @@ class CustomerMenuView extends React.Component {
         this.loadFoodCategories();
     }
 
-    onHideCartContent() {
-        this.setState({
-            showCartContent: false
-        })
-    }
-
-    onShowCartContent() {
-        const userSession = GetCurrentUser();
-        LoadCustomerCart(userSession.username, this.state.name)
-            .then(data => {
-                this.setState({
-                    cartItems: data
-                })
-            })
-            .catch(error => {
-                this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                });
-            });
-    }
-
     handleInputChange(event) {
         // prevent page from reloading
         event.preventDefault();
         const target = event.target
         this.setState({
             [target.name]: target.value,
-            showError: false
+            notification: {
+                show: false,
+            }
         });
     }
-
-    onFinalizeOrder() {
-        window.location.href = "customer/cart"
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     render() {
         return (
             <div>
-                {(this.state.showError ) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                {
+                    (this.state.notification.show) ?
+                        <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                            {this.state.notification.message}
+                        </Alert>
+                        :
+                        <div/>
+                }
                 <Navbar className="justify-content-center">
                 <Form className="d-flex">
                     <FormControl
@@ -189,8 +195,6 @@ class CustomerMenuView extends React.Component {
                 </Navbar>
             <div className="flex justify-content-center">
                 <Container >
-                    {/*className="header-image-home d-flex justify-content-center align-items-center">*/}
-                    {/*<Card className={(this.state.restaurant.name !== "")?"visible transparent-background" : "invisible"}>*/}
                     <Card className={(this.state.restaurant.name !== "")?"visible" : "invisible"}>
                         <Card.Title className="text-center">
                             {this.state.restaurant.name}
@@ -243,24 +247,12 @@ class CustomerMenuView extends React.Component {
                     <ListGroup variant="flush">
                         {this.state.menu.map(item =>
                             <ListGroup.Item key={item.name}>
-                                <MenuItem data={item} showCartContent={this.state.showCartContent}/>
+                                <MenuItem data={item} showSuccess={this.state.showSuccess} successMessage={this.state.successMessage}/>
                             </ListGroup.Item>
                         )}
                     </ListGroup>
                 </Container>
             </div>
-
-                <Offcanvas show={this.state.showCartContent} placement="end" onShow={this.onShowCartContent} onHide={this.onHideCartContent}>
-                    <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>My Cart</Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body>
-                        {this.state.cartItems.map(cartItem =>
-                            <CartItem data={cartItem}/>
-                        )}
-                        <Button variant="outline-success" onClick={this.onFinalizeOrder}>Finalize Order</Button>
-                    </Offcanvas.Body>
-                </Offcanvas>
             </div>
         );
     }

@@ -27,6 +27,7 @@ class CartContent extends React.Component {
             },
             showError: false,
             errorMessage: "",
+            showNotification: false
         }
         this.onPlaceOrder = this.onPlaceOrder.bind(this);
         this.onRemoveFoodFromCart = this.onRemoveFoodFromCart.bind(this);

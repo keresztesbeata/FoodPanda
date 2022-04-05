@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, Button, Alert, FormGroup, FormLabel, FormControl} from 'react-bootstrap'
-import Header from "../components/Header";
 import {RegisterUser} from "../actions/UserActions";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class Register extends React.Component {
     constructor(props) {
@@ -9,12 +9,16 @@ class Register extends React.Component {
         this.state = {
             username: "",
             password: "",
-            showError: false,
-            errorMessage: "",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     handleInputChange(event) {
@@ -23,7 +27,9 @@ class Register extends React.Component {
         const target = event.target
         this.setState({
             [target.name]: target.value,
-            showError: false
+            notification: {
+                show: false
+            }
         });
     }
 
@@ -32,13 +38,31 @@ class Register extends React.Component {
         // prevent page from reloading
         event.preventDefault();
         RegisterUser(this.state.username, this.state.password)
-            .catch(error => {
-                console.log(error.message)
+            .then(() => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message
+                    notification: {
+                        show: true,
+                        message: "You have successfully registered! Please log in to access the application!",
+                        type: SUCCESS
+                    }
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
             });
+    }
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     render() {
@@ -47,7 +71,14 @@ class Register extends React.Component {
                 <div className="card col-sm-3 border-dark text-left">
                     <form onSubmit={this.handleSubmit} className="card-body">
                         <h3 className="card-title">Register</h3>
-                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Username</FormLabel>
                         <FormControl type="text" placeholder="Enter username" name="username" onChange={this.handleInputChange}/>

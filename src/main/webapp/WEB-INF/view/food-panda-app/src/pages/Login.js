@@ -1,6 +1,7 @@
 import React from 'react'
 import {FormControl, FormLabel, FormGroup, Button, Alert, Image} from 'react-bootstrap'
 import {LoginUser} from "../actions/UserActions";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class Login extends React.Component {
     constructor(props, context) {
@@ -8,12 +9,16 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: "",
-            showError: false,
-            errorMessage: "",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     handleInputChange(event) {
@@ -22,7 +27,9 @@ class Login extends React.Component {
         const target = event.target
         this.setState({
             [target.name]: target.value,
-            showError: false
+            notification: {
+                show: false,
+            }
         });
     }
 
@@ -30,12 +37,25 @@ class Login extends React.Component {
         // prevent page from reloading
         event.preventDefault();
         LoginUser(this.state.username, this.state.password)
+            .then(() => {
+                window.location.href = "/"
+            })
             .catch(error => {
-                    this.setState({
-                        showError: true,
-                        errorMessage: error.message
-                    });
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
             });
+    }
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     render() {
@@ -44,7 +64,14 @@ class Login extends React.Component {
                 <div className="card col-sm-3 border-dark text-left">
                 <form onSubmit={this.handleSubmit} className="card-body">
                     <h3 className="card-title">Log in</h3>
-                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Username</FormLabel>
                         <FormControl type="text" placeholder="Enter username" name="username" onChange={this.handleInputChange}/>
