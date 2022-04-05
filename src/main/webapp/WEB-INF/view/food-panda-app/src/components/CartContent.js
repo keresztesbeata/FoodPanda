@@ -4,6 +4,7 @@ import {GetCurrentUser} from "../actions/UserActions";
 import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class CartContent extends React.Component {
     constructor(props, context) {
@@ -25,13 +26,16 @@ class CartContent extends React.Component {
                 withCutlery: false,
                 remark: ""
             },
-            showError: false,
-            errorMessage: "",
-            showNotification: false
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         }
         this.onPlaceOrder = this.onPlaceOrder.bind(this);
         this.onRemoveFoodFromCart = this.onRemoveFoodFromCart.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.loadCartContent = this.loadCartContent.bind(this);
     }
 
     onPlaceOrder() {
@@ -45,24 +49,31 @@ class CartContent extends React.Component {
         PlaceOrder(this.state.orderDetails)
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                })
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
             });
     }
 
-    onRemoveFoodFromCart() {
+    onRemoveFoodFromCart(foodName) {
         const userSession = GetCurrentUser()
-        RemoveFoodFromCart(userSession.username, this.state.name)
+        RemoveFoodFromCart(userSession.username, foodName)
+            .then(() => this.loadCartContent())
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                })
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
             });
     }
 
-    componentDidMount() {
+    loadCartContent() {
         const userSession = GetCurrentUser();
         LoadCustomerCart(userSession.username, this.state.name)
             .then(data => {
@@ -72,10 +83,17 @@ class CartContent extends React.Component {
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
             });
+    }
+
+    componentDidMount() {
+        this.loadCartContent();
     }
 
     handleInputChange(event) {
@@ -86,7 +104,9 @@ class CartContent extends React.Component {
             orderDetails:{
                 [target.name]: target.value
             },
-            showError: false
+            notification: {
+                show: false,
+            }
         });
     }
 
@@ -106,7 +126,14 @@ class CartContent extends React.Component {
             </ListGroup>
                 <form onSubmit={this.handleSubmit} className="card-body">
                     <h3 className="card-title">Order details</h3>
-                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Delivery Address</FormLabel>
                         <FormControl type="text" placeholder="Delivery address..." name="deliveryAddress" onChange={this.handleInputChange}/>

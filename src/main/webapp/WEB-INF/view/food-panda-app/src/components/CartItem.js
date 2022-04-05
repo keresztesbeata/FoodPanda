@@ -1,6 +1,7 @@
 import React from 'react'
 import {Alert, Button, Card} from 'react-bootstrap'
 import {LoadFoodDetails} from "../actions/CustomerActions";
+import {ERROR, SUCCESS} from "../actions/Utils";
 
 class CartItem extends React.Component {
     constructor(props, context) {
@@ -12,9 +13,13 @@ class CartItem extends React.Component {
             category: "",
             price: 0,
             quantity: props.quantity,
-            showError: false,
-            errorMessage: "",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         }
+        this.onRemoveItemFromCart = this.onRemoveItemFromCart.bind(this);
     }
 
     componentDidMount() {
@@ -29,17 +34,31 @@ class CartItem extends React.Component {
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
             });
+    }
+
+    onRemoveItemFromCart() {
+        this.props.onRemoveFoodFromCart(this.state.name);
     }
 
     render() {
         return (
             <Card>
                 <Card.Body>
-                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
                     <Card.Title className="card-title">
                         {this.state.name}
                     </Card.Title>
@@ -52,7 +71,7 @@ class CartItem extends React.Component {
                     <Card.Text>
                         Price x Quantity: {this.state.price} $ x {this.state.quantity}
                     </Card.Text>
-                    <Button variant="primary" onClick={this.props.onRemoveFoodFromCart}>
+                    <Button variant="primary" onClick={this.onRemoveItemFromCart}>
                         Remove
                     </Button>
                 </Card.Body>

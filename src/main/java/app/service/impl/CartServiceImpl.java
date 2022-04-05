@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 public class CartServiceImpl implements CartService {
 
     private static final String CART_NOT_FOUND_ERROR_MESSAGE = "The user has no cart!";
-    private static final String INEXISTENT_FOOD_ERROR_MESSAGE = "The food cannot be added to the cart! No such food!";
-    private static final String INEXISTENT_USER_ERROR_MESSAGE = "The cart cannot be fetched! No such user exists!";
-    private static final String INEXISTENT_FOOD_IN_CART_ERROR_MESSAGE = "The food cannot be removed from the cart, because the cart doesn't contain it!";
+    private static final String INEXISTENT_FOOD_ERROR_MESSAGE = "No such food exists!";
+    private static final String INEXISTENT_USER_ERROR_MESSAGE = "No such user exists!";
+    private static final String INEXISTENT_FOOD_IN_CART_ERROR_MESSAGE = "There's no such food in the cart!";
     private static final String NEGATIVE_QUANTITY_ERROR_MESSAGE = "The new quantity of food should be positive!";
 
     @Autowired
