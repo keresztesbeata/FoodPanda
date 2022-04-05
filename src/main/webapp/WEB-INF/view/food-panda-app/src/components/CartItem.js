@@ -20,6 +20,15 @@ class CartItem extends React.Component {
             }
         }
         this.onRemoveItemFromCart = this.onRemoveItemFromCart.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
+    }
+
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     componentDidMount() {

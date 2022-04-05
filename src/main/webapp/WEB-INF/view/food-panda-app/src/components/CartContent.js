@@ -1,10 +1,22 @@
 import React from 'react'
-import {Alert, Button, Card, Col, Container, FormControl, FormGroup, FormLabel, ListGroup, Row} from 'react-bootstrap'
+import {
+    Alert,
+    Button,
+    Card,
+    Col,
+    Container,
+    FormCheck,
+    FormControl,
+    FormGroup,
+    FormLabel,
+    ListGroup,
+    Row
+} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
-import FormCheckInput from "react-bootstrap/FormCheckInput";
 import {ERROR, SUCCESS} from "../actions/Utils";
+import orderDetails from "./OrderDetails";
 
 class CartContent extends React.Component {
     constructor(props, context) {
@@ -18,7 +30,7 @@ class CartContent extends React.Component {
             orderDetails: {
                 orderNumber: "",
                 restaurant: "",
-                customer: "",
+                customer: GetCurrentUser().username,
                 orderStatus: "",
                 dateCreated: null,
                 orderedFoods: {},
@@ -36,19 +48,34 @@ class CartContent extends React.Component {
         this.onRemoveFoodFromCart = this.onRemoveFoodFromCart.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.loadCartContent = this.loadCartContent.bind(this);
+        this.onSelectCutlery = this.onSelectCutlery.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
+    }
+
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     onPlaceOrder() {
-        const userSession = GetCurrentUser()
-        this.setState({
-            orderDetails: {
-                customer: userSession.username,
-            }
-        });
-
         PlaceOrder(this.state.orderDetails)
+            .then(() => {
+                this.setState({
+                    notification:{
+                        show: true,
+                        message: "The order was successfully created!",
+                        type: SUCCESS
+                    }
+                });
+                this.loadCartContent();
+            }
+        )
             .catch(error => {
                 this.setState({
+                    ...this.state,
                     notification: {
                         show: true,
                         message: error.message,
@@ -64,6 +91,7 @@ class CartContent extends React.Component {
             .then(() => this.loadCartContent())
             .catch(error => {
                 this.setState({
+                    ...this.state,
                     notification: {
                         show: true,
                         message: error.message,
@@ -78,11 +106,17 @@ class CartContent extends React.Component {
         LoadCustomerCart(userSession.username, this.state.name)
             .then(data => {
                 this.setState({
-                    cart: data
+                    ...this.state,
+                    cart: data,
+                    orderDetails: {
+                        ...this.state.orderDetails,
+                        orderedFoods: data.foods,
+                    }
                 })
             })
             .catch(error => {
                 this.setState({
+                    ...this.state,
                     notification: {
                         show: true,
                         message: error.message,
@@ -96,12 +130,29 @@ class CartContent extends React.Component {
         this.loadCartContent();
     }
 
+    onSelectCutlery(event) {
+        // prevent page from reloading
+        event.preventDefault();
+        const withCutleryChecked = document.getElementById("withCutlery").checked;
+
+        this.setState({
+            ...this.state,
+            orderDetails: {
+                ...this.state.orderDetails,
+                withCutlery: withCutleryChecked,
+            }
+        });
+    }
+
     handleInputChange(event) {
         // prevent page from reloading
         event.preventDefault();
         const target = event.target
+
         this.setState({
+            ...this.state,
             orderDetails:{
+                ...this.state.orderDetails,
                 [target.name]: target.value
             },
             notification: {
@@ -135,18 +186,26 @@ class CartContent extends React.Component {
                             <div/>
                     }
                     <FormGroup className="mb-3" controlId="formBasicText">
+                        <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
+                    </FormGroup>
+                    <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Delivery Address</FormLabel>
                         <FormControl type="text" placeholder="Delivery address..." name="deliveryAddress" onChange={this.handleInputChange}/>
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicPassword">
-                        <FormLabel>Want cutlery</FormLabel>
-                        <FormCheckInput placeholder="With cutlery" name="withCutlery" onChange={this.handleInputChange}/>
+                        <FormCheck
+                            type="checkbox"
+                            name="withCutlery"
+                            id="withCutlery"
+                            label="Want cutlery"
+                            onChange={this.onSelectCutlery}
+                        />
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Remarks</FormLabel>
                         <FormControl type="text" placeholder="Remarks..." name="remark" onChange={this.handleInputChange}/>
                     </FormGroup>
-                    <Button variant="secondary" type="submit">
+                    <Button variant="secondary" onClick={this.onPlaceOrder}>
                         Place order
                     </Button>
                 </form>

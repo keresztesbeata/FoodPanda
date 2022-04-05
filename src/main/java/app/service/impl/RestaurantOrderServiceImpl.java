@@ -29,9 +29,6 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private RestaurantOrderRepository restaurantOrderRepository;
 
     @Autowired
-    private FoodRepository foodRepository;
-
-    @Autowired
     private CartRepository cartRepository;
 
     @Autowired
