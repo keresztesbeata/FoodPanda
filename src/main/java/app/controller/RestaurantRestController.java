@@ -42,7 +42,7 @@ public class RestaurantRestController {
         }
     }
 
-    @GetMapping("/restaurant/admin")
+    @GetMapping("/admin/restaurant")
     public ResponseEntity getRestaurantOfAdmin(@RequestParam String admin) {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantOfAdmin(admin));
@@ -51,7 +51,7 @@ public class RestaurantRestController {
         }
     }
 
-    @PostMapping(value = "/restaurant/admin/new")
+    @PostMapping(value = "/admin/restaurant/new")
     public ResponseEntity addRestaurant(@RequestBody RestaurantDto restaurantDto) {
         try{
             restaurantService.addRestaurant(restaurantDto);

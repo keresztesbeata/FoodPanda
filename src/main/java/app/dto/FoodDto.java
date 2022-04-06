@@ -18,6 +18,7 @@ public class FoodDto {
     private Integer portion;
     private Double price;
     private String restaurant;
+    /*
     private Optional<NutritionFactsDto> nutritionFacts;
 
     private FoodDto(String name, String description, String category, Integer portion, Double price, String restaurant, Optional<NutritionFactsDto> nutritionFactsDto) {
@@ -59,4 +60,6 @@ public class FoodDto {
             return new FoodDto(name, description, category, portion, price, restaurant, nutritionFacts);
         }
     }
+
+     */
 }

@@ -25,9 +25,9 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/perform_register")
-    public ResponseEntity register(@RequestBody UserDto userDto) {
+    public ResponseEntity register(@RequestBody UserDto userDto, @RequestParam Boolean asAdmin) {
         try {
-            userDto.setUserRole(UserRole.CUSTOMER.name());
+            userDto.setUserRole(asAdmin? UserRole.ADMIN.name(): UserRole.CUSTOMER.name());
             userService.addUser(userDto);
             return ResponseEntity.ok().body(userDto);
         } catch (InvalidDataException | DuplicateDataException e) {

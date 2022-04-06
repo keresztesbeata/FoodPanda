@@ -1,7 +1,6 @@
 package app.service.impl;
 
-import app.dto.DeliveryZoneDto;
-import app.mapper.DeliveryZoneMapper;
+import app.model.DeliveryZone;
 import app.repository.DeliveryZoneRepository;
 import app.service.api.DeliveryZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +15,19 @@ public class DeliveryZoneServiceImpl implements DeliveryZoneService {
     @Autowired
     private DeliveryZoneRepository deliveryZoneRepository;
 
-    private final DeliveryZoneMapper deliveryZoneMapper = new DeliveryZoneMapper();
-
     @Override
-    public List<DeliveryZoneDto> getAllDeliveryZones() {
+    public List<String> getAllDeliveryZones() {
         return deliveryZoneRepository.findAll()
                 .stream()
-                .map(deliveryZoneMapper::toDto)
+                .map(DeliveryZone::getName)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<DeliveryZoneDto> getDeliveryZonesOfRestaurant(String restaurantName) {
+    public List<String> getDeliveryZonesOfRestaurant(String restaurantName) {
         return deliveryZoneRepository.findByRestaurant(restaurantName)
                 .stream()
-                .map(deliveryZoneMapper::toDto)
+                .map(DeliveryZone::getName)
                 .collect(Collectors.toList());
     }
 }

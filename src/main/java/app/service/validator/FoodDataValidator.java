@@ -25,6 +25,6 @@ public class FoodDataValidator implements DataValidator<FoodDto> {
         if (foodDto.getRestaurant() == null || foodDto.getRestaurant().isEmpty()) {
             throw new InvalidDataException(MISSING_RESTAURANT_ERROR_MESSAGE);
         }
-        foodDto.getNutritionFacts().ifPresent(nutritionFactsDto -> nutritionFactsValidator.validate(nutritionFactsDto));
+//        foodDto.getNutritionFacts().ifPresent(nutritionFactsDto -> nutritionFactsValidator.validate(nutritionFactsDto));
     }
 }

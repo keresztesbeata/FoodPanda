@@ -40,6 +40,7 @@ class CustomerMenuView extends React.Component {
         LoadFoodCategories()
             .then(data => {
                 this.setState({
+                    ...this.state,
                     categories: data
                 });
             })
@@ -60,6 +61,7 @@ class CustomerMenuView extends React.Component {
         return FindRestaurant(restaurantName)
             .then(data => {
                 this.setState({
+                    ...this.state,
                     restaurant: data,
                     notification: {
                         show: false,

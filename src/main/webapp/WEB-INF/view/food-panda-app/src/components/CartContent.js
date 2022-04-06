@@ -178,7 +178,7 @@ class CartContent extends React.Component {
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Delivery Address</FormLabel>
-                        <FormControl type="text" placeholder="Delivery address..." name="deliveryAddress" onChange={this.handleInputChange}/>
+                        <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress" onChange={this.handleInputChange}/>
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicPassword">
                         <FormCheck

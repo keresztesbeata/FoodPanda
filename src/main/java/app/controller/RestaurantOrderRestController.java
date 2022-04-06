@@ -37,7 +37,7 @@ public class RestaurantOrderRestController {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfUserByStatus(username, Optional.of(orderStatus)));
     }
 
-    @GetMapping("/restaurant/order/admin/orderNumber")
+    @GetMapping("/admin/restaurant/order/orderNumber")
     public ResponseEntity getOrderByOrderNumber(@RequestParam String orderNumber) {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getOrderByOrderNumber(orderNumber));
@@ -46,17 +46,17 @@ public class RestaurantOrderRestController {
         }
     }
 
-    @GetMapping("/restaurant/order/admin/all")
+    @GetMapping("/admin/restaurant/order/all")
     public ResponseEntity getAllOrdersOfRestaurant(@RequestParam String restaurant) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.empty()));
     }
 
-    @GetMapping("/restaurant/order/admin/status")
+    @GetMapping("/admin/restaurant/order/status")
     public ResponseEntity getAllOrdersOfRestaurantByStatus(@RequestParam String restaurant, @RequestParam String orderStatus) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus)));
     }
 
-    @GetMapping("/restaurant/order/admin/orderNumber/available_statuses")
+    @GetMapping("/admin/restaurant/order/orderNumber/available_statuses")
     public ResponseEntity getAvailableOrderStatusesForOrder(@RequestParam String orderNumber) {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getAvailableStatusForOrder(orderNumber));
@@ -65,7 +65,7 @@ public class RestaurantOrderRestController {
         }
     }
 
-    @PostMapping("/restaurant/order/admin/orderNumber/update_status")
+    @PostMapping("/admin/restaurant/order/orderNumber/update_status")
     public ResponseEntity updateOrderStatus(@RequestParam String orderNumber, @RequestParam String orderStatus) {
         try {
             restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);

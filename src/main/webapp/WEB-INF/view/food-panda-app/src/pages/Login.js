@@ -81,12 +81,14 @@ class Login extends React.Component {
                         </FormGroup>
                         <FormGroup className="mb-3" controlId="formBasicPassword">
                             <FormLabel>Password</FormLabel>
-                            <FormControl type="password" placeholder="Password" name="password"
+                            <FormControl type="password" placeholder="Enter Password" name="password"
                                          onChange={this.handleInputChange}/>
                         </FormGroup>
-                        <Button variant="secondary" type="submit">
-                            Log in
-                        </Button>
+                        <div className="text-center">
+                            <Button variant="secondary" type="submit">
+                                Log in
+                            </Button>
+                        </div>
                     </form>
                 </div>
             </div>

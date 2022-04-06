@@ -18,8 +18,8 @@ public class NutritionFacts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne(mappedBy = "food")
-    private Food food;
+//    @OneToOne(mappedBy = "nutritionFacts")
+//    private Food food;
 
     @Column
     private Integer protein;

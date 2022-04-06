@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface NutritionFactsRepository extends JpaRepository<NutritionFacts, Integer> {
-    @Transactional
-    @Query("SELECT nutritionFacts from NutritionFacts nutritionFacts left join nutritionFacts.food food where food.name = ?1")
-    Optional<NutritionFacts> findByFood(String foodName);
+//    @Transactional
+//    @Query("SELECT nutritionFacts from NutritionFacts nutritionFacts left join nutritionFacts.food food where food.name = ?1")
+//    Optional<NutritionFacts> findByFood(String foodName);
 }

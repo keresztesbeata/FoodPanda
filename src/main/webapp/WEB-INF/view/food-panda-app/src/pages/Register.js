@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, Button, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
+import {Alert, Button, FormCheck, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {RegisterUser} from "../actions/UserActions";
 import {ERROR, SUCCESS} from "../actions/Utils";
 
@@ -9,6 +9,7 @@ class Register extends React.Component {
         this.state = {
             username: "",
             password: "",
+            asAdmin: false,
             notification: {
                 show: false,
                 message: "",
@@ -19,6 +20,7 @@ class Register extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
+        this.onSelectUserRole = this.onSelectUserRole.bind(this);
     }
 
     handleInputChange(event) {
@@ -37,7 +39,7 @@ class Register extends React.Component {
     handleSubmit(event) {
         // prevent page from reloading
         event.preventDefault();
-        RegisterUser(this.state.username, this.state.password)
+        RegisterUser(this.state.username, this.state.password, this.state.asAdmin)
             .then(() => {
                 this.setState({
                     notification: {
@@ -57,11 +59,23 @@ class Register extends React.Component {
                 });
             });
     }
+
     hideNotification() {
         this.setState({
             notification: {
                 show: false
             }
+        });
+    }
+
+    onSelectUserRole(event) {
+        // prevent page from reloading
+        event.preventDefault();
+        const asAdminChecked = document.getElementById("asAdmin").checked;
+
+        this.setState({
+            ...this.state,
+            asAdmin: asAdminChecked,
         });
     }
 
@@ -71,29 +85,44 @@ class Register extends React.Component {
                 <div className="card col-sm-3 border-dark text-left">
                     <form onSubmit={this.handleSubmit} className="card-body">
                         <h3 className="card-title">Register</h3>
-                    {
-                        (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
-                                {this.state.notification.message}
-                            </Alert>
-                            :
-                            <div/>
-                    }
-                    <FormGroup className="mb-3" controlId="formBasicText">
-                        <FormLabel>Username</FormLabel>
-                        <FormControl type="text" placeholder="Enter username" name="username" onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <FormGroup className="mb-3" controlId="formBasicPassword">
-                        <FormLabel>Password</FormLabel>
-                        <FormControl type="password" placeholder="Password" name="password" onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <Button variant="secondary" type="submit">
-                        Register
-                    </Button>
-                </form>
+                        {
+                            (this.state.notification.show) ?
+                                <Alert dismissible={true} onClose={this.hideNotification}
+                                       className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                                    {this.state.notification.message}
+                                </Alert>
+                                :
+                                <div/>
+                        }
+                        <FormGroup className="mb-3" controlId="formBasicText">
+                            <FormLabel>Username</FormLabel>
+                            <FormControl type="text" required placeholder="Enter username" name="username"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicPassword">
+                            <FormLabel>Password</FormLabel>
+                            <FormControl type="password" required placeholder="Enter Password" name="password"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicSelect">
+                            <FormCheck
+                                type="checkbox"
+                                name="asAdmin"
+                                id="asAdmin"
+                                label="As admin"
+                                onChange={this.onSelectUserRole}
+                            />
+                        </FormGroup>
+                        <div className="text-center">
+                            <Button variant="secondary" type="submit">
+                                Register
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </div>
         )
     }
 }
+
 export default Register;

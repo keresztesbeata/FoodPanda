@@ -33,18 +33,25 @@ export function LoginUser(username, password) {
         });
 }
 
-export function RegisterUser(username, password) {
+export function RegisterUser(username, password, asAdmin) {
+    const url = new URL(BASE_URL + "/perform_register")
+    const params = {
+        asAdmin: asAdmin
+    };
+    url.search = new URLSearchParams(params).toString();
+
     const data = {
         username: username,
         password: password
     }
+
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
 
-    return fetch(BASE_URL + '/perform_register', requestOptions)
+    return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
                 return response.json()
@@ -55,7 +62,7 @@ export function RegisterUser(username, password) {
             return response.json();
         })
         .then(data => {
-            console.log("Successfully registered: " + data);
+            console.log("Successfully registered!");
         });
 }
 

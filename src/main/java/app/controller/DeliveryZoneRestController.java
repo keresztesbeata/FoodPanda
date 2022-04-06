@@ -1,13 +1,11 @@
 package app.controller;
 
-import app.dto.DeliveryZoneDto;
 import app.service.api.DeliveryZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class DeliveryZoneRestController {
@@ -16,12 +14,12 @@ public class DeliveryZoneRestController {
     private DeliveryZoneService deliveryZoneService;
 
     @GetMapping("/delivery_zone/all")
-    public List<DeliveryZoneDto> getAllDeliveryZones() {
-        return deliveryZoneService.getAllDeliveryZones();
+    public ResponseEntity getAllDeliveryZones() {
+        return ResponseEntity.ok().body(deliveryZoneService.getAllDeliveryZones());
     }
 
     @GetMapping("/delivery_zone/restaurant/all")
-    public List<DeliveryZoneDto> getDeliveryZonesOfRestaurant(@RequestParam String restaurant) {
-        return deliveryZoneService.getDeliveryZonesOfRestaurant(restaurant);
+    public ResponseEntity getDeliveryZonesOfRestaurant(@RequestParam String restaurant) {
+        return ResponseEntity.ok().body(deliveryZoneService.getDeliveryZonesOfRestaurant(restaurant));
     }
 }

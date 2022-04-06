@@ -8,6 +8,8 @@ import app.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class FoodMapper implements Mapper<Food, FoodDto> {
 
@@ -34,7 +36,7 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
         food.setRestaurant(restaurantRepository.findByName(foodDto.getRestaurant())
                 .orElseThrow(() -> new EntityNotFoundException(RESTAURANT_NOT_FOUND_ERROR_MESSAGE)));
         food.setDescription(foodDto.getDescription());
-        food.setNutritionFacts(nutritionFactsMapper.toEntity(foodDto.getNutritionFacts()));
+//        foodDto.getNutritionFacts().ifPresent(nutritionFactsDto -> food.setNutritionFacts(nutritionFactsMapper.toEntity(nutritionFactsDto)));
 
         return food;
     }
@@ -48,7 +50,9 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
         foodDto.setCategory(food.getCategory().getName());
         foodDto.setRestaurant(food.getRestaurant().getName());
         foodDto.setDescription(food.getDescription());
-        foodDto.setNutritionFacts(nutritionFactsMapper.toDto(food.getNutritionFacts()));
+//        if(food.getNutritionFacts() != null) {
+//            foodDto.setNutritionFacts(Optional.of(nutritionFactsMapper.toDto(food.getNutritionFacts())));
+//        }
 
         return foodDto;
     }

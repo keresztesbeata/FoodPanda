@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.dto.BasicFoodDto;
+import app.dto.FoodDto;
 import app.dto.FoodDtoFactory;
 import app.dto.HealthyFoodRequestBody;
 import app.exceptions.DuplicateDataException;
@@ -59,22 +60,23 @@ public class FoodRestController {
     }
 
     @PostMapping(value = "/restaurant/food/admin/new")
-    public ResponseEntity addFood(@RequestBody BasicFoodDto foodDto) {
+    public ResponseEntity addFood(@RequestBody FoodDto foodDto) {
         try {
-            foodService.addFood(foodDtoFactory.createFoodDto(foodDto));
+            //foodService.addFood(foodDtoFactory.createFoodDto(foodDto));
+            foodService.addFood(foodDto);
             return ResponseEntity.ok().build();
         }catch(InvalidDataException | DuplicateDataException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }
 
-    @PostMapping(value = "/restaurant/healthy_food/admin/new")
-    public ResponseEntity addHealthyFood(@RequestBody HealthyFoodRequestBody healthyFoodRequestBody) {
-        try {
-            foodService.addFood(foodDtoFactory.createHealthyFoodDto(healthyFoodRequestBody.getBasicFoodDto(), healthyFoodRequestBody.getNutritionFacts()));
-            return ResponseEntity.ok().build();
-        }catch(InvalidDataException | DuplicateDataException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
-        }
-    }
+//    @PostMapping(value = "/restaurant/food/healthy/admin/new")
+//    public ResponseEntity addHealthyFood(@RequestBody FoodDto foodDto) {
+//        try {
+//            foodService.addFood(foodDtoFactory.createHealthyFoodDto(healthyFoodRequestBody.getBasicFoodDto(), healthyFoodRequestBody.getNutritionFacts()));
+//            return ResponseEntity.ok().build();
+//        }catch(InvalidDataException | DuplicateDataException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+//        }
+//    }
 }

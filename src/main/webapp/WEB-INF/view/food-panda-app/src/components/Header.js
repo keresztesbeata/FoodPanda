@@ -21,6 +21,7 @@ class Header extends React.Component {
                                 <Navbar.Brand href="/admin">foodpanda</Navbar.Brand>
                                 <Nav className="me-auto">
                                     <Nav.Link href="/admin/menu">Menu</Nav.Link>
+                                    <Nav.Link href="/admin/restaurant">My restaurant</Nav.Link>
                                     <Nav.Link href="/admin/orders_history">Orders</Nav.Link>
                                     <Nav.Link href="/logout">Logout</Nav.Link>
                                 </Nav>
