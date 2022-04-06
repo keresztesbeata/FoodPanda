@@ -1,8 +1,9 @@
 import React from 'react'
 import {Alert, Button, FormControl, FormSelect, InputGroup, Table} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {ERROR, SUCCESS} from "../actions/Utils";
+import {ERROR, INFO, SUCCESS} from "../actions/Utils";
 import {AddRestaurant, LoadDeliveryZones} from "../actions/AdminActions";
+import {Link} from "react-router-dom";
 
 class NewRestaurant extends React.Component {
     constructor(props) {
@@ -53,7 +54,6 @@ class NewRestaurant extends React.Component {
                     }
                 });
             });
-
     }
 
     handleInputChange(event) {
@@ -200,7 +200,7 @@ class NewRestaurant extends React.Component {
                         {
                             (this.state.notification.show) ?
                                 <Alert dismissible={true} onClose={this.hideNotification}
-                                       className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                                       className={this.state.notification.type}>
                                     {this.state.notification.message}
                                 </Alert>
                                 :

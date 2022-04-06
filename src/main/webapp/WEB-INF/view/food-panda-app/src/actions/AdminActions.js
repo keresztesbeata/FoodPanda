@@ -20,6 +20,30 @@ export function LoadDeliveryZones() {
         });
 }
 
+export function LoadAdminsRestaurant(admin) {
+    const url = new URL(BASE_URL + "/admin/restaurant");
+    const params = {
+        admin: admin,
+    };
+    url.search = new URLSearchParams(params).toString();
+
+    const requestOptions = {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    };
+
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
+                    .then(function (err) {
+                        throw new Error(err.message);
+                    });
+            }
+            return response.json();
+        });
+}
+
 export function AddRestaurant(restaurant) {
     const url = BASE_URL + "/admin/restaurant/new";
 

@@ -62,7 +62,8 @@ class CartItem extends React.Component {
                 <Card.Body>
                     {
                         (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                            <Alert dismissible={true} onClose={this.hideNotification}
+                                   className={this.state.notification.type}>
                                 {this.state.notification.message}
                             </Alert>
                             :

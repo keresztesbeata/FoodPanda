@@ -1,5 +1,6 @@
 // base server url
 export const BASE_URL = 'http://localhost:8080/foodpanda';
 
-export const SUCCESS = 1;
-export const ERROR = 0;
+export const INFO = "alert-info";
+export const SUCCESS = "alert-success";
+export const ERROR = "alert-danger";

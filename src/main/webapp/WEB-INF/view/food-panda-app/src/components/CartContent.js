@@ -50,16 +50,16 @@ class CartContent extends React.Component {
     onPlaceOrder() {
         PlaceOrder(this.state.orderDetails)
             .then(() => {
-                this.setState({
-                    notification:{
-                        show: true,
-                        message: "The order was successfully created!",
-                        type: SUCCESS
-                    }
-                });
-                this.loadCartContent();
-            }
-        )
+                    this.setState({
+                        notification: {
+                            show: true,
+                            message: "The order was successfully created!",
+                            type: SUCCESS
+                        }
+                    });
+                    this.loadCartContent();
+                }
+            )
             .catch(error => {
                 this.setState({
                     ...this.state,
@@ -138,7 +138,7 @@ class CartContent extends React.Component {
 
         this.setState({
             ...this.state,
-            orderDetails:{
+            orderDetails: {
                 ...this.state.orderDetails,
                 [target.name]: target.value
             },
@@ -151,23 +151,24 @@ class CartContent extends React.Component {
     render() {
         return (
             <Container>
-            <ListGroup>
-                {
-                    (this.state.cart.length === 0)?
-                        <p>Empty cart</p>
-                        :
-                        Object.entries(this.state.cart.foods).map(
-                            ([food,quantity]) =>
-                                    <CartItem name={food} quantity={quantity} onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>
+                <ListGroup>
+                    {
+                        (this.state.cart.length === 0) ?
+                            <p>Empty cart</p>
+                            :
+                            Object.entries(this.state.cart.foods).map(
+                                ([food, quantity]) =>
+                                    <CartItem name={food} quantity={quantity}
+                                              onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>
                             )
-                }
-            </ListGroup>
+                    }
+                </ListGroup>
                 <form onSubmit={this.handleSubmit} className="card-body">
                     <h3 className="card-title">Order details</h3>
                     {
                         (this.state.notification.show) ?
                             <Alert dismissible={true} onClose={this.hideNotification}
-                                   className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                                   className={this.state.notification.type}>
                                 {this.state.notification.message}
                             </Alert>
                             :
@@ -178,7 +179,8 @@ class CartContent extends React.Component {
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Delivery Address</FormLabel>
-                        <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress" onChange={this.handleInputChange}/>
+                        <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress"
+                                     onChange={this.handleInputChange}/>
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicPassword">
                         <FormCheck
@@ -191,7 +193,8 @@ class CartContent extends React.Component {
                     </FormGroup>
                     <FormGroup className="mb-3" controlId="formBasicText">
                         <FormLabel>Remarks</FormLabel>
-                        <FormControl type="text" placeholder="Remarks..." name="remark" onChange={this.handleInputChange}/>
+                        <FormControl type="text" placeholder="Remarks..." name="remark"
+                                     onChange={this.handleInputChange}/>
                     </FormGroup>
                     <Button variant="secondary" onClick={this.onPlaceOrder}>
                         Place order

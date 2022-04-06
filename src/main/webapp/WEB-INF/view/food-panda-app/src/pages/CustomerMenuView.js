@@ -164,7 +164,7 @@ class CustomerMenuView extends React.Component {
                 {
                     (this.state.notification.show) ?
                         <Alert dismissible={true} onClose={this.hideNotification}
-                               className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                               className={this.state.notification.type}>
                             {this.state.notification.message}
                         </Alert>
                         :
