@@ -39,14 +39,14 @@ export function LoadMenuForRestaurantByCategory(restaurant, category) {
 export function LoadFoodCategories() {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {'Content-Type': 'application/json'}
     };
 
-    return fetch(BASE_URL + "/category",requestOptions)
+    return fetch(BASE_URL + "/category", requestOptions)
         .then(response => {
-            if(!response.ok) {
+            if (!response.ok) {
                 return response.json()
-                    .then(function(err) {
+                    .then(function (err) {
                         throw new Error(err.message);
                     });
             }

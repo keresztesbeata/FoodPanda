@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Navbar, Nav, Image} from 'react-bootstrap'
+import {Container, Nav, Navbar} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 
 class Header extends React.Component {
@@ -63,4 +63,5 @@ class Header extends React.Component {
         }
     }
 }
+
 export default Header;

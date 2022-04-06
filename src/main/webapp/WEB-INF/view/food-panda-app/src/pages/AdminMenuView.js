@@ -1,21 +1,7 @@
 import React from 'react'
 import MenuItem from "../components/MenuItem";
-import {
-    Alert,
-    Button,
-    Card,
-    Col,
-    Container,
-    Form,
-    FormControl,
-    ListGroup, Nav,
-    Navbar, Offcanvas, Row
-} from "react-bootstrap";
-import {
-    FindRestaurant,
-    LoadFoodCategories,
-    LoadMenuForRestaurantByCategory
-} from "../actions/MenuActions";
+import {Alert, Button, Card, Col, Container, Form, FormControl, ListGroup, Navbar, Row} from "react-bootstrap";
+import {FindRestaurant, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
 
 class AdminMenuView extends React.Component {
     constructor(props, context) {
@@ -131,7 +117,7 @@ class AdminMenuView extends React.Component {
     render() {
         return (
             <div>
-                {(this.state.showError ) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
                 <Navbar className="justify-content-center">
                     <Form className="d-flex">
                         <FormControl
@@ -145,10 +131,10 @@ class AdminMenuView extends React.Component {
                     </Form>
                 </Navbar>
                 <div className="flex justify-content-center">
-                    <Container >
+                    <Container>
                         {/*className="header-image-home d-flex justify-content-center align-items-center">*/}
                         {/*<Card className={(this.state.restaurant.name !== "")?"visible transparent-background" : "invisible"}>*/}
-                        <Card className={(this.state.restaurant.name !== "")?"visible" : "invisible"}>
+                        <Card className={(this.state.restaurant.name !== "") ? "visible" : "invisible"}>
                             <Card.Title className="text-center">
                                 {this.state.restaurant.name}
                             </Card.Title>
@@ -162,7 +148,8 @@ class AdminMenuView extends React.Component {
                                             <b>DeliveryFee</b> : {this.state.restaurant.deliveryFee} $
                                         </Card.Text>
                                         <Card.Text>
-                                            <b>Open - Close</b> : {this.state.restaurant.openingHour}:00 - {this.state.restaurant.closingHour}:00
+                                            <b>Open - Close</b> : {this.state.restaurant.openingHour}:00
+                                            - {this.state.restaurant.closingHour}:00
                                         </Card.Text>
                                     </Col>
                                     <Col>

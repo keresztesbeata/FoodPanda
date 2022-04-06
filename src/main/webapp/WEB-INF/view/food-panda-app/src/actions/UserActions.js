@@ -9,15 +9,15 @@ export function LoginUser(username, password) {
     }
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
 
-    return fetch(BASE_URL + '/perform_login',requestOptions)
+    return fetch(BASE_URL + '/perform_login', requestOptions)
         .then(response => {
-            if(!response.ok) {
+            if (!response.ok) {
                 return response.json()
-                    .then(function(err) {
+                    .then(function (err) {
                         throw new Error(err.message);
                     });
             }
@@ -40,15 +40,15 @@ export function RegisterUser(username, password) {
     }
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
 
-    return fetch(BASE_URL + '/perform_register',requestOptions)
+    return fetch(BASE_URL + '/perform_register', requestOptions)
         .then(response => {
-            if(!response.ok) {
+            if (!response.ok) {
                 return response.json()
-                    .then(function(err) {
+                    .then(function (err) {
                         throw new Error(err.message);
                     });
             }
@@ -68,15 +68,15 @@ export function LogoutUser() {
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {'Content-Type': 'application/json'}
     };
 
-    fetch(url,requestOptions)
+    fetch(url, requestOptions)
         .then(response => {
             console.log(response)
-            if(!response.ok) {
+            if (!response.ok) {
                 response.json()
-                    .then(function(err) {
+                    .then(function (err) {
                         throw new Error(err.message);
                     });
             }
@@ -93,9 +93,9 @@ export function LogoutUser() {
 
 export function GetCurrentUser() {
     let userSessionData = localStorage.getItem(SESSION_KEY);
-    if(userSessionData === null) {
-       throw Error("No logged in user!")
-    }else{
+    if (userSessionData === null) {
+        throw Error("No logged in user!")
+    } else {
         return JSON.parse(userSessionData);
     }
 }

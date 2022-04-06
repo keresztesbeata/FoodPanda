@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Button, Alert, FormGroup, FormLabel, FormControl} from 'react-bootstrap'
+import {Alert, Button, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {RegisterUser} from "../actions/UserActions";
 import {ERROR, SUCCESS} from "../actions/Utils";
 

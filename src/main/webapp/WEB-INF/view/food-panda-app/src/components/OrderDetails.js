@@ -1,7 +1,7 @@
 import React from 'react'
-import {Alert, Button, Card, Col, ListGroup, Row} from 'react-bootstrap'
+import {Button, ListGroup} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CustomerActions";
+import {LoadCustomerCart} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
 
 class OrderDetails extends React.Component {
@@ -18,21 +18,8 @@ class OrderDetails extends React.Component {
                 deliveryAddress: "",
                 withCutlery: false,
                 remark: ""
-            },
-            showError: false,
-            errorMessage: "",
-        }
-        this.onUpdateOrderStatus = this.onUpdateOrderStatus.bind(this);
-    }
-
-    // todo
-    onUpdateOrderStatus() {
-        this.setState({
-            orderDetails: {
-                orderStatus: "",
             }
-        });
-
+        }
     }
 
     componentDidMount() {
@@ -45,8 +32,7 @@ class OrderDetails extends React.Component {
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
+                    cart: []
                 });
             });
     }
@@ -55,7 +41,7 @@ class OrderDetails extends React.Component {
         return (
             <ListGroup>
                 {
-                    (this.state.cart.length === 0)?
+                    (this.state.cart.length === 0) ?
                         <p>Empty cart</p>
                         :
                         this.state.cart.map(

@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
-        <CustomerMenuView />
+        <CustomerMenuView/>
     </React.StrictMode>,
     document.getElementById('root')
 );

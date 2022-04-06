@@ -47,7 +47,7 @@ class MenuItem extends React.Component {
                 this.setState({
                     notification: {
                         show: true,
-                        message: this.state.quantity + " x " + this.state.name +" has been added to the cart!",
+                        message: this.state.quantity + " x " + this.state.name + " has been added to the cart!",
                         type: SUCCESS
                     }
                 });
@@ -73,56 +73,58 @@ class MenuItem extends React.Component {
 
     render() {
         return (
-          <Card>
-              <Card.Body>
-                  {
-                      (this.state.notification.show) ?
-                          <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
-                              {this.state.notification.message}
-                          </Alert>
-                          :
-                          <div/>
-                  }
-                  <Row>
-                  <Col>
-                  <Card.Title className="card-title">
-                      {this.state.name}
-                  </Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                      {this.state.category}
-                  </Card.Subtitle>
-                  <Card.Text>
-                      {this.state.description}
-                  </Card.Text>
-                  <Card.Text>
-                      Price: {this.state.price} $
-                  </Card.Text>
-                  </Col>
-                  <Col>
-                      <ListGroup horizontal>
-                          <ListGroup.Item>
-                              <Button variant="outline-danger" onClick={this.decrementQuantity} disabled={this.state.quantity <= 1}>
-                                  -
-                              </Button>
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                              {this.state.quantity}
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                              <Button variant="outline-success" onClick={this.incrementQuantity}>
-                                  +
-                              </Button>
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                              <Button variant="outline-secondary" onClick={this.onAddFoodToCart}>
-                                  Add to cart
-                              </Button>
-                          </ListGroup.Item>
-                      </ListGroup>
-                  </Col>
-                  </Row>
-              </Card.Body>
-          </Card>
+            <Card>
+                <Card.Body>
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification}
+                                   className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
+                    <Row>
+                        <Col>
+                            <Card.Title className="card-title">
+                                {this.state.name}
+                            </Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">
+                                {this.state.category}
+                            </Card.Subtitle>
+                            <Card.Text>
+                                {this.state.description}
+                            </Card.Text>
+                            <Card.Text>
+                                Price: {this.state.price} $
+                            </Card.Text>
+                        </Col>
+                        <Col>
+                            <ListGroup horizontal>
+                                <ListGroup.Item>
+                                    <Button variant="outline-danger" onClick={this.decrementQuantity}
+                                            disabled={this.state.quantity <= 1}>
+                                        -
+                                    </Button>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    {this.state.quantity}
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <Button variant="outline-success" onClick={this.incrementQuantity}>
+                                        +
+                                    </Button>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <Button variant="outline-secondary" onClick={this.onAddFoodToCart}>
+                                        Add to cart
+                                    </Button>
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
         )
     }
 }

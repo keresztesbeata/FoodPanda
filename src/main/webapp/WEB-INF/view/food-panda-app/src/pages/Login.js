@@ -1,5 +1,5 @@
 import React from 'react'
-import {FormControl, FormLabel, FormGroup, Button, Alert, Image} from 'react-bootstrap'
+import {Alert, Button, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {LoginUser} from "../actions/UserActions";
 import {ERROR, SUCCESS} from "../actions/Utils";
 
@@ -50,6 +50,7 @@ class Login extends React.Component {
                 });
             });
     }
+
     hideNotification() {
         this.setState({
             notification: {
@@ -62,28 +63,31 @@ class Login extends React.Component {
         return (
             <div className="background-container-login bg-image d-flex justify-content-center align-items-center">
                 <div className="card col-sm-3 border-dark text-left">
-                <form onSubmit={this.handleSubmit} className="card-body">
-                    <h3 className="card-title">Log in</h3>
-                    {
-                        (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
-                                {this.state.notification.message}
-                            </Alert>
-                            :
-                            <div/>
-                    }
-                    <FormGroup className="mb-3" controlId="formBasicText">
-                        <FormLabel>Username</FormLabel>
-                        <FormControl type="text" placeholder="Enter username" name="username" onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <FormGroup className="mb-3" controlId="formBasicPassword">
-                        <FormLabel>Password</FormLabel>
-                        <FormControl type="password" placeholder="Password" name="password" onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <Button variant="secondary" type="submit">
-                        Log in
-                    </Button>
-                </form>
+                    <form onSubmit={this.handleSubmit} className="card-body">
+                        <h3 className="card-title">Log in</h3>
+                        {
+                            (this.state.notification.show) ?
+                                <Alert dismissible={true} onClose={this.hideNotification}
+                                       className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
+                                    {this.state.notification.message}
+                                </Alert>
+                                :
+                                <div/>
+                        }
+                        <FormGroup className="mb-3" controlId="formBasicText">
+                            <FormLabel>Username</FormLabel>
+                            <FormControl type="text" placeholder="Enter username" name="username"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicPassword">
+                            <FormLabel>Password</FormLabel>
+                            <FormControl type="password" placeholder="Password" name="password"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <Button variant="secondary" type="submit">
+                            Log in
+                        </Button>
+                    </form>
                 </div>
             </div>
         )

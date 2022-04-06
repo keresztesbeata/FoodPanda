@@ -1,22 +1,9 @@
 import React from 'react'
-import {
-    Alert,
-    Button,
-    Card,
-    Col,
-    Container,
-    FormCheck,
-    FormControl,
-    FormGroup,
-    FormLabel,
-    ListGroup,
-    Row
-} from 'react-bootstrap'
+import {Alert, Button, Container, FormCheck, FormControl, FormGroup, FormLabel, ListGroup} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
 import {ERROR, SUCCESS} from "../actions/Utils";
-import orderDetails from "./OrderDetails";
 
 class CartContent extends React.Component {
     constructor(props, context) {
@@ -179,7 +166,8 @@ class CartContent extends React.Component {
                     <h3 className="card-title">Order details</h3>
                     {
                         (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification} className={this.state.notification.type === SUCCESS? "alert-success" : "alert-danger"}>
+                            <Alert dismissible={true} onClose={this.hideNotification}
+                                   className={this.state.notification.type === SUCCESS ? "alert-success" : "alert-danger"}>
                                 {this.state.notification.message}
                             </Alert>
                             :

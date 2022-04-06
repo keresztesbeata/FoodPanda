@@ -17,7 +17,7 @@ class Home extends React.Component {
                     </h1>
                 </div>
             )
-        }catch(e) {
+        } catch (e) {
             return (
                 <div className="background-container-home bg-image d-flex justify-content-center align-items-center">
                     <h1 className="text-white">

@@ -20,7 +20,8 @@ class EditableMenuItem extends React.Component {
         return (
             <Card>
                 <Card.Body>
-                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
+                    {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> :
+                        <div/>}
                     <Row>
                         <Col>
                             <Card.Title className="card-title">
