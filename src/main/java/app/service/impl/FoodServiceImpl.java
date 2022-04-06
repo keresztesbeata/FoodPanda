@@ -11,7 +11,6 @@ import app.repository.CategoryRepository;
 import app.repository.FoodRepository;
 import app.service.api.FoodService;
 import app.service.validator.FoodDataValidator;
-import app.service.validator.DataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

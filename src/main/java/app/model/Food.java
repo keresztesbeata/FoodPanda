@@ -22,8 +22,15 @@ public class Food {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "nutrition_facts_id")
+    private NutritionFacts nutritionFacts;
+
     @Column(nullable = false, unique = true)
     private String description;
+
+    @Column
+    private Integer portion;
 
     @Column
     private Double price;

@@ -4,6 +4,7 @@ import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.exceptions.InvalidOperationException;
 import app.service.api.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class RestaurantRestController {
         try{
             restaurantService.addRestaurant(restaurantDto);
             return ResponseEntity.ok().build();
-        }catch(InvalidDataException | DuplicateDataException e) {
+        }catch(InvalidDataException | DuplicateDataException | InvalidOperationException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }

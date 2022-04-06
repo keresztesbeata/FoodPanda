@@ -1,6 +1,5 @@
 package app.service.impl;
 
-import app.config.UserDetailsImpl;
 import app.dto.UserDto;
 import app.exceptions.*;
 import app.mapper.UserMapper;
@@ -14,11 +13,6 @@ import app.repository.UserSessionRepository;
 import app.service.api.UserService;
 import app.service.validator.UserDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        if(user.getUserRole().equals(UserRole.CUSTOMER)) {
+        if (user.getUserRole().equals(UserRole.CUSTOMER)) {
             // create cart for new customers
             Cart cart = new Cart();
             cart.setCustomer(savedUser);
@@ -84,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new InvalidLoginException(INVALID_USERNAME_ERROR_MESSAGE));
 
         Optional<UserSession> alreadyLoggedInUser = userSessionRepository.findByUsername(userDto.getUsername());
-        if(alreadyLoggedInUser.isPresent()) {
+        if (alreadyLoggedInUser.isPresent()) {
             return userMapper.toDto(alreadyLoggedInUser.get().getUser());
         }
 
@@ -110,11 +104,4 @@ public class UserServiceImpl implements UserService {
 
         userSessionRepository.delete(currentUserSession);
     }
-
-//    @Override
-//    public Optional<UserDto> getCurrentUser() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        return userRepository.findByUsername(((UserDetailsImpl) auth.getPrincipal()).getUsername())
-//                .map(userMapper::toDto);
-//    }
 }

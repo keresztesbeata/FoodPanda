@@ -23,7 +23,7 @@ public class Restaurant {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "admin_id")
     private User admin;
 

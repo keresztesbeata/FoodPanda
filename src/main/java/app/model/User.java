@@ -38,8 +38,8 @@ public class User {
     @OneToMany(mappedBy = "customer")
     private Set<RestaurantOrder> orders;
 
-    @OneToMany(mappedBy = "admin")
-    private Set<Restaurant> restaurants;
+    @OneToOne(mappedBy = "admin")
+    private Restaurant restaurant;
 
     public void addOrder(RestaurantOrder restaurantOrder) {
         orders.add(restaurantOrder);

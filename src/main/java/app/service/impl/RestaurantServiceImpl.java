@@ -4,6 +4,7 @@ import app.dto.RestaurantDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.exceptions.InvalidOperationException;
 import app.mapper.RestaurantMapper;
 import app.model.Restaurant;
 import app.repository.RestaurantRepository;
@@ -21,6 +22,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate restaurant name!\nThis name is already taken!";
     private static final String INVALID_ADMIN_ERROR_MESSAGE = "The admin has no associated restaurant!";
     private static final String INVALID_NAME_ERROR_MESSAGE = "No restaurant with the given name exists!";
+    private static final String ALREADY_HAVE_RESTAURANT_ERROR_MESSAGE = "You are already assigned as admin of another restaurant,\ntherefore you cannot manage other restaurants!";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -63,11 +65,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException {
+    public void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException, InvalidOperationException {
         restaurantDataValidator.validate(restaurantDto);
 
         if (restaurantRepository.findByName(restaurantDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
+        }
+
+        if(restaurantRepository.findByAdmin(restaurantDto.getAdmin()).isPresent()) {
+            throw new InvalidOperationException(ALREADY_HAVE_RESTAURANT_ERROR_MESSAGE);
         }
 
         Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
