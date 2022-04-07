@@ -33,7 +33,6 @@ class AddRestaurantView extends React.Component {
         this.handleAddNewDeliveryZone = this.handleAddNewDeliveryZone.bind(this);
         this.handleRemoveDeliveryZone = this.handleRemoveDeliveryZone.bind(this);
         this.handleSelectDeliveryZone = this.handleSelectDeliveryZone.bind(this);
-        this.resetRestaurantData = this.resetRestaurantData.bind(this);
     }
 
     componentDidMount() {
@@ -110,6 +109,16 @@ class AddRestaurantView extends React.Component {
         AddRestaurant(this.state.restaurant)
             .then(() => {
                 this.setState({
+                    ...this.state,
+                    restaurant: {
+                        name: "",
+                        address: "",
+                        admin: GetCurrentUser().username,
+                        deliveryZones: [],
+                        openingHour: 0,
+                        closingHour: 0,
+                        deliveryFee: 0.0,
+                    },
                     notification: {
                         show: true,
                         message: "The restaurant has been successfully added!",
@@ -126,21 +135,8 @@ class AddRestaurantView extends React.Component {
                     }
                 });
             });
-    }
 
-    resetRestaurantData() {
-        this.setState({
-            ...this.state,
-            restaurant: {
-                name: "",
-                address: "",
-                admin: GetCurrentUser().username,
-                deliveryZones: [],
-                openingHour: 0,
-                closingHour: 0,
-                deliveryFee: 0.0,
-            },
-        })
+        document.getElementById("add-restaurant-form").reset();
     }
 
     handleAddNewDeliveryZone() {
@@ -194,7 +190,7 @@ class AddRestaurantView extends React.Component {
         return (
             <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
                 <div className="card col-lg-5 border-dark text-left">
-                    <form onSubmit={this.handleSubmit} className="card-body">
+                    <form onSubmit={this.handleSubmit} className="card-body" id="add-restaurant-form">
                         <h3 className="card-title text-center">Add restaurant</h3>
                         {
                             (this.state.notification.show) ?

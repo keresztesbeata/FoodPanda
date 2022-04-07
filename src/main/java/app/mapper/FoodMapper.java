@@ -30,7 +30,7 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
 
         food.setName(foodDto.getName());
         food.setPrice(foodDto.getPrice());
-        food.setPortion(food.getPortion());
+        food.setPortion(foodDto.getPortion());
         food.setCategory(categoryRepository.findByName(foodDto.getCategory())
                 .orElseThrow(() -> new EntityNotFoundException(CATEGORY_NOT_FOUND_ERROR_MESSAGE)));
         food.setRestaurant(restaurantRepository.findByName(foodDto.getRestaurant())

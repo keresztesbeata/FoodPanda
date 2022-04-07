@@ -2,7 +2,7 @@ import React from 'react'
 import {Alert, Button, FormControl, FormSelect, InputGroup} from 'react-bootstrap'
 import {ERROR, SUCCESS} from "../actions/Utils";
 import {AddFood, LoadAdminsRestaurant} from "../actions/AdminActions";
-import {LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
+import {LoadFoodCategories} from "../actions/MenuActions";
 import {GetCurrentUser} from "../actions/UserActions";
 
 class AddFoodView extends React.Component {
@@ -10,10 +10,9 @@ class AddFoodView extends React.Component {
         super(props);
         this.state = {
             allFoodCategories: [],
-            selectedFoodCategory: "-",
             food: {
                 name: "",
-                category: "All",
+                category: "",
                 restaurant: "",
                 portion: 0,
                 description: "",
@@ -34,11 +33,27 @@ class AddFoodView extends React.Component {
 
     componentDidMount() {
         LoadFoodCategories()
-            .then(data => {
-                this.setState({
-                    ...this.state,
-                    allFoodCategories: data,
-                });
+            .then(foodCategories => {
+                LoadAdminsRestaurant(GetCurrentUser().username)
+                    .then(restaurantData => {
+                        this.setState({
+                            ...this.state,
+                            allFoodCategories: foodCategories,
+                            food: {
+                                ...this.state.food,
+                                restaurant: restaurantData.name
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            notification: {
+                                show: true,
+                                message: error.message,
+                                type: ERROR
+                            }
+                        });
+                    });
             })
             .catch(error => {
                 this.setState({
@@ -49,28 +64,6 @@ class AddFoodView extends React.Component {
                     }
                 });
             });
-
-        LoadAdminsRestaurant(GetCurrentUser().username)
-            .then(restaurantData => {
-                this.setState({
-                    ...this.state,
-                    food: {
-                        ...this.state.food,
-                        restaurant: restaurantData.name
-                    }
-                })
-            })
-            .catch(error => {
-                this.setState({
-                    notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
-                    }
-                });
-            });
-
-        console.log(this.state.food)
     }
 
     handleInputChange(event) {
@@ -106,19 +99,18 @@ class AddFoodView extends React.Component {
                     type: ERROR,
                 },
             });
-            return;
+        } else {
+            this.setState({
+                ...this.state,
+                food: {
+                    ...this.state.food,
+                    [target.name]: value,
+                },
+                notification: {
+                    show: false
+                }
+            });
         }
-
-        this.setState({
-            ...this.state,
-            food: {
-                ...this.state.food,
-                [target.name]: value,
-            },
-            notification: {
-                show: false
-            }
-        });
     }
 
 
@@ -126,11 +118,18 @@ class AddFoodView extends React.Component {
         // prevent page from reloading
         event.preventDefault();
 
-        console.log(this.state.food)
-
         AddFood(this.state.food)
             .then(() => {
                 this.setState({
+                    ...this.state,
+                    food: {
+                        name: "",
+                        category: "",
+                        restaurant: "",
+                        portion: 0,
+                        description: "",
+                        price: 0.0,
+                    },
                     notification: {
                         show: true,
                         message: "The food has been successfully added!",
@@ -147,6 +146,8 @@ class AddFoodView extends React.Component {
                     }
                 });
             });
+
+        document.getElementById("add-food-form").reset();
     }
 
     hideNotification() {
@@ -160,8 +161,9 @@ class AddFoodView extends React.Component {
 
     render() {
         return (
-                <div className="card col-lg-5 border-dark text-left">
-                    <form onSubmit={this.handleSubmit} className="card-body">
+            <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
+                <div className="card col-sm-5 border-dark text-left">
+                    <form onSubmit={this.handleSubmit} className="card-body" id="add-food-form">
                         <h3 className="card-title text-center">Add food</h3>
                         {
                             (this.state.notification.show) ?
@@ -179,7 +181,8 @@ class AddFoodView extends React.Component {
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Restaurant</InputGroup.Text>
-                            <FormControl type="text" required placeholder="Restaurant" disabled value={this.state.food.restaurant}/>
+                            <FormControl type="text" required placeholder="Restaurant" disabled
+                                         value={this.state.food.restaurant}/>
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Description</InputGroup.Text>
@@ -188,9 +191,8 @@ class AddFoodView extends React.Component {
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Category</InputGroup.Text>
-                            <FormSelect placeholder="Select category" name="selectedFoodCategory"
-                                        onChange={this.handleInputChange}>
-                                <option value="All" key="All">All</option>
+                            <FormSelect placeholder="Select category" name="category"
+                                        onChange={this.handleInputChange} required>
                                 {
                                     this.state.allFoodCategories.map(foodCategory =>
                                         <option value={foodCategory} key={"new_" + foodCategory}>
@@ -218,6 +220,7 @@ class AddFoodView extends React.Component {
                         </div>
                     </form>
                 </div>
+            </div>
         )
     }
 }
