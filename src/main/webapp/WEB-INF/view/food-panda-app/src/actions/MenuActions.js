@@ -42,7 +42,7 @@ export function LoadFoodCategories() {
         headers: {'Content-Type': 'application/json'}
     };
 
-    return fetch(BASE_URL + "/category", requestOptions)
+    return fetch(BASE_URL + "/food/categories", requestOptions)
         .then(response => {
             if (!response.ok) {
                 return response.json()

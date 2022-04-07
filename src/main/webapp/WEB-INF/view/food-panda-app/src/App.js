@@ -10,8 +10,9 @@ import Header from "./components/Header";
 import CustomerMenuView from "./pages/CustomerMenuView";
 import AdminMenuView from "./pages/AdminMenuView";
 import CartContent from "./components/CartContent";
-import NewRestaurant from "./pages/NewRestaurant";
+import AddRestaurantView from "./pages/AddRestaurantView";
 import MyRestaurant from "./pages/MyRestaurant";
+import AddFoodView from "./pages/AddFoodView";
 
 class App extends Component {
     constructor(props) {
@@ -30,9 +31,10 @@ class App extends Component {
                         <Route path="/logout" element={<Logout/>}/>
                         <Route path="/customer/menu" element={<CustomerMenuView/>}/>
                         <Route path="/customer/cart" element={<CartContent/>}/>
-                        <Route path="/admin/menu" element={<AdminMenuView/>}/>
                         <Route path="/admin/restaurant" element={<MyRestaurant/>}/>
-                        <Route path="/admin/new_restaurant" element={<NewRestaurant/>}/>
+                        <Route path="/admin/restaurant/view_menu" element={<AdminMenuView/>}/>
+                        <Route path="/admin/restaurant/add_food" element={<AddFoodView/>}/>
+                        <Route path="/admin/restaurant/new" element={<AddRestaurantView/>}/>
                     </Routes>
                 </BrowserRouter>
             </>

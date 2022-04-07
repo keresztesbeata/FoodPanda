@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Nav, Navbar} from 'react-bootstrap'
+import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 
 class Header extends React.Component {
@@ -20,7 +20,10 @@ class Header extends React.Component {
                                 <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>
                                 <Navbar.Brand href="/admin">foodpanda</Navbar.Brand>
                                 <Nav className="me-auto">
-                                    <Nav.Link href="/admin/menu">Menu</Nav.Link>
+                                    <NavDropdown title="Menu">
+                                        <NavDropdown.Item href="/admin/restaurant/view_menu">View Menu</NavDropdown.Item>
+                                        <NavDropdown.Item href="/admin/restaurant/add_food">Add Food</NavDropdown.Item>
+                                    </NavDropdown>
                                     <Nav.Link href="/admin/restaurant">My restaurant</Nav.Link>
                                     <Nav.Link href="/admin/orders_history">Orders</Nav.Link>
                                     <Nav.Link href="/logout">Logout</Nav.Link>

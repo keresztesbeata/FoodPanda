@@ -2,7 +2,8 @@ import React from 'react'
 import MenuItem from "../components/MenuItem";
 import {Alert, Button, Card, Col, Container, Form, FormControl, ListGroup, Navbar, Row} from "react-bootstrap";
 import {FindRestaurant, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
-import {ERROR, SUCCESS} from "../actions/Utils";
+import {ERROR} from "../actions/Utils";
+import {GetCurrentUser} from "../actions/UserActions";
 
 class CustomerMenuView extends React.Component {
     constructor(props, context) {
@@ -34,6 +35,7 @@ class CustomerMenuView extends React.Component {
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
+        this.applyCategoryFilter = this.applyCategoryFilter.bind(this);
     }
 
     loadFoodCategories() {
@@ -130,7 +132,6 @@ class CustomerMenuView extends React.Component {
                         type: ERROR
                     }
                 });
-                this.resetRestaurantInformation();
             });
     }
 
@@ -139,8 +140,6 @@ class CustomerMenuView extends React.Component {
     }
 
     handleInputChange(event) {
-        // prevent page from reloading
-        event.preventDefault();
         const target = event.target
         this.setState({
             [target.name]: target.value,
@@ -148,6 +147,11 @@ class CustomerMenuView extends React.Component {
                 show: false,
             }
         });
+    }
+
+    applyCategoryFilter(event) {
+        this.handleInputChange(event);
+        this.onLoadRestaurantMenu();
     }
 
     hideNotification() {
@@ -159,8 +163,9 @@ class CustomerMenuView extends React.Component {
     }
 
     render() {
+        let isAdmin = GetCurrentUser().isAdmin;
         return (
-            <div>
+            <Container>
                 {
                     (this.state.notification.show) ?
                         <Alert dismissible={true} onClose={this.hideNotification}
@@ -224,7 +229,7 @@ class CustomerMenuView extends React.Component {
                     <Navbar className="justify-content-center">
                         <Form className="d-flex">
                             <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory"
-                                         onChange={this.handleInputChange}>
+                                         onChange={this.applyCategoryFilter}>
                                 <option value="All" key="All">All</option>
                                 {
                                     this.state.categories.map(category =>
@@ -232,7 +237,6 @@ class CustomerMenuView extends React.Component {
                                     )
                                 }
                             </Form.Select>
-                            <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Filter</Button>
                         </Form>
                     </Navbar>
                     <Container className="fluid">
@@ -246,7 +250,7 @@ class CustomerMenuView extends React.Component {
                         </ListGroup>
                     </Container>
                 </div>
-            </div>
+            </Container>
         );
     }
 }

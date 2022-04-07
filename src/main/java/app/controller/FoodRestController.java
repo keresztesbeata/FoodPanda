@@ -22,7 +22,7 @@ public class FoodRestController {
     @Autowired
     private FoodDtoFactory foodDtoFactory;
 
-    @GetMapping("/category")
+    @GetMapping("/food/categories")
     public ResponseEntity getAllFoodCategories() {
         return ResponseEntity.ok().body(foodService.getAllFoodCategories());
     }
@@ -59,11 +59,11 @@ public class FoodRestController {
         }
     }
 
-    @PostMapping(value = "/restaurant/food/admin/new")
-    public ResponseEntity addFood(@RequestBody FoodDto foodDto) {
+    @PostMapping(value = "/admin/restaurant/food/new")
+    public ResponseEntity addFood(@RequestBody FoodDto food) {
         try {
             //foodService.addFood(foodDtoFactory.createFoodDto(foodDto));
-            foodService.addFood(foodDto);
+            foodService.addFood(food);
             return ResponseEntity.ok().build();
         }catch(InvalidDataException | DuplicateDataException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);

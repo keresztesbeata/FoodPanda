@@ -63,3 +63,23 @@ export function AddRestaurant(restaurant) {
             }
         });
 }
+
+export function AddFood(food) {
+    const url = BASE_URL + "/admin/restaurant/food/new";
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(food)
+    };
+
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                response.json()
+                    .then(function (err) {
+                        throw new Error(err.message);
+                    });
+            }
+        });
+}

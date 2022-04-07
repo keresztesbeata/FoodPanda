@@ -1,11 +1,10 @@
 import React from 'react'
 import {Alert, Button, FormControl, FormSelect, InputGroup, Table} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {ERROR, INFO, SUCCESS} from "../actions/Utils";
+import {ERROR, SUCCESS} from "../actions/Utils";
 import {AddRestaurant, LoadDeliveryZones} from "../actions/AdminActions";
-import {Link} from "react-router-dom";
 
-class NewRestaurant extends React.Component {
+class AddRestaurantView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -271,4 +270,4 @@ class NewRestaurant extends React.Component {
     }
 }
 
-export default NewRestaurant;
+export default AddRestaurantView;

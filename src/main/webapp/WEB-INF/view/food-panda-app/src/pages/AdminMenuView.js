@@ -1,7 +1,10 @@
 import React from 'react'
-import MenuItem from "../components/MenuItem";
-import {Alert, Button, Card, Col, Container, Form, FormControl, ListGroup, Navbar, Row} from "react-bootstrap";
-import {FindRestaurant, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
+import {Alert, Button, Card, Col, Container, Form, ListGroup, Navbar, Row} from "react-bootstrap";
+import {LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
+import {ERROR} from "../actions/Utils";
+import PlainMenuItem from "../components/PlainMenuItem";
+import {LoadAdminsRestaurant} from "../actions/AdminActions";
+import {GetCurrentUser} from "../actions/UserActions";
 
 class AdminMenuView extends React.Component {
     constructor(props, context) {
@@ -18,43 +21,37 @@ class AdminMenuView extends React.Component {
             },
             menu: [],
             categories: [],
-            showError: false,
-            errorMessage: "",
+            selectedCategory: "All",
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR,
+            }
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.loadFoodCategories = this.loadFoodCategories.bind(this);
-        this.loadRestaurant = this.loadRestaurant.bind(this);
         this.resetRestaurantInformation = this.resetRestaurantInformation.bind(this);
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.hideNotification = this.hideNotification.bind(this);
     }
 
     loadFoodCategories() {
         LoadFoodCategories()
             .then(data => {
                 this.setState({
+                    ...this.state,
                     categories: data
                 });
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
-                })
-            });
-    }
-
-    loadRestaurant() {
-        let restaurantName = document.getElementById("search-restaurant").value;
-
-        return FindRestaurant(restaurantName)
-            .then(data => {
-                this.setState({
-                    restaurant: data,
-                    showError: false,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
-            })
-            .catch(error => {
-                throw new Error(error);
             });
     }
 
@@ -74,67 +71,93 @@ class AdminMenuView extends React.Component {
     }
 
     onLoadRestaurantMenu() {
-        let restaurantName = document.getElementById("search-restaurant").value;
-        const selectedCategory = document.getElementById("select-category").value;
-
-        FindRestaurant(restaurantName)
+        LoadAdminsRestaurant(GetCurrentUser().username)
             .then(restaurantData => {
-                LoadMenuForRestaurantByCategory(restaurantName, selectedCategory)
+                this.setState({
+                    ...this.state,
+                    restaurant: restaurantData
+                });
+                LoadMenuForRestaurantByCategory(this.state.restaurantName, this.state.selectedCategory)
                     .then(restaurantMenu => {
                         if (restaurantMenu.length > 0) {
                             this.setState({
-                                restaurant: restaurantData,
+                                ...this.state,
                                 menu: restaurantMenu,
-                                showError: false,
+                                notification: {
+                                    show: false,
+                                }
                             });
                         } else {
                             this.setState({
+                                ...this.state,
                                 menu: [],
-                                showError: false,
+                                notification: {
+                                    show: false,
+                                }
                             });
                         }
                     })
                     .catch(error => {
                         this.setState({
-                            showError: true,
-                            errorMessage: error.message,
-                        })
+                            notification: {
+                                show: true,
+                                message: error.message,
+                                type: ERROR
+                            }
+                        });
                     });
             })
             .catch(error => {
                 this.setState({
-                    showError: true,
-                    errorMessage: error.message,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
                 });
-                this.resetRestaurantInformation();
             });
     }
 
     componentDidMount() {
         this.loadFoodCategories();
+        this.onLoadRestaurantMenu();
+    }
+
+    handleInputChange(event) {
+        // prevent page from reloading
+        event.preventDefault();
+        const target = event.target
+        this.setState({
+            [target.name]: target.value,
+            notification: {
+                show: false,
+            }
+        });
+    }
+
+    hideNotification() {
+        this.setState({
+            notification: {
+                show: false
+            }
+        });
     }
 
     render() {
         return (
             <div>
-                {(this.state.showError) ? <Alert className="alert-danger">{this.state.errorMessage}</Alert> : <div/>}
-                <Navbar className="justify-content-center">
-                    <Form className="d-flex">
-                        <FormControl
-                            type="search"
-                            placeholder="Search restaurant..."
-                            className="me-2"
-                            aria-label="Search"
-                            id="search-restaurant"
-                        />
-                        <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Search</Button>
-                    </Form>
-                </Navbar>
+                {
+                    (this.state.notification.show) ?
+                        <Alert dismissible={true} onClose={this.hideNotification}
+                               className={this.state.notification.type}>
+                            {this.state.notification.message}
+                        </Alert>
+                        :
+                        <div/>
+                }
                 <div className="flex justify-content-center">
                     <Container>
-                        {/*className="header-image-home d-flex justify-content-center align-items-center">*/}
-                        {/*<Card className={(this.state.restaurant.name !== "")?"visible transparent-background" : "invisible"}>*/}
-                        <Card className={(this.state.restaurant.name !== "") ? "visible" : "invisible"}>
+                        <Card>
                             <Card.Title className="text-center">
                                 {this.state.restaurant.name}
                             </Card.Title>
@@ -172,7 +195,8 @@ class AdminMenuView extends React.Component {
                     </Container>
                     <Navbar className="justify-content-center">
                         <Form className="d-flex">
-                            <Form.Select aria-label="Food Category" className="me-2" id="select-category">
+                            <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory"
+                                         onChange={this.handleInputChange}>
                                 <option value="All" key="All">All</option>
                                 {
                                     this.state.categories.map(category =>
@@ -187,7 +211,7 @@ class AdminMenuView extends React.Component {
                         <ListGroup variant="flush">
                             {this.state.menu.map(item =>
                                 <ListGroup.Item key={item.name}>
-                                    <MenuItem data={item} showCartContent={this.state.showCartContent}/>
+                                    <PlainMenuItem data={item}/>
                                 </ListGroup.Item>
                             )}
                         </ListGroup>

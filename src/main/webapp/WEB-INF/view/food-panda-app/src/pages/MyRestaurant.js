@@ -57,7 +57,7 @@ class MyRestaurant extends React.Component {
                                 {this.state.notification.message}
                             </Alert>
                             <Button variant="outline-info">
-                                <Link to="/admin/new_restaurant" className="text-decoration-none">
+                                <Link to="/admin/restaurant/new" className="text-decoration-none">
                                     Add restaurant
                                 </Link>
                             </Button>
