@@ -13,6 +13,7 @@ import CartContent from "./components/CartContent";
 import AddRestaurantView from "./pages/AddRestaurantView";
 import MyRestaurant from "./pages/MyRestaurant";
 import AddFoodView from "./pages/AddFoodView";
+import CustomerOrderHistory from "./components/CustomerOrderHistory";
 
 class App extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class App extends Component {
                         <Route path="/logout" element={<Logout/>}/>
                         <Route path="/customer/menu" element={<CustomerMenuView/>}/>
                         <Route path="/customer/cart" element={<CartContent/>}/>
+                        <Route path="/customer/orders_history" element={<CustomerOrderHistory/>}/>
                         <Route path="/admin/restaurant" element={<MyRestaurant/>}/>
                         <Route path="/admin/restaurant/view_menu" element={<AdminMenuView/>}/>
                         <Route path="/admin/restaurant/add_food" element={<AddFoodView/>}/>

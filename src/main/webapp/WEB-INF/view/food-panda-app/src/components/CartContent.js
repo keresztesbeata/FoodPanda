@@ -70,6 +70,7 @@ class CartContent extends React.Component {
                     }
                 });
             });
+        document.getElementById("create-order-form").reset();
     }
 
     onRemoveFoodFromCart(foodName) {
@@ -163,7 +164,7 @@ class CartContent extends React.Component {
                             )
                     }
                 </ListGroup>
-                <form onSubmit={this.handleSubmit} className="card-body">
+                <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
                     <h3 className="card-title">Order details</h3>
                     {
                         (this.state.notification.show) ?

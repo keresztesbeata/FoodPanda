@@ -95,10 +95,11 @@ export function LoadCustomerCart(username) {
         });
 }
 
-export function LoadFoodDetails(foodName) {
-    const url = new URL(BASE_URL + "/food")
+
+export function LoadOrdersOfCustomer(customer) {
+    const url = new URL(BASE_URL + "/customer/orders")
     const params = {
-        food: foodName,
+        customer: customer,
     }
     url.search = new URLSearchParams(params).toString();
 

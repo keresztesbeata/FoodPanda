@@ -41,16 +41,16 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     public RestaurantOrderDto getOrderByOrderNumber(String orderNumber) throws EntityNotFoundException {
         return restaurantOrderMapper.toDto(
                 restaurantOrderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE)));
+                        .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE)));
     }
 
     @Override
-    public List<RestaurantOrderDto> getOrdersOfUserByStatus(String username, Optional<String> orderStatus) {
-        return orderStatus.map(status -> restaurantOrderRepository.findByUserAndStatus(username, status))
-                .orElseGet(() -> restaurantOrderRepository.findByUser(username))
+    public List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus) {
+        return ((orderStatus.isPresent()) ? restaurantOrderRepository.findByUserAndStatus(customer, orderStatus.get()) : restaurantOrderRepository.findByUser(customer))
                 .stream()
                 .map(restaurantOrderMapper::toDto)
                 .collect(Collectors.toList());
+
     }
 
     @Override
@@ -69,7 +69,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         Cart cart = cartRepository.findByCustomer(restaurantOrderDto.getCustomer())
                 .orElseThrow(() -> new InvalidDataException(INEXISTENT_CART_ERROR_MESSAGE));
 
-        if(cart.getFoods().isEmpty()) {
+        if (cart.getFoods().isEmpty()) {
             throw new InvalidDataException(EMPTY_CART_ERROR_MESSAGE);
         }
 
@@ -87,7 +87,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                 .distinct()
                 .count();
 
-        if(nrOfDifferentRestaurants != 1) {
+        if (nrOfDifferentRestaurants != 1) {
             throw new InvalidDataException(MULTIPLE_RESTAURANT_ERROR_MESSAGE);
         }
 
@@ -133,7 +133,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     }
 
     private List<OrderStatus> getNextOrderStatuses(OrderStatus currentStatus) {
-        switch(currentStatus){
+        switch (currentStatus) {
             case PENDING: {
                 return Arrays.asList(ACCEPTED, DECLINED);
             }

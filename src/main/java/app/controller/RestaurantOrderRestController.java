@@ -27,14 +27,14 @@ public class RestaurantOrderRestController {
         }
     }
 
-    @GetMapping("/customer/order/all")
-    public ResponseEntity getAllOrdersOfUser(@RequestParam String username) {
-        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfUserByStatus(username, Optional.empty()));
+    @GetMapping("/customer/orders")
+    public ResponseEntity getAllOrdersOfCustomer(@RequestParam String customer) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.empty()));
     }
 
     @GetMapping("/customer/order/status")
-    public ResponseEntity getAllOrdersOfUserByStatus(@RequestParam String username, @RequestParam String orderStatus) {
-        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfUserByStatus(username, Optional.of(orderStatus)));
+    public ResponseEntity getAllOrdersOfCustomerByStatus(@RequestParam String customer, @RequestParam String orderStatus) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.of(orderStatus)));
     }
 
     @GetMapping("/admin/restaurant/order/orderNumber")
@@ -46,7 +46,7 @@ public class RestaurantOrderRestController {
         }
     }
 
-    @GetMapping("/admin/restaurant/order/all")
+    @GetMapping("/admin/restaurant/orders")
     public ResponseEntity getAllOrdersOfRestaurant(@RequestParam String restaurant) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.empty()));
     }

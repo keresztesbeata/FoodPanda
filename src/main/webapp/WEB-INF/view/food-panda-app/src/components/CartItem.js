@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Button, Card} from 'react-bootstrap'
-import {LoadFoodDetails} from "../actions/CustomerActions";
 import {ERROR, SUCCESS} from "../actions/Utils";
+import {LoadFoodDetails} from "../actions/MenuActions";
 
 class CartItem extends React.Component {
     constructor(props, context) {

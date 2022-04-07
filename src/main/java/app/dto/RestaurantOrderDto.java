@@ -21,4 +21,5 @@ public class RestaurantOrderDto {
     private String deliveryAddress;
     private Boolean withCutlery = false;
     private String remark;
+    private Double totalPrice;
 }

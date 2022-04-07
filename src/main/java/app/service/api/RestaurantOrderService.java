@@ -10,7 +10,7 @@ public interface RestaurantOrderService {
 
     RestaurantOrderDto getOrderByOrderNumber(String orderNumber) throws EntityNotFoundException;
 
-    List<RestaurantOrderDto> getOrdersOfUserByStatus(String username, Optional<String> orderStatus);
+    List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus);
 
     List<RestaurantOrderDto> getOrdersOfRestaurantByStatus(String restaurantName, Optional<String> orderStatus);
 

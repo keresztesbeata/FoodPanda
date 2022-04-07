@@ -2,8 +2,6 @@ package app.mapper;
 
 import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
-import app.exceptions.InvalidDataException;
-import app.model.OrderStatus;
 import app.model.RestaurantOrder;
 import app.repository.RestaurantRepository;
 import app.repository.UserRepository;
@@ -17,12 +15,8 @@ import java.util.stream.Collectors;
 public class RestaurantOrderMapper implements Mapper<RestaurantOrder, RestaurantOrderDto> {
 
     private static final String INEXISTENT_USER_ERROR_MESSAGE = "The order cannot be created!\nNo user with the given username was found!";
-    private static final String INEXISTENT_RESTAURANT_ERROR_MESSAGE = "The order cannot be created!\nNo such restaurant exists!";
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
 
     @Override
     public RestaurantOrderDto toDto(RestaurantOrder restaurantOrder) {
@@ -36,6 +30,7 @@ public class RestaurantOrderMapper implements Mapper<RestaurantOrder, Restaurant
         restaurantOrderDto.setRemark(restaurantOrder.getRemark());
         restaurantOrderDto.setOrderStatus(restaurantOrder.getOrderStatus().name());
         restaurantOrderDto.setDateCreated(restaurantOrder.getDateCreated());
+        restaurantOrderDto.setTotalPrice(restaurantOrder.getTotalPrice());
         restaurantOrderDto.setOrderedFoods(restaurantOrder.getOrderedFoods()
                 .entrySet()
                 .stream()

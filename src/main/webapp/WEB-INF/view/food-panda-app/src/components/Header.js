@@ -18,7 +18,7 @@ class Header extends React.Component {
                         <Navbar bg="dark" variant="dark">
                             <Container>
                                 <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>
-                                <Navbar.Brand href="/admin">foodpanda</Navbar.Brand>
+                                <Navbar.Brand href="/">foodpanda</Navbar.Brand>
                                 <Nav className="me-auto">
                                     <NavDropdown title="Menu">
                                         <NavDropdown.Item href="/admin/restaurant/view_menu">View Menu</NavDropdown.Item>
@@ -38,7 +38,7 @@ class Header extends React.Component {
                     <Navbar bg="dark" variant="dark">
                         <Container>
                             <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>
-                            <Navbar.Brand href="/customer">foodpanda</Navbar.Brand>
+                            <Navbar.Brand href="/">foodpanda</Navbar.Brand>
                             <Nav className="me-auto">
                                 <Nav.Link href="/customer/menu">Menu</Nav.Link>
                                 <Nav.Link href="/customer/cart">My Cart</Nav.Link>

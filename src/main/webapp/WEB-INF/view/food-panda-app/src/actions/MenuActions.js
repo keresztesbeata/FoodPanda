@@ -54,6 +54,29 @@ export function LoadFoodCategories() {
         });
 }
 
+export function LoadFoodDetails(foodName) {
+    const url = new URL(BASE_URL + "/food")
+    const params = {
+        food: foodName,
+    }
+    url.search = new URLSearchParams(params).toString();
+
+    const requestOptions = {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    };
+
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
+                    .then(function (err) {
+                        throw new Error(err.message);
+                    });
+            }
+            return response.json();
+        });
+}
 
 export function FindRestaurant(restaurantName) {
     const url = new URL(BASE_URL + "/restaurant")
