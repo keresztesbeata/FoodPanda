@@ -1,9 +1,13 @@
 package app.model;
 
+import app.model.order_states.AbstractOrderState;
+import app.model.order_states.AcceptedState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;

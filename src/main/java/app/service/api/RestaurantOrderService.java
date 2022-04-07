@@ -18,7 +18,13 @@ public interface RestaurantOrderService {
 
     void addOrder(RestaurantOrderDto restaurantOrderDto) throws InvalidDataException;
 
-    void updateOrderStatus(String orderNumber, String orderStatus) throws EntityNotFoundException;
+    void acceptOrder(String orderNumber) throws EntityNotFoundException;
+
+    void declineOrder(String orderNumber) throws EntityNotFoundException;
+
+    void setOrderDelivered(String orderNumber) throws EntityNotFoundException;
+
+    void setOrderInDelivery(String orderNumber) throws EntityNotFoundException;
 
     List<String> getAvailableStatusForOrder(String orderNumber) throws EntityNotFoundException;
 }

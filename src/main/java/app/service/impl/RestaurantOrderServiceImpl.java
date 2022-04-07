@@ -3,8 +3,12 @@ package app.service.impl;
 import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.exceptions.InvalidOperationException;
 import app.mapper.RestaurantOrderMapper;
 import app.model.*;
+import app.model.order_states.AbstractOrderState;
+import app.model.order_states.OrderStatusManagerFactory;
+import app.model.order_states.PendingState;
 import app.repository.*;
 import app.service.api.RestaurantOrderService;
 import app.service.validator.RestaurantOrderDataValidator;
@@ -37,6 +41,9 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     @Autowired
     private RestaurantOrderDataValidator restaurantOrderDataValidator;
 
+    @Autowired
+    private OrderStatusManagerFactory orderStatusManagerFactory;
+
     @Override
     public List<String> getAllOrderStatuses() {
         return Arrays.stream(values()).map(Enum::name).collect(Collectors.toList());
@@ -55,7 +62,6 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                 .stream()
                 .map(restaurantOrderMapper::toDto)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -117,12 +123,38 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     }
 
     @Override
-    public void updateOrderStatus(String orderNumber, String orderStatus) {
-        // TODO validate correct sequence of updates: hint** use State pattern here
+    public void acceptOrder(String orderNumber) {
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
-        restaurantOrder.setOrderStatus(OrderStatus.valueOf(orderStatus));
 
+        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).accept();
+        restaurantOrderRepository.save(restaurantOrder);
+    }
+
+    @Override
+    public void declineOrder(String orderNumber) throws EntityNotFoundException {
+        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
+
+        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).decline();
+        restaurantOrderRepository.save(restaurantOrder);
+    }
+
+    @Override
+    public void setOrderDelivered(String orderNumber) throws EntityNotFoundException {
+        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
+
+        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).setDelivered();
+        restaurantOrderRepository.save(restaurantOrder);
+    }
+
+    @Override
+    public void setOrderInDelivery(String orderNumber) throws EntityNotFoundException {
+        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
+
+        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).setInDelivery();
         restaurantOrderRepository.save(restaurantOrder);
     }
 
@@ -130,26 +162,11 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     public List<String> getAvailableStatusForOrder(String orderNumber) {
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
+        AbstractOrderState orderState = orderStatusManagerFactory.createOrderStatusManager(restaurantOrder);
 
-        return getNextOrderStatuses(restaurantOrder.getOrderStatus())
+        return orderState.getNextStates()
                 .stream()
                 .map(OrderStatus::name)
                 .collect(Collectors.toList());
-    }
-
-    private List<OrderStatus> getNextOrderStatuses(OrderStatus currentStatus) {
-        switch (currentStatus) {
-            case PENDING: {
-                return Arrays.asList(ACCEPTED, DECLINED);
-            }
-            case ACCEPTED: {
-                return Arrays.asList(IN_DELIVERY);
-            }
-            case IN_DELIVERY: {
-                return Arrays.asList(DELIVERED);
-            }
-            default:
-                return Collections.emptyList();
-        }
     }
 }
