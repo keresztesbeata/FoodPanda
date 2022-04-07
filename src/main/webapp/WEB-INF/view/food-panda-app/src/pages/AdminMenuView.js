@@ -30,7 +30,6 @@ class AdminMenuView extends React.Component {
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.loadFoodCategories = this.loadFoodCategories.bind(this);
-        this.resetRestaurantInformation = this.resetRestaurantInformation.bind(this);
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
@@ -55,33 +54,15 @@ class AdminMenuView extends React.Component {
             });
     }
 
-    resetRestaurantInformation() {
-        this.setState({
-            restaurant: {
-                name: "",
-                address: "",
-                deliveryZones: [],
-                admin: "",
-                openingHour: 0,
-                closingHour: 0,
-                deliveryFee: 0,
-            },
-            menu: [],
-        })
-    }
-
     onLoadRestaurantMenu() {
         LoadAdminsRestaurant(GetCurrentUser().username)
             .then(restaurantData => {
-                this.setState({
-                    ...this.state,
-                    restaurant: restaurantData
-                });
-                LoadMenuForRestaurantByCategory(this.state.restaurantName, this.state.selectedCategory)
+                LoadMenuForRestaurantByCategory(restaurantData.name, this.state.selectedCategory)
                     .then(restaurantMenu => {
                         if (restaurantMenu.length > 0) {
                             this.setState({
                                 ...this.state,
+                                restaurant: restaurantData,
                                 menu: restaurantMenu,
                                 notification: {
                                     show: false,
