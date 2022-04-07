@@ -1,11 +1,9 @@
 import React from 'react'
-import MenuItem from "../components/MenuItem";
-import {Alert, Button, Card, Col, Container, Form, FormControl, ListGroup, Navbar, Row} from "react-bootstrap";
-import {FindRestaurant, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
+import {Alert, Container, ListGroup} from "react-bootstrap";
 import {ERROR, INFO} from "../actions/Utils";
 import {GetCurrentUser} from "../actions/UserActions";
 import {LoadOrdersOfCustomer} from "../actions/CustomerActions";
-import PlainOrder from "./PlainOrder";
+import PlainOrder from "../components/PlainOrder";
 
 class CustomerOrderHistory extends React.Component {
     constructor(props, context) {
@@ -28,7 +26,7 @@ class CustomerOrderHistory extends React.Component {
                     ...this.state,
                     orders: ordersData,
                 });
-                if(ordersData.length === 0) {
+                if (ordersData.length === 0) {
                     this.setState({
                         notification: {
                             show: true,
@@ -70,7 +68,7 @@ class CustomerOrderHistory extends React.Component {
                         <ListGroup variant="flush">
                             {this.state.orders.map(item =>
                                 <ListGroup.Item key={item.orderNumber}>
-                                    <PlainOrder data={item} />
+                                    <PlainOrder data={item}/>
                                 </ListGroup.Item>
                             )}
                         </ListGroup>

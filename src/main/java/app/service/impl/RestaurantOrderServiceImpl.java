@@ -38,6 +38,11 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private RestaurantOrderDataValidator restaurantOrderDataValidator;
 
     @Override
+    public List<String> getAllOrderStatuses() {
+        return Arrays.stream(values()).map(Enum::name).collect(Collectors.toList());
+    }
+
+    @Override
     public RestaurantOrderDto getOrderByOrderNumber(String orderNumber) throws EntityNotFoundException {
         return restaurantOrderMapper.toDto(
                 restaurantOrderRepository.findByOrderNumber(orderNumber)
@@ -46,7 +51,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus) {
-        return ((orderStatus.isPresent()) ? restaurantOrderRepository.findByUserAndStatus(customer, orderStatus.get()) : restaurantOrderRepository.findByUser(customer))
+        return ((orderStatus.isPresent()) ? restaurantOrderRepository.findByUserAndStatus(customer, OrderStatus.valueOf(orderStatus.get())) : restaurantOrderRepository.findByUser(customer))
                 .stream()
                 .map(restaurantOrderMapper::toDto)
                 .collect(Collectors.toList());
@@ -55,7 +60,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public List<RestaurantOrderDto> getOrdersOfRestaurantByStatus(String restaurantName, Optional<String> orderStatus) {
-        return orderStatus.map(status -> restaurantOrderRepository.findByRestaurantAndStatus(restaurantName, status))
+        return orderStatus.map(status -> restaurantOrderRepository.findByRestaurantAndStatus(restaurantName, OrderStatus.valueOf(status)))
                 .orElseGet(() -> restaurantOrderRepository.findByRestaurant(restaurantName))
                 .stream()
                 .map(restaurantOrderMapper::toDto)

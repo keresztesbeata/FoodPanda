@@ -25,7 +25,7 @@ class Header extends React.Component {
                                         <NavDropdown.Item href="/admin/restaurant/add_food">Add Food</NavDropdown.Item>
                                     </NavDropdown>
                                     <Nav.Link href="/admin/restaurant">My restaurant</Nav.Link>
-                                    <Nav.Link href="/admin/orders_history">Orders</Nav.Link>
+                                    <Nav.Link href="/admin/restaurant/orders">Orders</Nav.Link>
                                     <Nav.Link href="/logout">Logout</Nav.Link>
                                 </Nav>
                             </Container>

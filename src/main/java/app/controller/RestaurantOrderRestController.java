@@ -32,12 +32,12 @@ public class RestaurantOrderRestController {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.empty()));
     }
 
-    @GetMapping("/customer/order/status")
+    @GetMapping("/customer/orders/status")
     public ResponseEntity getAllOrdersOfCustomerByStatus(@RequestParam String customer, @RequestParam String orderStatus) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.of(orderStatus)));
     }
 
-    @GetMapping("/admin/restaurant/order/orderNumber")
+    @GetMapping("/admin/restaurant/orders/orderNumber")
     public ResponseEntity getOrderByOrderNumber(@RequestParam String orderNumber) {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getOrderByOrderNumber(orderNumber));
@@ -46,17 +46,22 @@ public class RestaurantOrderRestController {
         }
     }
 
+    @GetMapping("/order_statuses")
+    public ResponseEntity getAllOrderStates() {
+        return ResponseEntity.ok().body(restaurantOrderService.getAllOrderStatuses());
+    }
+
     @GetMapping("/admin/restaurant/orders")
     public ResponseEntity getAllOrdersOfRestaurant(@RequestParam String restaurant) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.empty()));
     }
 
-    @GetMapping("/admin/restaurant/order/status")
+    @GetMapping("/admin/restaurant/orders/status")
     public ResponseEntity getAllOrdersOfRestaurantByStatus(@RequestParam String restaurant, @RequestParam String orderStatus) {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus)));
     }
 
-    @GetMapping("/admin/restaurant/order/orderNumber/available_statuses")
+    @GetMapping("/admin/restaurant/orders/orderNumber/available_statuses")
     public ResponseEntity getAvailableOrderStatusesForOrder(@RequestParam String orderNumber) {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getAvailableStatusForOrder(orderNumber));

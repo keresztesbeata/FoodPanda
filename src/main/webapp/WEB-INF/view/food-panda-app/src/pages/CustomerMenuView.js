@@ -29,7 +29,7 @@ class CustomerMenuView extends React.Component {
             }
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
-        this.loadFoodCategories = this.loadFoodCategories.bind(this);
+        this.loadInitialData = this.loadInitialData.bind(this);
         this.loadRestaurant = this.loadRestaurant.bind(this);
         this.resetRestaurantInformation = this.resetRestaurantInformation.bind(this);
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
@@ -38,7 +38,7 @@ class CustomerMenuView extends React.Component {
         this.applyCategoryFilter = this.applyCategoryFilter.bind(this);
     }
 
-    loadFoodCategories() {
+    loadInitialData() {
         LoadFoodCategories()
             .then(data => {
                 this.setState({
@@ -136,7 +136,7 @@ class CustomerMenuView extends React.Component {
     }
 
     componentDidMount() {
-        this.loadFoodCategories();
+        this.loadInitialData();
     }
 
     handleInputChange(event) {

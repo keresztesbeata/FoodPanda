@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface RestaurantOrderService {
 
+    List<String> getAllOrderStatuses();
+
     RestaurantOrderDto getOrderByOrderNumber(String orderNumber) throws EntityNotFoundException;
 
     List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus);

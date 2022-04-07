@@ -29,13 +29,13 @@ class AdminMenuView extends React.Component {
             }
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
-        this.loadFoodCategories = this.loadFoodCategories.bind(this);
+        this.onLoadInitialData = this.onLoadInitialData.bind(this);
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
     }
 
-    loadFoodCategories() {
+    onLoadInitialData() {
         LoadFoodCategories()
             .then(data => {
                 this.setState({
@@ -100,7 +100,7 @@ class AdminMenuView extends React.Component {
     }
 
     componentDidMount() {
-        this.loadFoodCategories();
+        this.onLoadInitialData();
         this.onLoadRestaurantMenu();
     }
 

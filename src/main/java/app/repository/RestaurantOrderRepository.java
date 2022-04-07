@@ -1,5 +1,6 @@
 package app.repository;
 
+import app.model.OrderStatus;
 import app.model.RestaurantOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,9 +25,9 @@ public interface RestaurantOrderRepository extends JpaRepository<RestaurantOrder
 
     @Transactional
     @Query("SELECT restaurantOrder from RestaurantOrder restaurantOrder left join restaurantOrder.customer user where user.username = ?1 and restaurantOrder.orderStatus = ?2")
-    List<RestaurantOrder> findByUserAndStatus(String username, String orderStatus);
+    List<RestaurantOrder> findByUserAndStatus(String username, OrderStatus orderStatus);
 
     @Transactional
     @Query("SELECT restaurantOrder from RestaurantOrder restaurantOrder left join restaurantOrder.restaurant restaurant where restaurant.name = ?1 and restaurantOrder.orderStatus = ?2")
-    List<RestaurantOrder> findByRestaurantAndStatus(String restaurantName, String orderStatus);
+    List<RestaurantOrder> findByRestaurantAndStatus(String restaurantName, OrderStatus orderStatus);
 }
