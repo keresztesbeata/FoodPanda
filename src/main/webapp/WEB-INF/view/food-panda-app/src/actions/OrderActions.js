@@ -75,26 +75,6 @@ export function LoadOrdersOfCustomer(customer) {
         });
 }
 
-export function PlaceOrder(orderDetails) {
-    const url = BASE_URL + "/customer/order/new";
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(orderDetails)
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-        });
-}
-
 export function LoadOrdersStatuses() {
     const url = new URL(BASE_URL + "/order_statuses")
 
@@ -155,7 +135,7 @@ export function UpdateOrderStatus(orderNumber, orderStatus) {
    return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
-                response.json()
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });

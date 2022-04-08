@@ -1,10 +1,9 @@
 import React from 'react'
 import {Alert, Button, Container, FormCheck, FormControl, FormGroup, FormLabel, ListGroup} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {PlaceOrder} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
 import {ERROR, SUCCESS} from "../actions/Utils";
-import {LoadCustomerCart, RemoveFoodFromCart} from "../actions/CartActions";
+import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CartActions";
 
 class CartContent extends React.Component {
     constructor(props, context) {

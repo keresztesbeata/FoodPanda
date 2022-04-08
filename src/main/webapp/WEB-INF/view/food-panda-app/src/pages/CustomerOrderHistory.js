@@ -1,9 +1,9 @@
 import React from 'react'
-import {Alert, Container, ListGroup} from "react-bootstrap";
+import {Alert, Container, ListGroup, ListGroupItem} from "react-bootstrap";
 import {ERROR, INFO} from "../actions/Utils";
 import {GetCurrentUser} from "../actions/UserActions";
-import {LoadOrdersOfCustomer} from "../actions/CustomerActions";
 import PlainOrder from "../components/PlainOrder";
+import {LoadOrdersOfCustomer} from "../actions/OrderActions";
 
 class CustomerOrderHistory extends React.Component {
     constructor(props, context) {
@@ -67,10 +67,11 @@ class CustomerOrderHistory extends React.Component {
                     <Container className="fluid">
                         <ListGroup variant="flush">
                             {this.state.orders.map(item =>
-                                <ListGroup.Item key={item.orderNumber}>
+                                <ListGroupItem key={item.orderNumber}>
                                     <PlainOrder data={item}/>
-                                </ListGroup.Item>
-                            )}
+                                    <b>Status:</b> {this.state.orderStatus}
+                                </ListGroupItem>
+                                )}
                         </ListGroup>
                     </Container>
                 </div>

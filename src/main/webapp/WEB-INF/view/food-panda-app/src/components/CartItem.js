@@ -54,28 +54,28 @@ class CartItem extends React.Component {
 
     render() {
         return (<Card>
-                <Card.Body>
-                    {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
-                                                             className={this.state.notification.type}>
-                        {this.state.notification.message}
-                    </Alert> : <div/>}
-                    <Card.Title className="card-title">
-                        {this.state.name}
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                        {this.state.category}
-                    </Card.Subtitle>
-                    <Card.Text>
-                        {this.state.description}
-                    </Card.Text>
-                    <Card.Text>
-                        Price x Quantity: {this.state.price} $ x {this.state.quantity}
-                    </Card.Text>
-                    <Button variant="primary" onClick={this.onRemoveItemFromCart}>
-                        Remove
-                    </Button>
-                </Card.Body>
-            </Card>)
+            <Card.Body>
+                {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                                                         className={this.state.notification.type}>
+                    {this.state.notification.message}
+                </Alert> : <div/>}
+                <Card.Title className="card-title">
+                    {this.state.name}
+                </Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                    {this.state.category}
+                </Card.Subtitle>
+                <Card.Text>
+                    {this.state.description}
+                </Card.Text>
+                <Card.Text>
+                    Price x Quantity: {this.state.price} $ x {this.state.quantity}
+                </Card.Text>
+                <Button variant="primary" onClick={this.onRemoveItemFromCart}>
+                    Remove
+                </Button>
+            </Card.Body>
+        </Card>)
     }
 }
 

@@ -15,21 +15,21 @@ class PlainMenuItem extends React.Component {
 
     render() {
         return (<Card>
-                <Card.Body>
-                    <Card.Title className="card-title">
-                        {this.state.name}
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                        {this.state.category}
-                    </Card.Subtitle>
-                    <Card.Text>
-                        {this.state.description}
-                    </Card.Text>
-                    <Card.Text>
-                        Price: {this.state.price} $
-                    </Card.Text>
-                </Card.Body>
-            </Card>)
+            <Card.Body>
+                <Card.Title className="card-title">
+                    {this.state.name}
+                </Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                    {this.state.category}
+                </Card.Subtitle>
+                <Card.Text>
+                    {this.state.description}
+                </Card.Text>
+                <Card.Text>
+                    Price: {this.state.price} $
+                </Card.Text>
+            </Card.Body>
+        </Card>)
     }
 }
 

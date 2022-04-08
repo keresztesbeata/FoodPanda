@@ -22,7 +22,6 @@ class AdminOrdersView extends React.Component {
             allOrderStatuses: [],
             selectedOrderStatus: "All",
             updatedOrderStatus: "",
-            showDetails: false,
             notification: {
                 show: false,
                 message: "",
@@ -35,7 +34,6 @@ class AdminOrdersView extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
         this.applyOrderStatusFilter = this.applyOrderStatusFilter.bind(this);
-        this.onShowDetails = this.onShowDetails.bind(this);
     }
 
     loadInitialData() {
@@ -147,7 +145,6 @@ class AdminOrdersView extends React.Component {
     }
 
     handleInputChange(event) {
-        event.preventDefault();
         const target = event.target
 
         this.setState({
@@ -159,6 +156,7 @@ class AdminOrdersView extends React.Component {
     applyOrderStatusFilter(event) {
         this.handleInputChange(event);
         this.onLoadRestaurantOrdersByState();
+        this.hideNotification();
     }
 
     hideNotification() {
@@ -170,25 +168,19 @@ class AdminOrdersView extends React.Component {
         });
     }
 
-    onShowDetails(event) {
-        event.preventDefault();
-        const target = event.target
-
-        this.setState({
-            ...this.state,
-            showDetails: target.checked,
-        });
-    }
-
     onUpdateOrderStatus(orderNumber) {
         UpdateOrderStatus(orderNumber, this.state.updatedOrderStatus)
             .then(() => {
                 LoadOrdersOfRestaurantByStatus(this.state.restaurantName, this.state.selectedOrderStatus)
                     .then(ordersData => {
                         this.setState({
-                            ...this.state,
                             orders: ordersData,
-                        })
+                            notification: {
+                                show: true,
+                                message: "Status of the order has been successfully updated to " + this.state.updatedOrderStatus + "!",
+                                type: SUCCESS
+                            }
+                        });
                     })
                     .catch(error => {
                         this.setState({
@@ -199,15 +191,6 @@ class AdminOrdersView extends React.Component {
                             }
                         });
                     });
-
-                this.setState({
-                    ...this.state,
-                    notification: {
-                        show: true,
-                        message: "Status of the order has been successfully updated to " + this.state.updatedOrderStatus + "!",
-                        type: SUCCESS
-                    }
-                })
             })
             .catch(error => {
                 this.setState({
@@ -223,15 +206,6 @@ class AdminOrdersView extends React.Component {
     render() {
         return (
             <Container>
-                {
-                    (this.state.notification.show) ?
-                        <Alert dismissible={true} onClose={this.hideNotification}
-                               className={this.state.notification.type}>
-                            {this.state.notification.message}
-                        </Alert>
-                        :
-                        <div/>
-                }
                 <div className="flex justify-content-center">
                     <Navbar className="justify-content-center">
                         <Form className="d-flex">
@@ -246,27 +220,22 @@ class AdminOrdersView extends React.Component {
                             </Form.Select>
                         </Form>
                     </Navbar>
-                    <Form.Check
-                        type="switch"
-                        id="show-details-switch"
-                        label="Detailed view"
-                        onChange={this.onShowDetails}
-                    />
                     <Container className="fluid">
+                        {
+                            (this.state.notification.show) ?
+                                <Alert dismissible={true} onClose={this.hideNotification}
+                                       className={this.state.notification.type}>
+                                    {this.state.notification.message}
+                                </Alert>
+                                :
+                                <div/>
+                        }
                         <Table variant="flush">
                             <thead>
                             <tr>
-                                {
-                                    (this.state.showDetails) ?
-                                        <th>
-                                            Order details
-                                        </th>
-                                        :
-                                        <th>
-                                            Order number
-                                        </th>
-
-                                }
+                                <th>
+                                    Order
+                                </th>
                                 <th>
                                     Order status
                                 </th>
@@ -278,16 +247,9 @@ class AdminOrdersView extends React.Component {
                             <tbody>
                             {this.state.orders.map(item =>
                                 <tr key={item.orderNumber}>
-                                    {
-                                        (this.state.showDetails) ?
-                                            <td>
-                                                <PlainOrder data={item}/>
-                                            </td>
-                                            :
-                                            <td>
-                                                {item.orderNumber}
-                                            </td>
-                                    }
+                                    <td>
+                                        <PlainOrder data={item}/>
+                                    </td>
                                     <td>
                                         <Form className="d-flex">
                                             <Form.Select aria-label="Order status" className="me-2"

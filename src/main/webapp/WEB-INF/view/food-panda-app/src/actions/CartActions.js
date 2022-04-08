@@ -42,7 +42,7 @@ export function AddFoodToCart(username, foodName, quantity) {
     return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
-                response.json()
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });
@@ -67,7 +67,28 @@ export function RemoveFoodFromCart(username, foodName) {
     return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
-                response.json()
+                return response.json()
+                    .then(function (err) {
+                        throw new Error(err.message);
+                    });
+            }
+        });
+}
+
+
+export function PlaceOrder(orderDetails) {
+    const url = BASE_URL + "/customer/order/new";
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderDetails)
+    };
+
+    return fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });

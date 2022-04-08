@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Button, FormControl, FormGroup, FormLabel} from 'react-bootstrap'
 import {LoginUser} from "../actions/UserActions";
-import {ERROR, SUCCESS} from "../actions/Utils";
+import {ERROR} from "../actions/Utils";
 
 class Login extends React.Component {
     constructor(props, context) {

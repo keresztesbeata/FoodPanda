@@ -53,7 +53,7 @@ class MyRestaurant extends React.Component {
                     <Card className="sm-3">
                         <Card.Body>
                             <Alert
-                                   className={this.state.notification.type}>
+                                className={this.state.notification.type}>
                                 {this.state.notification.message}
                             </Alert>
                             <Button variant="outline-info">
@@ -73,11 +73,13 @@ class MyRestaurant extends React.Component {
                             <Card.Body>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Name</InputGroup.Text>
-                                    <FormControl type="text" placeholder="Name" disabled value={this.state.restaurant.name}/>
+                                    <FormControl type="text" placeholder="Name" disabled
+                                                 value={this.state.restaurant.name}/>
                                 </InputGroup>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Address</InputGroup.Text>
-                                    <FormControl type="text" placeholder="Address" disabled value={this.state.restaurant.address}/>
+                                    <FormControl type="text" placeholder="Address" disabled
+                                                 value={this.state.restaurant.address}/>
                                 </InputGroup>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Delivery zones</InputGroup.Text>
@@ -95,13 +97,16 @@ class MyRestaurant extends React.Component {
                                 </InputGroup>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Delivery fee</InputGroup.Text>
-                                    <FormControl type="text" placeholder="Delivery fee" disabled value={this.state.restaurant.deliveryFee}/>
+                                    <FormControl type="text" placeholder="Delivery fee" disabled
+                                                 value={this.state.restaurant.deliveryFee}/>
                                 </InputGroup>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Text>Opening hour</InputGroup.Text>
-                                    <FormControl type="text" placeholder="Opening hour" disabled value={this.state.restaurant.openingHour}/>
+                                    <FormControl type="text" placeholder="Opening hour" disabled
+                                                 value={this.state.restaurant.openingHour}/>
                                     <InputGroup.Text>Closing hour</InputGroup.Text>
-                                    <FormControl type="text" placeholder="Closing hour" disabled value={this.state.restaurant.closingHour}/>
+                                    <FormControl type="text" placeholder="Closing hour" disabled
+                                                 value={this.state.restaurant.closingHour}/>
                                 </InputGroup>
                             </Card.Body>
                         </Card>

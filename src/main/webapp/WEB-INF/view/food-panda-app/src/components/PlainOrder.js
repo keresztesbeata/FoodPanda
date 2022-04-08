@@ -1,68 +1,85 @@
 import React from 'react'
-import {Card, Table} from 'react-bootstrap'
+import {Accordion, Card, Table} from 'react-bootstrap'
+import {LoadOrderByOrderNumber} from "../actions/OrderActions";
 
 class PlainOrder extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {
-            orderNumber: props.data.orderNumber,
-            customer: props.data.customer,
-            restaurant: props.data.restaurant,
-            orderStatus: props.data.orderStatus,
-            dateCreated: props.data.dateCreated,
-            orderedFoods: props.data.orderedFoods,
-            deliveryAddress: props.data.deliveryAddress,
-            withCutlery: props.data.withCutlery,
-            totalPrice: props.data.totalPrice,
-            remark: props.data.remark,
-        }
+        this.state = props.data;
+        this.loadOrderData = this.loadOrderData.bind(this);
+    }
+
+    loadOrderData() {
+        LoadOrderByOrderNumber(this.state.orderNumber)
+            .then(orderData => {
+                this.setState(orderData)
+            })
+            .catch(e => {
+                console.log(e);
+            });
     }
 
     render() {
-        return (<Card>
-                <Card.Body>
-                    <Card.Title className="card-title">
-                        Order #{this.state.orderNumber}
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                        {this.state.customer}
-                    </Card.Subtitle>
-                    <Card.Text>
-                        Restaurant: {this.state.restaurant}
-                    </Card.Text>
-                    <Card.Text>
-                        Created at: {this.state.dateCreated}
-                    </Card.Text>
-                    <Card.Text>
-                        Status: {this.state.orderStatus}
-                    </Card.Text>
-                    <Card.Text>
-                        Delivery address: {this.state.deliveryAddress}
-                    </Card.Text>
-                    <Card.Text>
-                        With cutlery: {this.state.withCutlery ? "Yes" : "No"}
-                    </Card.Text>
-                    <Card.Text>
-                        Remark: {this.state.remark}
-                    </Card.Text>
-                    <Card.Body>
-                        <Card.Title>Ordered foods:</Card.Title>
-                        <Table>
-                            <tbody>{Object.entries(this.state.orderedFoods).map(([food, quantity]) => <tr
-                                key={this.state.orderNumber + ":" + food}>
-                                <td>{food}</td>
-                                <td>{quantity}</td>
-                            </tr>)}
-                            </tbody>
-                        </Table>
-                        <Card.Subtitle>
+        if(this.props.data.orderStatus !== this.state.orderStatus) {
+            this.loadOrderData();
+        }
+        return (
+            <Accordion>
+                <Accordion.Item eventKey="0" >
+                    {/*onClick={this.loadOrderData}>*/}
+                    <Accordion.Header>
+                        <Card.Body>
+                            <Card.Title className="card-title">
+                                Order #{this.state.orderNumber}
+                            </Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">
+                                {this.state.customer}
+                            </Card.Subtitle>
+                        </Card.Body>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        <Card.Body id={this.state.orderNumber + "_collapsable"} className="collapse show"
+                                   aria-labelledby="headingOne"
+                                   data-parent={"#" + this.state.orderNumber + "_accordion"}>
                             <Card.Text>
-                                Total amount: {this.state.totalPrice} $
+                                <b>Restaurant:</b> {this.state.restaurant}
                             </Card.Text>
-                        </Card.Subtitle>
-                    </Card.Body>
-                </Card.Body>
-            </Card>)
+                            <Card.Text>
+                                <b>Created at:</b> {this.state.dateCreated}
+                            </Card.Text>
+                            <Card.Text>
+                                <b>Status:</b> {this.state.orderStatus}
+                            </Card.Text>
+                            <Card.Text>
+                                <b>Delivery address:</b> {this.state.deliveryAddress}
+                            </Card.Text>
+                            <Card.Text>
+                                <b>With cutlery:</b> {this.state.withCutlery ? "Yes" : "No"}
+                            </Card.Text>
+                            <Card.Text>
+                                <b>Remark:</b> {this.state.remark}
+                            </Card.Text>
+                            <Card.Body>
+                                <Card.Title>Ordered foods:</Card.Title>
+                                <Table>
+                                    <tbody>{Object.entries(this.state.orderedFoods).map(([food, quantity]) => <tr
+                                        key={this.state.orderNumber + ":" + food}>
+                                        <td>{food}</td>
+                                        <td>{quantity}</td>
+                                    </tr>)}
+                                    </tbody>
+                                </Table>
+                                <Card.Subtitle>
+                                    <Card.Text>
+                                        <b>Total amount:</b> {this.state.totalPrice} <b>$</b>
+                                    </Card.Text>
+                                </Card.Subtitle>
+                            </Card.Body>
+                        </Card.Body>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+        )
     }
 }
 

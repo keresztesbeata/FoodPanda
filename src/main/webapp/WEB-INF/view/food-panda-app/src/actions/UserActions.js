@@ -82,7 +82,7 @@ export function LogoutUser() {
         .then(response => {
             console.log(response)
             if (!response.ok) {
-                response.json()
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });
