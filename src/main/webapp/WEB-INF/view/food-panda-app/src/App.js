@@ -14,7 +14,7 @@ import AddRestaurantView from "./pages/AddRestaurantView";
 import MyRestaurant from "./pages/MyRestaurant";
 import AddFoodView from "./pages/AddFoodView";
 import CustomerOrderHistory from "./pages/CustomerOrderHistory";
-import AdminRestaurantOrders from "./pages/AdminRestaurantOrders";
+import AdminOrdersView from "./pages/AdminOrdersView";
 
 class App extends Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class App extends Component {
                         <Route path="/admin/restaurant/view_menu" element={<AdminMenuView/>}/>
                         <Route path="/admin/restaurant/add_food" element={<AddFoodView/>}/>
                         <Route path="/admin/restaurant/new" element={<AddRestaurantView/>}/>
-                        <Route path="/admin/restaurant/orders" element={<AdminRestaurantOrders/>}/>
+                        <Route path="/admin/restaurant/orders" element={<AdminOrdersView/>}/>
                     </Routes>
                 </BrowserRouter>
             </>

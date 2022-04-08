@@ -3,7 +3,7 @@ import {Alert, Button, Card, Col, Container, Form, ListGroup, Navbar, Row} from 
 import {LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
 import {ERROR} from "../actions/Utils";
 import PlainMenuItem from "../components/PlainMenuItem";
-import {LoadAdminsRestaurant} from "../actions/AdminActions";
+import {LoadAdminsRestaurant} from "../actions/RestaurantActions";
 import {GetCurrentUser} from "../actions/UserActions";
 
 class AdminMenuView extends React.Component {

@@ -19,8 +19,7 @@ class PlainOrder extends React.Component {
     }
 
     render() {
-        return (
-            <Card>
+        return (<Card>
                 <Card.Body>
                     <Card.Title className="card-title">
                         Order #{this.state.orderNumber}
@@ -49,15 +48,11 @@ class PlainOrder extends React.Component {
                     <Card.Body>
                         <Card.Title>Ordered foods:</Card.Title>
                         <Table>
-                            <tbody>{
-                                Object.entries(this.state.orderedFoods).map(
-                                    ([food, quantity]) =>
-                                        <tr key={this.state.orderNumber + ":" + food}>
-                                            <td>{food}</td>
-                                            <td>{quantity}</td>
-                                        </tr>
-                                )
-                            }
+                            <tbody>{Object.entries(this.state.orderedFoods).map(([food, quantity]) => <tr
+                                key={this.state.orderNumber + ":" + food}>
+                                <td>{food}</td>
+                                <td>{quantity}</td>
+                            </tr>)}
                             </tbody>
                         </Table>
                         <Card.Subtitle>
@@ -67,8 +62,7 @@ class PlainOrder extends React.Component {
                         </Card.Subtitle>
                     </Card.Body>
                 </Card.Body>
-            </Card>
-        )
+            </Card>)
     }
 }
 

@@ -15,9 +15,7 @@ class MenuItem extends React.Component {
             price: props.data.price,
             quantity: 1,
             notification: {
-                show: false,
-                message: "",
-                type: ERROR,
+                show: false, message: "", type: ERROR,
             }
         }
         this.incrementQuantity = this.incrementQuantity.bind(this);
@@ -55,9 +53,7 @@ class MenuItem extends React.Component {
             .catch(error => {
                 this.setState({
                     notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
+                        show: true, message: error.message, type: ERROR
                     }
                 });
             });
@@ -72,18 +68,12 @@ class MenuItem extends React.Component {
     }
 
     render() {
-        return (
-            <Card>
+        return (<Card>
                 <Card.Body>
-                    {
-                        (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification}
-                                   className={this.state.notification.type}>
-                                {this.state.notification.message}
-                            </Alert>
-                            :
-                            <div/>
-                    }
+                    {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                                                             className={this.state.notification.type}>
+                        {this.state.notification.message}
+                    </Alert> : <div/>}
                     <Row>
                         <Col>
                             <Card.Title className="card-title">
@@ -124,8 +114,7 @@ class MenuItem extends React.Component {
                         </Col>
                     </Row>
                 </Card.Body>
-            </Card>
-        )
+            </Card>)
     }
 }
 

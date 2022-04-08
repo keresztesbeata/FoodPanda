@@ -1,9 +1,6 @@
 package app.controller;
 
-import app.dto.BasicFoodDto;
 import app.dto.FoodDto;
-import app.dto.FoodDtoFactory;
-import app.dto.HealthyFoodRequestBody;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
@@ -18,9 +15,6 @@ public class FoodRestController {
 
     @Autowired
     private FoodService foodService;
-
-    @Autowired
-    private FoodDtoFactory foodDtoFactory;
 
     @GetMapping("/food/categories")
     public ResponseEntity getAllFoodCategories() {
@@ -62,21 +56,10 @@ public class FoodRestController {
     @PostMapping(value = "/admin/restaurant/food/new")
     public ResponseEntity addFood(@RequestBody FoodDto food) {
         try {
-            //foodService.addFood(foodDtoFactory.createFoodDto(foodDto));
             foodService.addFood(food);
             return ResponseEntity.ok().build();
         }catch(InvalidDataException | DuplicateDataException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }
-
-//    @PostMapping(value = "/restaurant/food/healthy/admin/new")
-//    public ResponseEntity addHealthyFood(@RequestBody FoodDto foodDto) {
-//        try {
-//            foodService.addFood(foodDtoFactory.createHealthyFoodDto(healthyFoodRequestBody.getBasicFoodDto(), healthyFoodRequestBody.getNutritionFacts()));
-//            return ResponseEntity.ok().build();
-//        }catch(InvalidDataException | DuplicateDataException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
-//        }
-//    }
 }

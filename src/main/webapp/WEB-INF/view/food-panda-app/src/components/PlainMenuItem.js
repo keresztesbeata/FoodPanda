@@ -14,8 +14,7 @@ class PlainMenuItem extends React.Component {
     }
 
     render() {
-        return (
-            <Card>
+        return (<Card>
                 <Card.Body>
                     <Card.Title className="card-title">
                         {this.state.name}
@@ -30,8 +29,7 @@ class PlainMenuItem extends React.Component {
                         Price: {this.state.price} $
                     </Card.Text>
                 </Card.Body>
-            </Card>
-        )
+            </Card>)
     }
 }
 

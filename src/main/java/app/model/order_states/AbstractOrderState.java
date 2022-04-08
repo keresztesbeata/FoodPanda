@@ -4,28 +4,32 @@ import app.model.OrderStatus;
 import app.model.RestaurantOrder;
 import lombok.Getter;
 
-import java.util.List;
-
 public abstract class AbstractOrderState {
 
     @Getter
     private RestaurantOrder order;
 
-    public abstract List<OrderStatus> getNextStates();
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        order.setOrderStatus(orderStatus);
-    }
-
     public AbstractOrderState(RestaurantOrder order) {
         this.order = order;
     }
 
-    public abstract void setDelivered();
+    protected void updateStatus(OrderStatus orderStatus) {
+        order.setOrderStatus(orderStatus);
+    }
 
-    public abstract void setInDelivery();
+    public AbstractOrderState setDelivered() throws IllegalStateException {
+        throw new IllegalStateException("You cannot update the status of the order from "+order.getOrderStatus() + " to DELIVERED!");
+    }
 
-    public abstract void accept();
+    public AbstractOrderState setInDelivery() throws IllegalStateException {
+        throw new IllegalStateException("You cannot update the status of the order from "+order.getOrderStatus() + " to IN_DELIVERY!");
+    }
 
-    public abstract void decline();
+    public AbstractOrderState accept() throws IllegalStateException {
+        throw new IllegalStateException("You cannot update the status of the order from "+order.getOrderStatus() + " to ACCEPTED!");
+    }
+
+    public AbstractOrderState decline() throws IllegalStateException {
+        throw new IllegalStateException("You cannot update the status of the order from "+order.getOrderStatus() + " to DECLINED!");
+    }
 }

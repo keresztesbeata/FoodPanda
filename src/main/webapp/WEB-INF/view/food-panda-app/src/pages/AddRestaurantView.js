@@ -2,7 +2,7 @@ import React from 'react'
 import {Alert, Button, FormControl, FormSelect, InputGroup, Table} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
 import {ERROR, SUCCESS} from "../actions/Utils";
-import {AddRestaurant, LoadDeliveryZones} from "../actions/AdminActions";
+import {AddRestaurant, LoadDeliveryZones} from "../actions/RestaurantActions";
 
 class AddRestaurantView extends React.Component {
     constructor(props) {

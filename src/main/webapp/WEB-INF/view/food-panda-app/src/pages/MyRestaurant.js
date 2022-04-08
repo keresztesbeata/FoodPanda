@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Button, Card, Container, FormControl, InputGroup, Table} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {LoadAdminsRestaurant} from "../actions/AdminActions";
+import {LoadAdminsRestaurant} from "../actions/RestaurantActions";
 import {ERROR, INFO} from "../actions/Utils";
 import {Link} from "react-router-dom";
 

@@ -22,9 +22,6 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @Autowired
-    private NutritionFactsMapper nutritionFactsMapper;
-
     public Food toEntity(FoodDto foodDto) {
         Food food = new Food();
 
@@ -36,7 +33,6 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
         food.setRestaurant(restaurantRepository.findByName(foodDto.getRestaurant())
                 .orElseThrow(() -> new EntityNotFoundException(RESTAURANT_NOT_FOUND_ERROR_MESSAGE)));
         food.setDescription(foodDto.getDescription());
-//        foodDto.getNutritionFacts().ifPresent(nutritionFactsDto -> food.setNutritionFacts(nutritionFactsMapper.toEntity(nutritionFactsDto)));
 
         return food;
     }
@@ -50,9 +46,6 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
         foodDto.setCategory(food.getCategory().getName());
         foodDto.setRestaurant(food.getRestaurant().getName());
         foodDto.setDescription(food.getDescription());
-//        if(food.getNutritionFacts() != null) {
-//            foodDto.setNutritionFacts(Optional.of(nutritionFactsMapper.toDto(food.getNutritionFacts())));
-//        }
 
         return foodDto;
     }

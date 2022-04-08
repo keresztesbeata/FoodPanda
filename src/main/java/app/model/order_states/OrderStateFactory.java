@@ -4,9 +4,9 @@ import app.model.RestaurantOrder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderStatusManagerFactory {
+public class OrderStateFactory {
 
-    public AbstractOrderState createOrderStatusManager(RestaurantOrder order) {
+    public AbstractOrderState getOrderState(RestaurantOrder order) {
         switch (order.getOrderStatus()) {
             case PENDING: {
                 return new PendingState(order);

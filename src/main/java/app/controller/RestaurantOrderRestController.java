@@ -61,21 +61,12 @@ public class RestaurantOrderRestController {
         return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfRestaurantByStatus(restaurant, Optional.of(orderStatus)));
     }
 
-    @GetMapping("/admin/restaurant/orders/orderNumber/available_statuses")
-    public ResponseEntity getAvailableOrderStatusesForOrder(@RequestParam String orderNumber) {
-        try {
-            return ResponseEntity.ok().body(restaurantOrderService.getAvailableStatusForOrder(orderNumber));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
-        }
-    }
-
-    @PostMapping("/admin/restaurant/order/orderNumber/update_status")
-    public ResponseEntity updateOrderStatus(@RequestParam String orderNumber, @RequestParam String orderStatus) {
+    @PostMapping("/admin/restaurant/order/update_status")
+    public ResponseEntity updateOrderStatus(@RequestParam String orderNumber,@RequestParam String orderStatus) {
         try {
             restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }

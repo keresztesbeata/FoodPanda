@@ -3,18 +3,17 @@ package app.service.impl;
 import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
-import app.exceptions.InvalidOperationException;
 import app.mapper.RestaurantOrderMapper;
 import app.model.*;
 import app.model.order_states.AbstractOrderState;
-import app.model.order_states.OrderStatusManagerFactory;
-import app.model.order_states.PendingState;
+import app.model.order_states.OrderStateFactory;
 import app.repository.*;
 import app.service.api.RestaurantOrderService;
 import app.service.validator.RestaurantOrderDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Order;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private static final String INEXISTENT_ORDER_ERROR_MESSAGE = "No order with the given orderNumber has been found!";
     private static final String EMPTY_CART_ERROR_MESSAGE = "The order cannot be created! No foods are present in the cart!";
     private static final String MULTIPLE_RESTAURANT_ERROR_MESSAGE = "Invalid data! Cannot order from multiple restaurants at the same time!";
+    private static final String STATE_UNCHANGED_ERROR_MESSAGE = "The state of the order is unchanged!";
 
     @Autowired
     private RestaurantOrderRepository restaurantOrderRepository;
@@ -42,7 +42,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private RestaurantOrderDataValidator restaurantOrderDataValidator;
 
     @Autowired
-    private OrderStatusManagerFactory orderStatusManagerFactory;
+    private OrderStateFactory orderStateFactory;
 
     @Override
     public List<String> getAllOrderStatuses() {
@@ -123,50 +123,36 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     }
 
     @Override
-    public void acceptOrder(String orderNumber) {
+    public void updateOrderStatus(String orderNumber, String orderStatus) throws EntityNotFoundException, IllegalStateException {
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
 
-        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).accept();
-        restaurantOrderRepository.save(restaurantOrder);
-    }
+        if(OrderStatus.valueOf(orderStatus).equals(restaurantOrder.getOrderStatus())) {
+            throw new IllegalStateException(STATE_UNCHANGED_ERROR_MESSAGE);
+        }
 
-    @Override
-    public void declineOrder(String orderNumber) throws EntityNotFoundException {
-        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
-
-        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).decline();
-        restaurantOrderRepository.save(restaurantOrder);
-    }
-
-    @Override
-    public void setOrderDelivered(String orderNumber) throws EntityNotFoundException {
-        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
-
-        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).setDelivered();
-        restaurantOrderRepository.save(restaurantOrder);
-    }
-
-    @Override
-    public void setOrderInDelivery(String orderNumber) throws EntityNotFoundException {
-        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
-
-        orderStatusManagerFactory.createOrderStatusManager(restaurantOrder).setInDelivery();
-        restaurantOrderRepository.save(restaurantOrder);
-    }
-
-    @Override
-    public List<String> getAvailableStatusForOrder(String orderNumber) {
-        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
-        AbstractOrderState orderState = orderStatusManagerFactory.createOrderStatusManager(restaurantOrder);
-
-        return orderState.getNextStates()
-                .stream()
-                .map(OrderStatus::name)
-                .collect(Collectors.toList());
+        AbstractOrderState orderState = orderStateFactory.getOrderState(restaurantOrder);
+        switch(OrderStatus.valueOf(orderStatus)) {
+            case ACCEPTED: {
+                orderState.accept();
+                break;
+            }
+            case DECLINED: {
+                orderState.decline();
+                break;
+            }
+            case IN_DELIVERY: {
+                orderState.setInDelivery();
+                break;
+            }
+            case DELIVERED: {
+                orderState.setDelivered();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        restaurantOrderRepository.save(orderState.getOrder());
     }
 }

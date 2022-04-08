@@ -3,6 +3,9 @@ package app.service.api;
 import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.model.OrderStatus;
+
+import javax.persistence.criteria.Order;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,13 +21,5 @@ public interface RestaurantOrderService {
 
     void addOrder(RestaurantOrderDto restaurantOrderDto) throws InvalidDataException;
 
-    void acceptOrder(String orderNumber) throws EntityNotFoundException;
-
-    void declineOrder(String orderNumber) throws EntityNotFoundException;
-
-    void setOrderDelivered(String orderNumber) throws EntityNotFoundException;
-
-    void setOrderInDelivery(String orderNumber) throws EntityNotFoundException;
-
-    List<String> getAvailableStatusForOrder(String orderNumber) throws EntityNotFoundException;
+    void updateOrderStatus(String orderNumber, String orderStatus) throws IllegalStateException, EntityNotFoundException;
 }

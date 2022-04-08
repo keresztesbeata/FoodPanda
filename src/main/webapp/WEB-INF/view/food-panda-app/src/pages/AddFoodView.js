@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Button, FormControl, FormSelect, InputGroup} from 'react-bootstrap'
 import {ERROR, SUCCESS} from "../actions/Utils";
-import {AddFood, LoadAdminsRestaurant} from "../actions/AdminActions";
+import {AddFood, LoadAdminsRestaurant} from "../actions/RestaurantActions";
 import {LoadFoodCategories} from "../actions/MenuActions";
 import {GetCurrentUser} from "../actions/UserActions";
 

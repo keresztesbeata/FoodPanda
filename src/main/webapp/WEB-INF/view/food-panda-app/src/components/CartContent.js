@@ -1,20 +1,18 @@
 import React from 'react'
 import {Alert, Button, Container, FormCheck, FormControl, FormGroup, FormLabel, ListGroup} from 'react-bootstrap'
 import {GetCurrentUser} from "../actions/UserActions";
-import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CustomerActions";
+import {PlaceOrder} from "../actions/CustomerActions";
 import CartItem from "./CartItem";
 import {ERROR, SUCCESS} from "../actions/Utils";
+import {LoadCustomerCart, RemoveFoodFromCart} from "../actions/CartActions";
 
 class CartContent extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             cart: {
-                customerName: GetCurrentUser().username,
-                foods: {},
-                totalPrice: 0,
-            },
-            orderDetails: {
+                customerName: GetCurrentUser().username, foods: {}, totalPrice: 0,
+            }, orderDetails: {
                 orderNumber: "",
                 restaurant: "",
                 customer: GetCurrentUser().username,
@@ -24,11 +22,8 @@ class CartContent extends React.Component {
                 deliveryAddress: "",
                 withCutlery: false,
                 remark: ""
-            },
-            notification: {
-                show: false,
-                message: "",
-                type: ERROR,
+            }, notification: {
+                show: false, message: "", type: ERROR,
             }
         }
         this.onPlaceOrder = this.onPlaceOrder.bind(this);
@@ -50,23 +45,17 @@ class CartContent extends React.Component {
     onPlaceOrder() {
         PlaceOrder(this.state.orderDetails)
             .then(() => {
-                    this.setState({
-                        notification: {
-                            show: true,
-                            message: "The order was successfully created!",
-                            type: SUCCESS
-                        }
-                    });
-                    this.loadCartContent();
-                }
-            )
+                this.setState({
+                    notification: {
+                        show: true, message: "The order was successfully created!", type: SUCCESS
+                    }
+                });
+                this.loadCartContent();
+            })
             .catch(error => {
                 this.setState({
-                    ...this.state,
-                    notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
+                    ...this.state, notification: {
+                        show: true, message: error.message, type: ERROR
                     }
                 });
             });
@@ -79,11 +68,8 @@ class CartContent extends React.Component {
             .then(() => this.loadCartContent())
             .catch(error => {
                 this.setState({
-                    ...this.state,
-                    notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
+                    ...this.state, notification: {
+                        show: true, message: error.message, type: ERROR
                     }
                 });
             });
@@ -94,21 +80,15 @@ class CartContent extends React.Component {
         LoadCustomerCart(userSession.username, this.state.name)
             .then(data => {
                 this.setState({
-                    ...this.state,
-                    cart: data,
-                    orderDetails: {
-                        ...this.state.orderDetails,
-                        orderedFoods: data.foods,
+                    ...this.state, cart: data, orderDetails: {
+                        ...this.state.orderDetails, orderedFoods: data.foods,
                     }
                 })
             })
             .catch(error => {
                 this.setState({
-                    ...this.state,
-                    notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
+                    ...this.state, notification: {
+                        show: true, message: error.message, type: ERROR
                     }
                 });
             });
@@ -124,10 +104,8 @@ class CartContent extends React.Component {
         const withCutleryChecked = document.getElementById("withCutlery").checked;
 
         this.setState({
-            ...this.state,
-            orderDetails: {
-                ...this.state.orderDetails,
-                withCutlery: withCutleryChecked,
+            ...this.state, orderDetails: {
+                ...this.state.orderDetails, withCutlery: withCutleryChecked,
             }
         });
     }
@@ -138,71 +116,55 @@ class CartContent extends React.Component {
         const target = event.target
 
         this.setState({
-            ...this.state,
-            orderDetails: {
-                ...this.state.orderDetails,
-                [target.name]: target.value
-            },
-            notification: {
+            ...this.state, orderDetails: {
+                ...this.state.orderDetails, [target.name]: target.value
+            }, notification: {
                 show: false,
             }
         });
     }
 
     render() {
-        return (
-            <Container>
-                <ListGroup>
-                    {
-                        (this.state.cart.length === 0) ?
-                            <p>Empty cart</p>
-                            :
-                            Object.entries(this.state.cart.foods).map(
-                                ([food, quantity]) =>
-                                    <CartItem name={food} quantity={quantity}
-                                              onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>
-                            )
-                    }
-                </ListGroup>
-                <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
-                    <h3 className="card-title">Order details</h3>
-                    {
-                        (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification}
-                                   className={this.state.notification.type}>
-                                {this.state.notification.message}
-                            </Alert>
-                            :
-                            <div/>
-                    }
-                    <FormGroup className="mb-3" controlId="formBasicText">
-                        <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
-                    </FormGroup>
-                    <FormGroup className="mb-3" controlId="formBasicText">
-                        <FormLabel>Delivery Address</FormLabel>
-                        <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress"
-                                     onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <FormGroup className="mb-3" controlId="formBasicPassword">
-                        <FormCheck
-                            type="checkbox"
-                            name="withCutlery"
-                            id="withCutlery"
-                            label="Want cutlery"
-                            onChange={this.onSelectCutlery}
-                        />
-                    </FormGroup>
-                    <FormGroup className="mb-3" controlId="formBasicText">
-                        <FormLabel>Remarks</FormLabel>
-                        <FormControl type="text" placeholder="Remarks..." name="remark"
-                                     onChange={this.handleInputChange}/>
-                    </FormGroup>
-                    <Button variant="secondary" onClick={this.onPlaceOrder}>
-                        Place order
-                    </Button>
-                </form>
-            </Container>
-        )
+        return (<Container>
+            <ListGroup>
+                {(this.state.cart.length === 0) ?
+                    <p>Empty cart</p> : Object.entries(this.state.cart.foods).map(([food, quantity]) => <CartItem
+                        name={food} quantity={quantity}
+                        onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>)}
+            </ListGroup>
+            <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
+                <h3 className="card-title">Order details</h3>
+                {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                                                         className={this.state.notification.type}>
+                    {this.state.notification.message}
+                </Alert> : <div/>}
+                <FormGroup className="mb-3" controlId="formBasicText">
+                    <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
+                </FormGroup>
+                <FormGroup className="mb-3" controlId="formBasicText">
+                    <FormLabel>Delivery Address</FormLabel>
+                    <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress"
+                                 onChange={this.handleInputChange}/>
+                </FormGroup>
+                <FormGroup className="mb-3" controlId="formBasicPassword">
+                    <FormCheck
+                        type="checkbox"
+                        name="withCutlery"
+                        id="withCutlery"
+                        label="Want cutlery"
+                        onChange={this.onSelectCutlery}
+                    />
+                </FormGroup>
+                <FormGroup className="mb-3" controlId="formBasicText">
+                    <FormLabel>Remarks</FormLabel>
+                    <FormControl type="text" placeholder="Remarks..." name="remark"
+                                 onChange={this.handleInputChange}/>
+                </FormGroup>
+                <Button variant="secondary" onClick={this.onPlaceOrder}>
+                    Place order
+                </Button>
+            </form>
+        </Container>)
     }
 }
 

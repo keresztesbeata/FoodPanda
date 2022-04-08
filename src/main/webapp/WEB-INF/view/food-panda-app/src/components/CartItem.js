@@ -1,6 +1,6 @@
 import React from 'react'
 import {Alert, Button, Card} from 'react-bootstrap'
-import {ERROR, SUCCESS} from "../actions/Utils";
+import {ERROR} from "../actions/Utils";
 import {LoadFoodDetails} from "../actions/MenuActions";
 
 class CartItem extends React.Component {
@@ -14,9 +14,7 @@ class CartItem extends React.Component {
             price: 0,
             quantity: props.quantity,
             notification: {
-                show: false,
-                message: "",
-                type: ERROR,
+                show: false, message: "", type: ERROR,
             }
         }
         this.onRemoveItemFromCart = this.onRemoveItemFromCart.bind(this);
@@ -44,9 +42,7 @@ class CartItem extends React.Component {
             .catch(error => {
                 this.setState({
                     notification: {
-                        show: true,
-                        message: error.message,
-                        type: ERROR
+                        show: true, message: error.message, type: ERROR
                     }
                 });
             });
@@ -57,18 +53,12 @@ class CartItem extends React.Component {
     }
 
     render() {
-        return (
-            <Card>
+        return (<Card>
                 <Card.Body>
-                    {
-                        (this.state.notification.show) ?
-                            <Alert dismissible={true} onClose={this.hideNotification}
-                                   className={this.state.notification.type}>
-                                {this.state.notification.message}
-                            </Alert>
-                            :
-                            <div/>
-                    }
+                    {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                                                             className={this.state.notification.type}>
+                        {this.state.notification.message}
+                    </Alert> : <div/>}
                     <Card.Title className="card-title">
                         {this.state.name}
                     </Card.Title>
@@ -85,8 +75,7 @@ class CartItem extends React.Component {
                         Remove
                     </Button>
                 </Card.Body>
-            </Card>
-        )
+            </Card>)
     }
 }
 
