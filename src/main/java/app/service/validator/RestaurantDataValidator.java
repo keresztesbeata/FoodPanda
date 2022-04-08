@@ -2,7 +2,6 @@ package app.service.validator;
 
 import app.dto.RestaurantDto;
 import app.exceptions.InvalidDataException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
