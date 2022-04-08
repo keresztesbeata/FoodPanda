@@ -102,23 +102,11 @@ class AddRestaurantView extends React.Component {
     }
 
 
-    handleSubmit(event) {
-        // prevent page from reloading
-        event.preventDefault();
-
+    handleSubmit() {
         AddRestaurant(this.state.restaurant)
             .then(() => {
                 this.setState({
                     ...this.state,
-                    restaurant: {
-                        name: "",
-                        address: "",
-                        admin: GetCurrentUser().username,
-                        deliveryZones: [],
-                        openingHour: 0,
-                        closingHour: 0,
-                        deliveryFee: 0.0,
-                    },
                     notification: {
                         show: true,
                         message: "The restaurant has been successfully added!",
@@ -135,8 +123,6 @@ class AddRestaurantView extends React.Component {
                     }
                 });
             });
-
-        document.getElementById("add-restaurant-form").reset();
     }
 
     handleAddNewDeliveryZone() {
@@ -188,7 +174,7 @@ class AddRestaurantView extends React.Component {
 
     render() {
         return (
-            <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
+            <div className="background-container-restaurant bg-image d-flex justify-content-center align-items-center">
                 <div className="card col-lg-5 border-dark text-left">
                     <form onSubmit={this.handleSubmit} className="card-body" id="add-restaurant-form">
                         <h3 className="card-title text-center">Add restaurant</h3>

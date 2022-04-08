@@ -32,4 +32,8 @@ public abstract class AbstractOrderState {
     public AbstractOrderState decline() throws IllegalStateException {
         throw new IllegalStateException("You cannot update the status of the order from "+order.getOrderStatus() + " to DECLINED!");
     }
+
+    public AbstractOrderState resetToPending() throws IllegalStateException {
+        throw new IllegalStateException("You cannot reset the status of the order from "+order.getOrderStatus() + " to PENDING!");
+    }
 }

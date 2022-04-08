@@ -56,11 +56,12 @@ export function AddRestaurant(restaurant) {
     return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
-                response.json()
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });
             }
+            window.location.href = "/admin/restaurant"
         });
 }
 
@@ -76,7 +77,7 @@ export function AddFood(food) {
     return fetch(url, requestOptions)
         .then(response => {
             if (!response.ok) {
-                response.json()
+                return response.json()
                     .then(function (err) {
                         throw new Error(err.message);
                     });

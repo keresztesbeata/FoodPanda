@@ -1,20 +1,45 @@
 import React from 'react'
 import {LogoutUser} from "../actions/UserActions";
+import {ERROR} from "../actions/Utils";
+import {Alert} from "react-bootstrap";
 
 class Logout extends React.Component {
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            notification: {
+                show: false,
+                message: "",
+                type: ERROR
+            }}
     }
 
     componentDidMount() {
-        LogoutUser();
+        LogoutUser()
+            .catch(error => {
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
+            })
     }
 
     render() {
         return (
-            <>
-                Logging out...
-            </>
+            <div  className="background-container-home bg-image justify-content-center ">
+                {
+                    (this.state.notification.show) ?
+                        <Alert dismissible={true} onClose={this.hideNotification}
+                               className={this.state.notification.type}>
+                            {this.state.notification.message}
+                        </Alert>
+                        :
+                        <p>Logging out...</p>
+                }
+            </div>
         )
     }
 }

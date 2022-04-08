@@ -22,11 +22,7 @@ public class Food {
     @Column(nullable = false, unique = true)
     private String name;
 
-//    @OneToOne
-//    @JoinColumn(name = "nutrition_facts_id")
-//    private NutritionFacts nutritionFacts;
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String description;
 
     @Column

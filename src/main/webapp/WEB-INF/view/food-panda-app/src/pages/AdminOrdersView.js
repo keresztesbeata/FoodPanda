@@ -1,6 +1,6 @@
 import React from 'react'
 import {Alert, Button, Container, Form, FormSelect, ListGroup, Navbar, Table} from "react-bootstrap";
-import {ERROR, INFO, SUCCESS} from "../actions/Utils";
+import {ERROR, INFO, SUCCESS, WARNING} from "../actions/Utils";
 import {GetCurrentUser} from "../actions/UserActions";
 
 import PlainOrder from "../components/PlainOrder";
@@ -71,7 +71,7 @@ class AdminOrdersView extends React.Component {
                                 notification: {
                                     show: true,
                                     message: "This restaurant has no previous orders!",
-                                    type: INFO
+                                    type: WARNING
                                 }
                             })
                         }
@@ -113,7 +113,7 @@ class AdminOrdersView extends React.Component {
                                 notification: {
                                     show: true,
                                     message: "This restaurant has no previous orders with state " + this.state.selectedOrderStatus + "!",
-                                    type: INFO
+                                    type: WARNING
                                 }
                             })
                         }
@@ -205,82 +205,84 @@ class AdminOrdersView extends React.Component {
 
     render() {
         return (
-            <Container>
-                <div className="flex justify-content-center">
-                    <Navbar className="justify-content-center">
-                        <Form className="d-flex">
-                            <Form.Select aria-label="Order status" className="me-2" name="selectedOrderStatus"
-                                         onChange={this.applyOrderStatusFilter}>
-                                <option value="All" key="All">All</option>
-                                {
-                                    this.state.allOrderStatuses.map(state =>
-                                        <option value={state} key={state}>{state}</option>
-                                    )
-                                }
-                            </Form.Select>
-                        </Form>
-                    </Navbar>
-                    <Container className="fluid">
-                        {
-                            (this.state.notification.show) ?
-                                <Alert dismissible={true} onClose={this.hideNotification}
-                                       className={this.state.notification.type}>
-                                    {this.state.notification.message}
-                                </Alert>
-                                :
-                                <div/>
-                        }
-                        <Table variant="flush">
-                            <thead>
-                            <tr>
-                                <th>
-                                    Order
-                                </th>
-                                <th>
-                                    Order status
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.state.orders.map(item =>
-                                <tr key={item.orderNumber}>
-                                    <td>
-                                        <PlainOrder data={item}/>
-                                    </td>
-                                    <td>
-                                        <Form className="d-flex">
-                                            <Form.Select aria-label="Order status" className="me-2"
-                                                         name="updatedOrderStatus"
-                                                         onChange={this.handleInputChange}
-                                                         defaultValue={item.orderStatus}>
-                                                {
-                                                    this.state.allOrderStatuses
-                                                        .map(status =>
-                                                            <option value={status}
-                                                                    key={"new_" + status}>
-                                                                {status}
-                                                            </option>
-                                                        )
-                                                }
-                                            </Form.Select>
-                                        </Form>
-                                    </td>
-                                    <td>
-                                        <Button variant="outline-info"
-                                                onClick={() => this.onUpdateOrderStatus(item.orderNumber)}>
-                                            Update status
-                                        </Button>
-                                    </td>
+            <div className="background-container-order bg-image justify-content-center ">
+                <Container className="white-background">
+                    <div className="flex justify-content-center">
+                        <Navbar className="justify-content-center">
+                            <Form className="d-flex">
+                                <Form.Select aria-label="Order status" className="me-2" name="selectedOrderStatus"
+                                             onChange={this.applyOrderStatusFilter}>
+                                    <option value="All" key="All">All</option>
+                                    {
+                                        this.state.allOrderStatuses.map(state =>
+                                            <option value={state} key={state}>{state}</option>
+                                        )
+                                    }
+                                </Form.Select>
+                            </Form>
+                        </Navbar>
+                        <Container className="fluid">
+                            {
+                                (this.state.notification.show) ?
+                                    <Alert dismissible={true} onClose={this.hideNotification}
+                                           className={this.state.notification.type}>
+                                        {this.state.notification.message}
+                                    </Alert>
+                                    :
+                                    <div/>
+                            }
+                            <Table variant="flush">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        Order
+                                    </th>
+                                    <th>
+                                        Order status
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
                                 </tr>
-                            )}
-                            </tbody>
-                        </Table>
-                    </Container>
-                </div>
-            </Container>
+                                </thead>
+                                <tbody>
+                                {this.state.orders.map(item =>
+                                    <tr key={item.orderNumber}>
+                                        <td>
+                                            <PlainOrder data={item}/>
+                                        </td>
+                                        <td>
+                                            <Form className="d-flex">
+                                                <Form.Select aria-label="Order status" className="me-2"
+                                                             name="updatedOrderStatus"
+                                                             onChange={this.handleInputChange}
+                                                             defaultValue={item.orderStatus}>
+                                                    {
+                                                        this.state.allOrderStatuses
+                                                            .map(status =>
+                                                                <option value={status}
+                                                                        key={"new_" + status}>
+                                                                    {status}
+                                                                </option>
+                                                            )
+                                                    }
+                                                </Form.Select>
+                                            </Form>
+                                        </td>
+                                        <td>
+                                            <Button variant="outline-secondary"
+                                                    onClick={() => this.onUpdateOrderStatus(item.orderNumber)}>
+                                                Update status
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </Table>
+                        </Container>
+                    </div>
+                </Container>
+            </div>
         );
     }
 }

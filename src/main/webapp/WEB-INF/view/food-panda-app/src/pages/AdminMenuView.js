@@ -30,7 +30,6 @@ class AdminMenuView extends React.Component {
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.onLoadInitialData = this.onLoadInitialData.bind(this);
-        this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
     }
@@ -126,7 +125,7 @@ class AdminMenuView extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="background-container-menu bg-image justify-content-center ">
                 {
                     (this.state.notification.show) ?
                         <Alert dismissible={true} onClose={this.hideNotification}
@@ -137,43 +136,6 @@ class AdminMenuView extends React.Component {
                         <div/>
                 }
                 <div className="flex justify-content-center">
-                    <Container>
-                        <Card>
-                            <Card.Title className="text-center">
-                                {this.state.restaurant.name}
-                            </Card.Title>
-                            <Card.Body>
-                                <Row>
-                                    <Col>
-                                        <Card.Text>
-                                            <b>Address</b> : {this.state.restaurant.address}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            <b>DeliveryFee</b> : {this.state.restaurant.deliveryFee} $
-                                        </Card.Text>
-                                        <Card.Text>
-                                            <b>Open - Close</b> : {this.state.restaurant.openingHour}:00
-                                            - {this.state.restaurant.closingHour}:00
-                                        </Card.Text>
-                                    </Col>
-                                    <Col>
-                                        <ul>
-                                            <Card.Text>
-                                                <b>DeliveryZones</b> :
-                                                {this.state.restaurant.deliveryZones
-                                                    .sort()
-                                                    .map(deliveryZone =>
-                                                        <li key={deliveryZone}>
-                                                            {deliveryZone}
-                                                        </li>
-                                                    )}
-                                            </Card.Text>
-                                        </ul>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                        </Card>
-                    </Container>
                     <Navbar className="justify-content-center">
                         <Form className="d-flex">
                             <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory"
@@ -185,7 +147,7 @@ class AdminMenuView extends React.Component {
                                     )
                                 }
                             </Form.Select>
-                            <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Filter</Button>
+                            <Button variant="success" onClick={this.onLoadRestaurantMenu}>Filter</Button>
                         </Form>
                     </Navbar>
                     <Container className="fluid">

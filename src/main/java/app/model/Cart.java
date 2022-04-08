@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,13 +43,13 @@ public class Cart {
             oldQuantity = foods.get(food);
         }
         foods.put(food, quantity);
-        totalPrice  = totalPrice + food.getPrice() * (quantity - oldQuantity);
+        totalPrice = ValueRounderUtil.roundValue(totalPrice + food.getPrice() * (quantity - oldQuantity));
     }
 
     public void deleteFood(Food food) {
         int oldQuantity = foods.get(food);
         foods.remove(food);
-        totalPrice  = totalPrice - food.getPrice() * oldQuantity;
+        totalPrice = ValueRounderUtil.roundValue(totalPrice - food.getPrice() * oldQuantity);
     }
 
     public void deleteAllFood() {

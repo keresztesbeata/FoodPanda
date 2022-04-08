@@ -149,6 +149,10 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                 orderState.setDelivered();
                 break;
             }
+            case PENDING: {
+                orderState.resetToPending();
+                break;
+            }
             default: {
                 break;
             }

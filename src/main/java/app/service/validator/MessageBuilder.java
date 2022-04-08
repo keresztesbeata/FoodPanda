@@ -16,7 +16,7 @@ public class MessageBuilder {
     }
 
     public String build() {
-        return String.join("\n", messages);
+        return String.join(" ", messages);
     }
 
     public int length() {

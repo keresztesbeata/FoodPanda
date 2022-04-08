@@ -10,6 +10,7 @@ class AddFoodView extends React.Component {
         super(props);
         this.state = {
             allFoodCategories: [],
+            restaurantName: "",
             food: {
                 name: "",
                 category: "",
@@ -39,9 +40,11 @@ class AddFoodView extends React.Component {
                         this.setState({
                             ...this.state,
                             allFoodCategories: foodCategories,
+                            restaurantName: restaurantData.name,
                             food: {
                                 ...this.state.food,
-                                restaurant: restaurantData.name
+                                restaurant: restaurantData.name,
+                                category: foodCategories[0],
                             }
                         })
                     })
@@ -121,15 +124,6 @@ class AddFoodView extends React.Component {
         AddFood(this.state.food)
             .then(() => {
                 this.setState({
-                    ...this.state,
-                    food: {
-                        name: "",
-                        category: "",
-                        restaurant: "",
-                        portion: 0,
-                        description: "",
-                        price: 0.0,
-                    },
                     notification: {
                         show: true,
                         message: "The food has been successfully added!",
@@ -161,7 +155,7 @@ class AddFoodView extends React.Component {
 
     render() {
         return (
-            <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
+            <div className="background-container-food bg-image d-flex justify-content-center align-items-center">
                 <div className="card col-sm-5 border-dark text-left">
                     <form onSubmit={this.handleSubmit} className="card-body" id="add-food-form">
                         <h3 className="card-title text-center">Add food</h3>
@@ -182,11 +176,11 @@ class AddFoodView extends React.Component {
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Restaurant</InputGroup.Text>
                             <FormControl type="text" required placeholder="Restaurant" disabled
-                                         value={this.state.food.restaurant}/>
+                                         defaultValue={this.state.food.restaurant}/>
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Description</InputGroup.Text>
-                            <FormControl type="text-area" required placeholder="Description" name="description"
+                            <FormControl type="text-area" placeholder="Description" name="description"
                                          onChange={this.handleInputChange}/>
                         </InputGroup>
                         <InputGroup className="mb-3">
@@ -204,13 +198,13 @@ class AddFoodView extends React.Component {
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Price</InputGroup.Text>
-                            <FormControl type="text" placeholder="Price" name="price" defaultValue="0"
+                            <FormControl type="text" placeholder="Price" name="price" defaultValue={0}
                                          onChange={this.handleNumericInputChange}/>
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>Portion</InputGroup.Text>
                             <InputGroup.Text>(grams)</InputGroup.Text>
-                            <FormControl type="text" placeholder="Portion" name="portion" defaultValue="0"
+                            <FormControl type="text" placeholder="Portion" name="portion" defaultValue={0.0}
                                          onChange={this.handleNumericInputChange}/>
                         </InputGroup>
                         <div className="text-center">

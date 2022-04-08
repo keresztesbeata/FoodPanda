@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,11 +74,11 @@ public class RestaurantOrder {
                 .stream()
                 .map(entry -> entry.getKey().getPrice() * entry.getValue())
                 .reduce(Double::sum)
+                .map(ValueRounderUtil::roundValue)
                 .orElse(0d);
     }
 
     public void addOrderedFoods(Map<Food, Integer> orderedFoods) {
         this.orderedFoods.putAll(orderedFoods);
     }
-
 }

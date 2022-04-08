@@ -67,7 +67,7 @@ public class RestaurantOrderRestController {
             restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e);
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(e);
         }
     }
 }

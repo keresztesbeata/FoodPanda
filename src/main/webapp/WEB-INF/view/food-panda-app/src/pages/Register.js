@@ -58,6 +58,8 @@ class Register extends React.Component {
                     }
                 });
             });
+
+        document.getElementById("registration-form").reset();
     }
 
     hideNotification() {
@@ -83,7 +85,7 @@ class Register extends React.Component {
         return (
             <div className="background-container-register bg-image d-flex justify-content-center align-items-center">
                 <div className="card col-sm-3 border-dark text-left">
-                    <form onSubmit={this.handleSubmit} className="card-body">
+                    <form onSubmit={this.handleSubmit} className="card-body" id="registration-form">
                         <h3 className="card-title">Register</h3>
                         {
                             (this.state.notification.show) ?

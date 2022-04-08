@@ -66,7 +66,7 @@ class MyRestaurant extends React.Component {
                 </Container>
                 :
                 <div
-                    className="background-container-register bg-image d-flex justify-content-center align-items-center">
+                    className="background-container-restaurant bg-image d-flex justify-content-center align-items-center">
                     <div className="card col-lg-5 border-dark text-left">
                         <Card className="card-body">
                             <h3 className="card-title text-center">My restaurant</h3>

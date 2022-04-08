@@ -66,12 +66,15 @@ class CartItem extends React.Component {
                     {this.state.category}
                 </Card.Subtitle>
                 <Card.Text>
+                    <i>{this.state.restaurant}</i>
+                </Card.Text>
+                <Card.Text>
                     {this.state.description}
                 </Card.Text>
                 <Card.Text>
                     Price x Quantity: {this.state.price} $ x {this.state.quantity}
                 </Card.Text>
-                <Button variant="primary" onClick={this.onRemoveItemFromCart}>
+                <Button variant="danger" onClick={this.onRemoveItemFromCart}>
                     Remove
                 </Button>
             </Card.Body>

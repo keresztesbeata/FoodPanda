@@ -163,94 +163,95 @@ class CustomerMenuView extends React.Component {
     }
 
     render() {
-        let isAdmin = GetCurrentUser().isAdmin;
         return (
-            <Container>
-                {
-                    (this.state.notification.show) ?
-                        <Alert dismissible={true} onClose={this.hideNotification}
-                               className={this.state.notification.type}>
-                            {this.state.notification.message}
-                        </Alert>
-                        :
-                        <div/>
-                }
-                <Navbar className="justify-content-center">
-                    <Form className="d-flex">
-                        <FormControl
-                            type="search"
-                            placeholder="Search restaurant..."
-                            className="me-2"
-                            aria-label="Search"
-                            name="restaurantName"
-                            onChange={this.handleInputChange}
-                        />
-                        <Button variant="outline-success" onClick={this.onLoadRestaurantMenu}>Search</Button>
-                    </Form>
-                </Navbar>
-                <div className="flex justify-content-center">
-                    <Container>
-                        <Card className={(this.state.restaurant.name !== "") ? "visible" : "invisible"}>
-                            <Card.Title className="text-center">
-                                {this.state.restaurant.name}
-                            </Card.Title>
-                            <Card.Body>
-                                <Row>
-                                    <Col>
-                                        <Card.Text>
-                                            <b>Address</b> : {this.state.restaurant.address}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            <b>DeliveryFee</b> : {this.state.restaurant.deliveryFee} $
-                                        </Card.Text>
-                                        <Card.Text>
-                                            <b>Open - Close</b> : {this.state.restaurant.openingHour}:00
-                                            - {this.state.restaurant.closingHour}:00
-                                        </Card.Text>
-                                    </Col>
-                                    <Col>
-                                        <ul>
-                                            <Card.Text>
-                                                <b>DeliveryZones</b> :
-                                                {this.state.restaurant.deliveryZones
-                                                    .sort()
-                                                    .map(deliveryZone =>
-                                                        <li key={deliveryZone}>
-                                                            {deliveryZone}
-                                                        </li>
-                                                    )}
-                                            </Card.Text>
-                                        </ul>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                        </Card>
-                    </Container>
+            <div  className="background-container-menu bg-image justify-content-center ">
+                <Container>
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification}
+                                   className={this.state.notification.type}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
                     <Navbar className="justify-content-center">
                         <Form className="d-flex">
-                            <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory"
-                                         onChange={this.applyCategoryFilter}>
-                                <option value="All" key="All">All</option>
-                                {
-                                    this.state.categories.map(category =>
-                                        <option value={category} key={category}>{category}</option>
-                                    )
-                                }
-                            </Form.Select>
+                            <FormControl
+                                type="search"
+                                placeholder="Search restaurant..."
+                                className="me-2"
+                                aria-label="Search"
+                                name="restaurantName"
+                                onChange={this.handleInputChange}
+                            />
+                            <Button variant="success" onClick={this.onLoadRestaurantMenu}>Search</Button>
                         </Form>
                     </Navbar>
-                    <Container className="fluid">
-                        <ListGroup variant="flush">
-                            {this.state.menu.map(item =>
-                                <ListGroup.Item key={item.name}>
-                                    <MenuItem data={item} showSuccess={this.state.showSuccess}
-                                              successMessage={this.state.successMessage}/>
-                                </ListGroup.Item>
-                            )}
-                        </ListGroup>
-                    </Container>
-                </div>
-            </Container>
+                    <div className="flex justify-content-center">
+                        <Container>
+                            <Card className={(this.state.restaurant.name !== "") ? "visible" : "invisible"}>
+                                <Card.Text className="text-center">
+                                    <h1>{this.state.restaurant.name}</h1>
+                                </Card.Text>
+                                <Card.Body>
+                                    <Row>
+                                        <Col>
+                                            <Card.Text>
+                                                <b>Address</b> : {this.state.restaurant.address}
+                                            </Card.Text>
+                                            <Card.Text>
+                                                <b>DeliveryFee</b> : {this.state.restaurant.deliveryFee} $
+                                            </Card.Text>
+                                            <Card.Text>
+                                                <b>Open - Close</b> : {this.state.restaurant.openingHour}:00
+                                                - {this.state.restaurant.closingHour}:00
+                                            </Card.Text>
+                                        </Col>
+                                        <Col>
+                                            <ul>
+                                                <Card.Text>
+                                                    <b>DeliveryZones</b> :
+                                                    {this.state.restaurant.deliveryZones
+                                                        .sort()
+                                                        .map(deliveryZone =>
+                                                            <li key={deliveryZone}>
+                                                                {deliveryZone}
+                                                            </li>
+                                                        )}
+                                                </Card.Text>
+                                            </ul>
+                                        </Col>
+                                    </Row>
+                                </Card.Body>
+                            </Card>
+                        </Container>
+                        <Navbar className="justify-content-center">
+                            <Form className="d-flex">
+                                <Form.Select aria-label="Food Category" className="me-2" name="selectedCategory"
+                                             onChange={this.applyCategoryFilter}>
+                                    <option value="All" key="All">All</option>
+                                    {
+                                        this.state.categories.map(category =>
+                                            <option value={category} key={category}>{category}</option>
+                                        )
+                                    }
+                                </Form.Select>
+                            </Form>
+                        </Navbar>
+                        <Container className="fluid">
+                            <ListGroup variant="flush">
+                                {this.state.menu.map(item =>
+                                    <ListGroup.Item key={item.name}>
+                                        <MenuItem data={item} showSuccess={this.state.showSuccess}
+                                                  successMessage={this.state.successMessage}/>
+                                    </ListGroup.Item>
+                                )}
+                            </ListGroup>
+                        </Container>
+                    </div>
+                </Container>
+            </div>
         );
     }
 }

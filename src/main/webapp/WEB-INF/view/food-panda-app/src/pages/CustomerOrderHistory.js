@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, Container, ListGroup, ListGroupItem} from "react-bootstrap";
+import {Alert, Card, Container, ListGroup, ListGroupItem} from "react-bootstrap";
 import {ERROR, INFO} from "../actions/Utils";
 import {GetCurrentUser} from "../actions/UserActions";
 import PlainOrder from "../components/PlainOrder";
@@ -53,29 +53,35 @@ class CustomerOrderHistory extends React.Component {
 
     render() {
         return (
-            <Container>
-                {
-                    (this.state.notification.show) ?
-                        <Alert dismissible={true} onClose={this.hideNotification}
-                               className={this.state.notification.type}>
-                            {this.state.notification.message}
-                        </Alert>
-                        :
-                        <div/>
-                }
-                <div className="flex justify-content-center">
-                    <Container className="fluid">
-                        <ListGroup variant="flush">
-                            {this.state.orders.map(item =>
-                                <ListGroupItem key={item.orderNumber}>
-                                    <PlainOrder data={item}/>
-                                    <b>Status:</b> {this.state.orderStatus}
-                                </ListGroupItem>
+            <div className="background-container-order bg-image justify-content-center ">
+                <Container>
+                    <div className="text-center transparent-background">
+                        <h1 className="text-white">
+                            My orders
+                        </h1>
+                    </div>
+                    {
+                        (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification}
+                                   className={this.state.notification.type}>
+                                {this.state.notification.message}
+                            </Alert>
+                            :
+                            <div/>
+                    }
+                    <div className="flex justify-content-center">
+                        <Container className="fluid">
+                            <ListGroup variant="flush">
+                                {this.state.orders.map(item =>
+                                    <ListGroupItem key={item.orderNumber}>
+                                        <PlainOrder data={item}/>
+                                    </ListGroupItem>
                                 )}
-                        </ListGroup>
-                    </Container>
-                </div>
-            </Container>
+                            </ListGroup>
+                        </Container>
+                    </div>
+                </Container>
+            </div>
         );
     }
 }

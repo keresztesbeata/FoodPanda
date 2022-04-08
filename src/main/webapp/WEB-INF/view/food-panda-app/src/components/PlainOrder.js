@@ -20,13 +20,12 @@ class PlainOrder extends React.Component {
     }
 
     render() {
-        if(this.props.data.orderStatus !== this.state.orderStatus) {
+        if (this.props.data.orderStatus !== this.state.orderStatus) {
             this.loadOrderData();
         }
         return (
             <Accordion>
-                <Accordion.Item eventKey="0" >
-                    {/*onClick={this.loadOrderData}>*/}
+                <Accordion.Item eventKey="0">
                     <Accordion.Header>
                         <Card.Body>
                             <Card.Title className="card-title">
@@ -59,22 +58,22 @@ class PlainOrder extends React.Component {
                             <Card.Text>
                                 <b>Remark:</b> {this.state.remark}
                             </Card.Text>
-                            <Card.Body>
-                                <Card.Title>Ordered foods:</Card.Title>
-                                <Table>
-                                    <tbody>{Object.entries(this.state.orderedFoods).map(([food, quantity]) => <tr
-                                        key={this.state.orderNumber + ":" + food}>
-                                        <td>{food}</td>
-                                        <td>{quantity}</td>
-                                    </tr>)}
-                                    </tbody>
-                                </Table>
-                                <Card.Subtitle>
-                                    <Card.Text>
-                                        <b>Total amount:</b> {this.state.totalPrice} <b>$</b>
-                                    </Card.Text>
-                                </Card.Subtitle>
-                            </Card.Body>
+
+                            <Card.Text><b>Ordered foods:</b></Card.Text>
+                            <Table>
+                                <tbody>{Object.entries(this.state.orderedFoods).map(([food, quantity]) => <tr
+                                    key={this.state.orderNumber + ":" + food}>
+                                    <td>{food}</td>
+                                    <td>{quantity}</td>
+                                </tr>)}
+                                </tbody>
+                            </Table>
+                            <Card.Subtitle>
+                                <Card.Text>
+                                    <b>Total amount:</b> {this.state.totalPrice} <b>$</b>
+                                </Card.Text>
+                            </Card.Subtitle>
+
                         </Card.Body>
                     </Accordion.Body>
                 </Accordion.Item>

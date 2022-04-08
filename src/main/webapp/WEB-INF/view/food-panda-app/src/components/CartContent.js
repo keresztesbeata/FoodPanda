@@ -124,46 +124,53 @@ class CartContent extends React.Component {
     }
 
     render() {
-        return (<Container>
-            <ListGroup>
-                {(this.state.cart.length === 0) ?
-                    <p>Empty cart</p> : Object.entries(this.state.cart.foods).map(([food, quantity]) => <CartItem
-                        name={food} quantity={quantity}
-                        onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>)}
-            </ListGroup>
-            <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
-                <h3 className="card-title">Order details</h3>
-                {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
-                                                         className={this.state.notification.type}>
-                    {this.state.notification.message}
-                </Alert> : <div/>}
-                <FormGroup className="mb-3" controlId="formBasicText">
-                    <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
-                </FormGroup>
-                <FormGroup className="mb-3" controlId="formBasicText">
-                    <FormLabel>Delivery Address</FormLabel>
-                    <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress"
-                                 onChange={this.handleInputChange}/>
-                </FormGroup>
-                <FormGroup className="mb-3" controlId="formBasicPassword">
-                    <FormCheck
-                        type="checkbox"
-                        name="withCutlery"
-                        id="withCutlery"
-                        label="Want cutlery"
-                        onChange={this.onSelectCutlery}
-                    />
-                </FormGroup>
-                <FormGroup className="mb-3" controlId="formBasicText">
-                    <FormLabel>Remarks</FormLabel>
-                    <FormControl type="text" placeholder="Remarks..." name="remark"
-                                 onChange={this.handleInputChange}/>
-                </FormGroup>
-                <Button variant="secondary" onClick={this.onPlaceOrder}>
-                    Place order
-                </Button>
-            </form>
-        </Container>)
+        return (
+            <div>
+                <div className="background-header-cart bg-image justify-content-center ">
+                </div>
+                <Container>
+                    <ListGroup>
+                        {(this.state.cart.length === 0) ?
+                            <p>Empty cart</p> : Object.entries(this.state.cart.foods).map(([food, quantity]) =>
+                                <CartItem
+                                    name={food} quantity={quantity}
+                                    onRemoveFoodFromCart={this.onRemoveFoodFromCart} key={food}/>)}
+                    </ListGroup>
+                    <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
+                        <h3 className="card-title">Order details</h3>
+                        {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                                                                 className={this.state.notification.type}>
+                            {this.state.notification.message}
+                        </Alert> : <div/>}
+                        <FormGroup className="mb-3" controlId="formBasicText">
+                            <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicText">
+                            <FormLabel>Delivery Address</FormLabel>
+                            <FormControl type="text" required placeholder="Delivery address..." name="deliveryAddress"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicPassword">
+                            <FormCheck
+                                type="checkbox"
+                                name="withCutlery"
+                                id="withCutlery"
+                                label="Want cutlery"
+                                onChange={this.onSelectCutlery}
+                            />
+                        </FormGroup>
+                        <FormGroup className="mb-3" controlId="formBasicText">
+                            <FormLabel>Remarks</FormLabel>
+                            <FormControl type="text" placeholder="Remarks..." name="remark"
+                                         onChange={this.handleInputChange}/>
+                        </FormGroup>
+                        <Button variant="secondary" onClick={this.onPlaceOrder}>
+                            Place order
+                        </Button>
+                    </form>
+                </Container>
+            </div>
+        )
     }
 }
 

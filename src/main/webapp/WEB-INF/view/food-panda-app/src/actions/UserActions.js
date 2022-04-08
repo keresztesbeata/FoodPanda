@@ -78,7 +78,7 @@ export function LogoutUser() {
         headers: {'Content-Type': 'application/json'}
     };
 
-    fetch(url, requestOptions)
+    return fetch(url, requestOptions)
         .then(response => {
             console.log(response)
             if (!response.ok) {
@@ -92,10 +92,8 @@ export function LogoutUser() {
             localStorage.removeItem(SESSION_KEY)
             console.log("Successfully logged out!");
             window.location.href = "/"
-        })
-        .catch(error => {
-            console.log("Failed to log out user!" + error.message);
         });
+
 }
 
 export function GetCurrentUser() {
