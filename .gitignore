@@ -4,9 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-src/main/webapp/WEB-INF/view/food-panda-app/node/node_modules/npm/node/**
-src/main/webapp/WEB-INF/view/food-panda-app/node/node_modules/npm/node_modules/**
-
 mvnw
 mvnw.cmd
 .mvn/*
@@ -38,7 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/webapp/WEB-INF/view/food-panda-app/node_modules/
-/src/main/webapp/WEB-INF/view/food-panda-app/build/
-/src/main/webapp/WEB-INF/view/food-panda-app/node/
-/src/main/webapp/WEB-INF/view/food-panda-app/node/node_modules/
+/src/main/webapp/WEB-INF/view/food-panda-app/node_modules/**
+/src/main/webapp/WEB-INF/view/food-panda-app/build/**
+/src/main/webapp/WEB-INF/view/food-panda-app/node/**
