@@ -5,14 +5,24 @@ import {GetCurrentUser} from "../actions/UserActions";
 class Header extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+         currentUser: null,
+        }
+    }
+
+    componentDidMount() {
+        GetCurrentUser()
+            .then(currentUserData => {
+                this.setState({
+                    currentUser: currentUserData
+                })
+            })
+            .catch(e => console.log(e));
     }
 
     render() {
         try {
-            const userSession = GetCurrentUser();
-            console.log("Home of : " + userSession.username);
-
-            if (userSession.isAdmin === true) return (<div>
+            if (this.state.currentUser.isAdmin === true) return (<div>
                 <Navbar bg="dark" variant="dark">
                     <Container>
                         <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>

@@ -16,6 +16,9 @@ class Logout extends React.Component {
 
     componentDidMount() {
         LogoutUser()
+            .then(() => {
+                window.location.href = "/"
+            })
             .catch(error => {
                 this.setState({
                     notification: {

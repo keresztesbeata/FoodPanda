@@ -1,4 +1,6 @@
 // base server url
+import {GetCurrentUser} from "./UserActions";
+
 export const BASE_URL = 'http://localhost:8080/foodpanda';
 
 export const INFO = "alert-info";

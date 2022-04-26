@@ -14,7 +14,5 @@ public interface UserService {
 
     void addUser(UserDto userDto) throws InvalidDataException, DuplicateDataException;
 
-    UserDto authenticateUser(UserDto userDto) throws InvalidDataException, InvalidLoginException;
-
     void logout(String username) throws InvalidOperationException;
 }
