@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+src/main/webapp/WEB-INF/view/food-panda-app/node/node_modules/npm/node/**
+src/main/webapp/WEB-INF/view/food-panda-app/node/node_modules/npm/node_modules/**
+
 mvnw
 mvnw.cmd
 .mvn/*
