@@ -6,6 +6,7 @@ class Home extends React.Component {
         super(props);
         this.state = {
             currentUser: null,
+            loggedIn: false,
         }
     }
 
@@ -13,10 +14,14 @@ class Home extends React.Component {
         GetCurrentUser()
             .then(currentUserData => {
                 this.setState({
-                    currentUser: currentUserData
+                    currentUser: currentUserData,
                 })
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+                this.state = {
+                    currentUser: null,
+                }
+            });
     }
 
     render() {

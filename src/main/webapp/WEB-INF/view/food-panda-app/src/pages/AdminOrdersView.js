@@ -1,7 +1,6 @@
 import React from 'react'
 import {Alert, Button, Container, Form, Navbar, Table} from "react-bootstrap";
 import {ERROR, SUCCESS, WARNING} from "../actions/Utils";
-import {GetCurrentUser} from "../actions/UserActions";
 
 import PlainOrder from "../components/PlainOrder";
 import {

@@ -1,41 +1,28 @@
 package app.service.impl;
 
-import app.config.UserDetailsImpl;
-import app.config.UserDetailsServiceImpl;
 import app.dto.UserDto;
-import app.exceptions.*;
+import app.exceptions.DuplicateDataException;
+import app.exceptions.EntityNotFoundException;
+import app.exceptions.InvalidDataException;
 import app.mapper.UserMapper;
 import app.model.Cart;
 import app.model.User;
 import app.model.UserRole;
-import app.model.UserSession;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
-import app.repository.UserSessionRepository;
 import app.service.api.UserService;
 import app.service.validator.UserDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
-    private static final String INVALID_PASSWORD_ERROR_MESSAGE = "Invalid password!";
-    private static final String NO_SIGNED_IN_USER_ERROR_MESSAGE = "Cannot log out! There is no currently logged in user!";
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private UserSessionRepository userSessionRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -74,10 +61,5 @@ public class UserServiceImpl implements UserService {
             cart.setCustomer(savedUser);
             cartRepository.save(cart);
         }
-    }
-
-    @Override
-    public void logout(User user) throws InvalidOperationException {
-        // todo
     }
 }

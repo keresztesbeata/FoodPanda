@@ -5,13 +5,14 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidOperationException;
+import app.model.User;
 
 import java.util.List;
 
 public interface RestaurantService {
     List<RestaurantDto> getAllRestaurants();
 
-    RestaurantDto getRestaurantOfAdmin(String admin) throws EntityNotFoundException;
+    RestaurantDto getRestaurantOfAdmin(User admin) throws EntityNotFoundException;
 
     RestaurantDto getRestaurantByName(String name) throws EntityNotFoundException;
 

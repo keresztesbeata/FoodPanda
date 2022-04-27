@@ -7,6 +7,7 @@ import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidOperationException;
 import app.mapper.RestaurantMapper;
 import app.model.Restaurant;
+import app.model.User;
 import app.repository.RestaurantRepository;
 import app.service.api.RestaurantService;
 import app.service.validator.RestaurantDataValidator;
@@ -42,8 +43,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto getRestaurantOfAdmin(String admin) throws EntityNotFoundException {
-        return restaurantRepository.findByAdmin(admin)
+    public RestaurantDto getRestaurantOfAdmin(User admin) throws EntityNotFoundException {
+        return restaurantRepository.findByAdmin(admin.getUsername())
                 .map(restaurantMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(INVALID_ADMIN_ERROR_MESSAGE));
     }
@@ -72,7 +73,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 
-        if(restaurantRepository.findByAdmin(restaurantDto.getAdmin()).isPresent()) {
+        if (restaurantRepository.findByAdmin(restaurantDto.getAdmin()).isPresent()) {
             throw new InvalidOperationException(ALREADY_HAVE_RESTAURANT_ERROR_MESSAGE);
         }
 

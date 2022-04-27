@@ -13,6 +13,4 @@ public interface UserService {
     UserDto getUserByUsername(String username) throws EntityNotFoundException;
 
     void addUser(UserDto userDto) throws InvalidDataException, DuplicateDataException;
-
-    void logout(User user) throws InvalidOperationException;
 }

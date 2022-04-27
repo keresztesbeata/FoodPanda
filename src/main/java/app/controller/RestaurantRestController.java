@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static app.controller.Utils.getCurrentUser;
+
 @RestController
 public class RestaurantRestController {
 
@@ -26,7 +28,7 @@ public class RestaurantRestController {
     public ResponseEntity getRestaurantByName(@RequestParam String name) {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantByName(name));
-        }catch(EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -35,27 +37,27 @@ public class RestaurantRestController {
     public ResponseEntity getRestaurantByDeliveryZone(@RequestParam String deliveryZoneName) {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName));
-        }catch(EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
 
     @GetMapping("/admin/restaurant")
-    public ResponseEntity getRestaurantOfAdmin(@RequestParam String admin) {
+    public ResponseEntity getRestaurantOfAdmin() {
         try {
-            return ResponseEntity.ok().body(restaurantService.getRestaurantOfAdmin(admin));
-        }catch(EntityNotFoundException e) {
+            return ResponseEntity.ok().body(restaurantService.getRestaurantOfAdmin(getCurrentUser()));
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
 
     @PostMapping(value = "/admin/restaurant/new")
     public ResponseEntity addRestaurant(@RequestBody RestaurantDto restaurantDto) {
-        try{
+        try {
             restaurantService.addRestaurant(restaurantDto);
             return ResponseEntity.ok().build();
-        }catch(InvalidDataException | DuplicateDataException | InvalidOperationException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+        } catch (InvalidDataException | DuplicateDataException | InvalidOperationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 

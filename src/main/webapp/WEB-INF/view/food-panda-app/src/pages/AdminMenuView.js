@@ -54,7 +54,7 @@ class AdminMenuView extends React.Component {
     }
 
     onLoadRestaurantMenu() {
-        LoadAdminsRestaurant(GetCurrentUser().username)
+        LoadAdminsRestaurant()
             .then(restaurantData => {
                 LoadMenuForRestaurantByCategory(restaurantData.name, this.state.selectedCategory)
                     .then(restaurantMenu => {

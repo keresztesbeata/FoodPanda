@@ -6,7 +6,7 @@ class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-         currentUser: null,
+            currentUser: null,
         }
     }
 
@@ -17,29 +17,35 @@ class Header extends React.Component {
                     currentUser: currentUserData
                 })
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+                this.state = {
+                    currentUser: null,
+                }
+            });
     }
 
     render() {
-        try {
-            if (this.state.currentUser.isAdmin === true) return (<div>
-                <Navbar bg="dark" variant="dark">
-                    <Container>
-                        <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>
-                        <Navbar.Brand href="/">foodpanda</Navbar.Brand>
-                        <Nav className="me-auto">
-                            <NavDropdown title="Menu">
-                                <NavDropdown.Item href="/admin/restaurant/view_menu">View
-                                    Menu</NavDropdown.Item>
-                                <NavDropdown.Item href="/admin/restaurant/add_food">Add Food</NavDropdown.Item>
-                            </NavDropdown>
-                            <Nav.Link href="/admin/restaurant">My restaurant</Nav.Link>
-                            <Nav.Link href="/admin/restaurant/orders">Orders</Nav.Link>
-                            <Nav.Link href="/logout">Logout</Nav.Link>
-                        </Nav>
-                    </Container>
-                </Navbar>
-            </div>);
+        if (this.state.currentUser !== null) {
+
+            if (this.state.currentUser.isAdmin === true)
+                return (<div>
+                    <Navbar bg="dark" variant="dark">
+                        <Container>
+                            <img src={require("../images/food-panda-logo.png")} alt="FoodPanda icon" width="5%"/>
+                            <Navbar.Brand href="/">foodpanda</Navbar.Brand>
+                            <Nav className="me-auto">
+                                <NavDropdown title="Menu">
+                                    <NavDropdown.Item href="/admin/restaurant/view_menu">View
+                                        Menu</NavDropdown.Item>
+                                    <NavDropdown.Item href="/admin/restaurant/add_food">Add Food</NavDropdown.Item>
+                                </NavDropdown>
+                                <Nav.Link href="/admin/restaurant">My restaurant</Nav.Link>
+                                <Nav.Link href="/admin/restaurant/orders">Orders</Nav.Link>
+                                <Nav.Link href="/logout">Logout</Nav.Link>
+                            </Nav>
+                        </Container>
+                    </Navbar>
+                </div>);
 
             return (<div>
                 <Navbar bg="dark" variant="dark">
@@ -55,7 +61,7 @@ class Header extends React.Component {
                     </Container>
                 </Navbar>
             </div>);
-        } catch (e) {
+        } else {
             return (<div>
                 <Navbar bg="dark" variant="dark">
                     <Container>

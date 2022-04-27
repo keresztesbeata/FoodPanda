@@ -15,15 +15,15 @@ export const GET_REQUEST = "GET"
 function GetSessionToken() {
     let sessionToken = JSON.parse(localStorage.getItem(SESSION_TOKEN));
     if (sessionToken === null) {
-        throw Error("You are not logged in!")
+        throw Error("You are not logged in!");
     }
     return sessionToken.tokenType + " " + sessionToken.accessToken;
 }
 
 function HandleErrorResponse(response, errorCode, errorMessage) {
-    if(response.status === errorCode) {
-        window.location.href = "/error?message="+errorMessage;
-    }else{
+    if (response.status === errorCode) {
+        window.location.href = "/error?message=" + errorMessage;
+    } else {
         return response;
     }
 }
@@ -36,17 +36,23 @@ export function FetchRequest(url, method, body = null, authorized = true, return
         },
     };
 
-    if(body !== null) {
+    if (body !== null) {
         requestOptions.body = JSON.stringify(body);
     }
 
-    if(authorized) {
-        requestOptions.headers["Authorization"] = GetSessionToken();
+    if (authorized) {
+        try {
+            requestOptions.headers["Authorization"] = GetSessionToken()
+        } catch(error) {
+            return new Promise(function (err) {
+                throw new Error(err.message);
+            });
+        }
     }
 
     return fetch(url, requestOptions)
         .then(response => HandleErrorResponse(response, 401, "Unauthorized access! You must authenticate yourself before accessing this resource!"))
-        .then(response => HandleErrorResponse(response, 403, "Forbidden! You cannot view the content of this page!"))
+        .then(response => HandleErrorResponse(response, 403, "Forbidden! You cannot view the content of this page! You do not have the corresponding privileges."))
         .then(response => {
             if (!response.ok && response.status !== 201) {
                 return response
@@ -55,7 +61,7 @@ export function FetchRequest(url, method, body = null, authorized = true, return
                         throw new Error(err.message);
                     });
             }
-            if(returnData) {
+            if (returnData) {
                 return response.json();
             }
         });

@@ -1,4 +1,4 @@
-import {BASE_URL, FetchRequest, GET_REQUEST, POST_REQUEST, SESSION_TOKEN} from "./Utils";
+import {BASE_URL, FetchRequest, FetchRequestWithNoReturnData, GET_REQUEST, POST_REQUEST, SESSION_TOKEN} from "./Utils";
 
 export function LoginUser(username, password) {
     const url = BASE_URL + "/perform_login"
@@ -36,7 +36,7 @@ export function RegisterUser(username, password, asAdmin) {
 export function LogoutUser() {
     const url = BASE_URL + "/perform_logout"
 
-    return FetchRequest(url, POST_REQUEST)
+    return FetchRequestWithNoReturnData(url, POST_REQUEST)
         .then(() => {
             localStorage.removeItem(SESSION_TOKEN)
         });

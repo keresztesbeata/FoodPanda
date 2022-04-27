@@ -163,7 +163,7 @@ class CustomerMenuView extends React.Component {
 
     render() {
         return (
-            <div  className="background-container-menu bg-image justify-content-center ">
+            <div className="background-container-menu bg-image justify-content-center ">
                 <Container>
                     {
                         (this.state.notification.show) ?

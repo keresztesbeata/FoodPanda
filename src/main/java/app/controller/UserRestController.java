@@ -89,14 +89,4 @@ public class UserRestController {
         }
     }
 
-    @PostMapping(value = "/perform_logout")
-    public ResponseEntity logout() {
-        try {
-            userService.logout(Utils.getCurrentUser());
-            return ResponseEntity.ok().build();
-        } catch (InvalidOperationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
-        }
-    }
-
 }

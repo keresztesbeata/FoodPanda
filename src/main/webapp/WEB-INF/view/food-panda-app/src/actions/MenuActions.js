@@ -1,4 +1,4 @@
-import {BASE_URL, FetchRequest, GET_REQUEST, GetSessionToken} from "./Utils";
+import {BASE_URL, FetchRequest, GET_REQUEST} from "./Utils";
 
 export function LoadMenuForRestaurantByCategory(restaurant, category) {
     let url;
