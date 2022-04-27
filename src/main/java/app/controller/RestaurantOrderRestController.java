@@ -31,13 +31,13 @@ public class RestaurantOrderRestController {
     }
 
     @GetMapping("/customer/orders")
-    public ResponseEntity getAllOrdersOfCustomer(@RequestParam String customer) {
-        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.empty()));
+    public ResponseEntity getAllOrdersOfCustomer() {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(getCurrentUser(), Optional.empty()));
     }
 
     @GetMapping("/customer/orders/status")
-    public ResponseEntity getAllOrdersOfCustomerByStatus(@RequestParam String customer, @RequestParam String orderStatus) {
-        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(customer, Optional.of(orderStatus)));
+    public ResponseEntity getAllOrdersOfCustomerByStatus(@RequestParam String orderStatus) {
+        return ResponseEntity.ok().body(restaurantOrderService.getOrdersOfCustomerByStatus(getCurrentUser(), Optional.of(orderStatus)));
     }
 
     @GetMapping("/admin/restaurant/orders/orderNumber")

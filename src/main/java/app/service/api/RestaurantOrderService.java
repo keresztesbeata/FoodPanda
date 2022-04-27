@@ -4,6 +4,7 @@ import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.model.OrderStatus;
+import app.model.User;
 
 import javax.persistence.criteria.Order;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface RestaurantOrderService {
 
     RestaurantOrderDto getOrderByOrderNumber(String orderNumber) throws EntityNotFoundException;
 
-    List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus);
+    List<RestaurantOrderDto> getOrdersOfCustomerByStatus(User user, Optional<String> orderStatus);
 
     List<RestaurantOrderDto> getOrdersOfRestaurantByStatus(String restaurantName, Optional<String> orderStatus);
 

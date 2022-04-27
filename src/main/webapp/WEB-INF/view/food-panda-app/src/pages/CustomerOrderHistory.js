@@ -1,7 +1,6 @@
 import React from 'react'
-import {Alert, Card, Container, ListGroup, ListGroupItem} from "react-bootstrap";
+import {Alert, Container, ListGroup, ListGroupItem} from "react-bootstrap";
 import {ERROR, INFO} from "../actions/Utils";
-import {GetCurrentUser} from "../actions/UserActions";
 import PlainOrder from "../components/PlainOrder";
 import {LoadOrdersOfCustomer} from "../actions/OrderActions";
 
@@ -20,7 +19,7 @@ class CustomerOrderHistory extends React.Component {
     }
 
     loadCustomerOrders() {
-        LoadOrdersOfCustomer(GetCurrentUser().username)
+        LoadOrdersOfCustomer()
             .then(ordersData => {
                 this.setState({
                     ...this.state,

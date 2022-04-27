@@ -1,6 +1,6 @@
 import React from 'react'
-import {Alert, Button, Container, Form, FormSelect, ListGroup, Navbar, Table} from "react-bootstrap";
-import {ERROR, INFO, SUCCESS, WARNING} from "../actions/Utils";
+import {Alert, Button, Container, Form, Navbar, Table} from "react-bootstrap";
+import {ERROR, SUCCESS, WARNING} from "../actions/Utils";
 import {GetCurrentUser} from "../actions/UserActions";
 
 import PlainOrder from "../components/PlainOrder";
@@ -11,7 +11,6 @@ import {
     UpdateOrderStatus
 } from "../actions/OrderActions";
 import {LoadAdminsRestaurant} from "../actions/RestaurantActions";
-import {Link} from "react-router-dom";
 
 class AdminOrdersView extends React.Component {
     constructor(props, context) {
@@ -57,7 +56,7 @@ class AdminOrdersView extends React.Component {
     }
 
     onLoadRestaurantOrders() {
-        LoadAdminsRestaurant(GetCurrentUser().username)
+        LoadAdminsRestaurant()
             .then(restaurantData => {
                 LoadOrdersOfRestaurant(restaurantData.name)
                     .then(ordersData => {
@@ -99,7 +98,7 @@ class AdminOrdersView extends React.Component {
     }
 
     onLoadRestaurantOrdersByState() {
-        LoadAdminsRestaurant(GetCurrentUser().username)
+        LoadAdminsRestaurant()
             .then(restaurantData => {
                 LoadOrdersOfRestaurantByStatus(restaurantData.name, this.state.selectedOrderStatus)
                     .then(ordersData => {

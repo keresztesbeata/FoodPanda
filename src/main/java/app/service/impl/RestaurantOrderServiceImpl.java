@@ -7,17 +7,22 @@ import app.mapper.RestaurantOrderMapper;
 import app.model.*;
 import app.model.order_states.AbstractOrderState;
 import app.model.order_states.OrderStateFactory;
-import app.repository.*;
+import app.repository.CartRepository;
+import app.repository.RestaurantOrderRepository;
 import app.service.api.RestaurantOrderService;
 import app.service.validator.RestaurantOrderDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
-import static app.model.OrderStatus.*;
+import static app.model.OrderStatus.PENDING;
+import static app.model.OrderStatus.values;
 
 @Service
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
@@ -56,8 +61,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     }
 
     @Override
-    public List<RestaurantOrderDto> getOrdersOfCustomerByStatus(String customer, Optional<String> orderStatus) {
-        return ((orderStatus.isPresent()) ? restaurantOrderRepository.findByUserAndStatus(customer, OrderStatus.valueOf(orderStatus.get())) : restaurantOrderRepository.findByUser(customer))
+    public List<RestaurantOrderDto> getOrdersOfCustomerByStatus(User user, Optional<String> orderStatus) {
+        return ((orderStatus.isPresent()) ? restaurantOrderRepository.findByUserAndStatus(user.getUsername(), OrderStatus.valueOf(orderStatus.get())) : restaurantOrderRepository.findByUser(user.getUsername()))
                 .stream()
                 .map(restaurantOrderMapper::toDto)
                 .collect(Collectors.toList());
@@ -126,12 +131,12 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
 
-        if(OrderStatus.valueOf(orderStatus).equals(restaurantOrder.getOrderStatus())) {
+        if (OrderStatus.valueOf(orderStatus).equals(restaurantOrder.getOrderStatus())) {
             throw new IllegalStateException(STATE_UNCHANGED_ERROR_MESSAGE);
         }
 
         AbstractOrderState orderState = orderStateFactory.getOrderState(restaurantOrder);
-        switch(OrderStatus.valueOf(orderStatus)) {
+        switch (OrderStatus.valueOf(orderStatus)) {
             case ACCEPTED: {
                 orderState.accept();
                 break;

@@ -3,7 +3,6 @@ import {
     FetchRequest,
     FetchRequestWithNoReturnData,
     GET_REQUEST,
-    GetSessionToken,
     POST_REQUEST
 } from "./Utils";
 
@@ -23,19 +22,16 @@ export function LoadOrdersOfRestaurantByStatus(restaurant, orderStatus) {
     }
     const url = new URL(BASE_URL + "/admin/restaurant/orders/status")
     const params = {
-        restaurant: restaurant, orderStatus: orderStatus
+        restaurant: restaurant,
+        orderStatus: orderStatus
     }
     url.search = new URLSearchParams(params).toString();
 
     return FetchRequest(url, GET_REQUEST);
 }
 
-export function LoadOrdersOfCustomer(customer) {
-    const url = new URL(BASE_URL + "/customer/orders")
-    const params = {
-        customer: customer,
-    }
-    url.search = new URLSearchParams(params).toString();
+export function LoadOrdersOfCustomer() {
+    const url = BASE_URL + "/customer/orders";
 
     return FetchRequest(url, GET_REQUEST);
 }
@@ -64,7 +60,7 @@ export function UpdateOrderStatus(orderNumber, orderStatus) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    return FetchRequest(url, POST_REQUEST);
+    return FetchRequestWithNoReturnData(url, POST_REQUEST);
 }
 
 export function PlaceOrder(orderDetails) {

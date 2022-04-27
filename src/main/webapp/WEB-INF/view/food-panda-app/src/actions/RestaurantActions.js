@@ -1,4 +1,4 @@
-import {BASE_URL, FetchRequest, GET_REQUEST, POST_REQUEST} from "./Utils";
+import {BASE_URL, FetchRequest, FetchRequestWithNoReturnData, GET_REQUEST, POST_REQUEST} from "./Utils";
 
 export function LoadDeliveryZones() {
     const url = BASE_URL + "/delivery_zone/all";
@@ -6,12 +6,8 @@ export function LoadDeliveryZones() {
     return FetchRequest(url, GET_REQUEST);
 }
 
-export function LoadAdminsRestaurant(admin) {
-    const url = new URL(BASE_URL + "/admin/restaurant");
-    const params = {
-        admin: admin,
-    };
-    url.search = new URLSearchParams(params).toString();
+export function LoadAdminsRestaurant() {
+    const url = BASE_URL + "/admin/restaurant";
 
     return FetchRequest(url, GET_REQUEST);
 }
@@ -28,7 +24,7 @@ export function AddRestaurant(restaurant) {
 export function AddFood(food) {
     const url = BASE_URL + "/admin/restaurant/food/new";
 
-    return FetchRequest(url, POST_REQUEST, food);
+    return FetchRequestWithNoReturnData(url, POST_REQUEST, food);
 }
 
 
