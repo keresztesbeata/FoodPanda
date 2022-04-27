@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static app.controller.Utils.getCurrentUser;
+
 @RestController
 public class RestaurantOrderRestController {
 
@@ -20,6 +22,7 @@ public class RestaurantOrderRestController {
     @PostMapping("/customer/order/new")
     public ResponseEntity addOrder(@RequestBody RestaurantOrderDto orderDetails) {
         try {
+            orderDetails.setCustomer(getCurrentUser().getUsername());
             restaurantOrderService.addOrder(orderDetails);
             return ResponseEntity.ok().build();
         } catch (InvalidDataException e) {
@@ -62,12 +65,14 @@ public class RestaurantOrderRestController {
     }
 
     @PostMapping("/admin/restaurant/order/update_status")
-    public ResponseEntity updateOrderStatus(@RequestParam String orderNumber,@RequestParam String orderStatus) {
+    public ResponseEntity updateOrderStatus(@RequestParam String orderNumber, @RequestParam String orderStatus) {
         try {
             restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
             return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(e);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
 }

@@ -1,4 +1,11 @@
-import {BASE_URL} from "./Utils";
+import {
+    BASE_URL,
+    FetchRequest,
+    FetchRequestWithNoReturnData,
+    GET_REQUEST,
+    GetSessionToken,
+    POST_REQUEST
+} from "./Utils";
 
 export function LoadOrdersOfRestaurant(restaurant) {
     const url = new URL(BASE_URL + "/admin/restaurant/orders")
@@ -7,21 +14,7 @@ export function LoadOrdersOfRestaurant(restaurant) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadOrdersOfRestaurantByStatus(restaurant, orderStatus) {
@@ -34,21 +27,7 @@ export function LoadOrdersOfRestaurantByStatus(restaurant, orderStatus) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadOrdersOfCustomer(customer) {
@@ -58,41 +37,13 @@ export function LoadOrdersOfCustomer(customer) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadOrdersStatuses() {
     const url = new URL(BASE_URL + "/order_statuses")
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadOrderByOrderNumber(orderNumber) {
@@ -102,21 +53,7 @@ export function LoadOrderByOrderNumber(orderNumber) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function UpdateOrderStatus(orderNumber, orderStatus) {
@@ -127,18 +64,11 @@ export function UpdateOrderStatus(orderNumber, orderStatus) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-    };
+    return FetchRequest(url, POST_REQUEST);
+}
 
-   return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-        });
+export function PlaceOrder(orderDetails) {
+    const url = BASE_URL + "/customer/order/new";
+
+    return FetchRequestWithNoReturnData(url, POST_REQUEST, orderDetails);
 }

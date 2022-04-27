@@ -1,6 +1,5 @@
 import React from 'react'
 import {Alert, Button, Card, Col, ListGroup, Row} from 'react-bootstrap'
-import {GetCurrentUser} from "../actions/UserActions";
 
 import {ERROR, SUCCESS} from "../actions/Utils";
 import {AddFoodToCart} from "../actions/CartActions";
@@ -40,8 +39,7 @@ class MenuItem extends React.Component {
     }
 
     onAddFoodToCart() {
-        const userSession = GetCurrentUser()
-        AddFoodToCart(userSession.username, this.state.name, this.state.quantity)
+        AddFoodToCart(this.state.name, this.state.quantity)
             .then(() => {
                 this.setState({
                     notification: {

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static app.controller.Utils.getCurrentUser;
+
 @RestController
 public class CartRestController {
 
@@ -18,38 +20,42 @@ public class CartRestController {
     private CartService cartService;
 
     @GetMapping("/customer/cart")
-    public ResponseEntity getCartOfUser(@RequestParam String username) {
+    public ResponseEntity getCartOfUser() {
         try {
-            return ResponseEntity.ok().body(cartService.getCartOfCustomer(username));
+            return ResponseEntity.ok().body(cartService.getCartOfCustomer(getCurrentUser()));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
 
     @PostMapping("/customer/cart/add_food")
-    public ResponseEntity addFoodToCart(@RequestParam String username, @RequestParam String foodName, @RequestParam Integer quantity) {
+    public ResponseEntity addFoodToCart(@RequestParam String foodName, @RequestParam Integer quantity) {
         try {
-            cartService.addFoodToCart(username, foodName, quantity);
+            cartService.addFoodToCart(getCurrentUser(), foodName, quantity);
             return ResponseEntity.ok().build();
-        } catch (InvalidDataException | EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 
     @PostMapping("/customer/cart/remove_food")
-    public ResponseEntity removeFoodFromCart(@RequestParam String username, @RequestParam String foodName) {
+    public ResponseEntity removeFoodFromCart(@RequestParam String foodName) {
         try {
-            cartService.removeFoodFromCart(username, foodName);
+            cartService.removeFoodFromCart(getCurrentUser(), foodName);
             return ResponseEntity.ok().build();
-        } catch (InvalidDataException | EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }
 
     @PostMapping("/customer/cart/reset")
-    public ResponseEntity resetCart(@RequestParam String username) {
+    public ResponseEntity resetCart() {
         try {
-            cartService.resetCart(username);
+            cartService.resetCart(getCurrentUser());
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);

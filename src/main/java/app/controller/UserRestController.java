@@ -1,20 +1,15 @@
 package app.controller;
 
 import app.config.JwtTokenProvider;
-import app.config.UserDetailsImpl;
 import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidOperationException;
+import app.mapper.UserMapper;
 import app.model.UserRole;
 import app.repository.UserRepository;
 import app.service.api.UserService;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +20,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.io.IOException;
-import java.net.URI;
 
 
 @RestController
@@ -51,10 +42,10 @@ public class UserRestController {
 
     @GetMapping(value = "/current_user")
     @ResponseBody
-    public ResponseEntity getCurrentUser() {
-        String username = ((UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    public ResponseEntity getLoggedInUser() {
         try {
-            return ResponseEntity.ok().body(userService.getUserByUsername(username));
+            UserMapper userMapper = new UserMapper();
+            return ResponseEntity.ok().body(userMapper.toDto(Utils.getCurrentUser()));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
@@ -82,7 +73,7 @@ public class UserRestController {
             String jwt = tokenProvider.generateToken(authentication);
 
             return ResponseEntity.ok().body(new JwtAuthenticationResponse(jwt));
-        }catch(AuthenticationException e) {
+        } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -99,9 +90,9 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/perform_logout")
-    public ResponseEntity logout(@RequestParam String username) {
+    public ResponseEntity logout() {
         try {
-            userService.logout(username);
+            userService.logout(Utils.getCurrentUser());
             return ResponseEntity.ok().build();
         } catch (InvalidOperationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);

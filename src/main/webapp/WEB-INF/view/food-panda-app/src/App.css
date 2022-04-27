@@ -107,6 +107,17 @@
     border-radius: 5px;
 }
 
+.background-container-error {
+    background-color: white;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+.error-background {
+    border-color: darkred;
+    padding: 50px;
+    border-radius: 5px;
+}
 
 

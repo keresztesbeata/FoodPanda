@@ -1,38 +1,14 @@
-import {BASE_URL} from "./Utils";
-
-const SESSION_TOKEN = 'sessionToken'
-
-function getSessionToken() {
-    let sessionToken = JSON.parse(localStorage.getItem(SESSION_TOKEN));
-    if (sessionToken === null) {
-        throw Error("You are not logged in!")
-    }
-    return sessionToken.tokenType + " " + sessionToken.accessToken;
-}
+import {BASE_URL, FetchRequest, GET_REQUEST, POST_REQUEST, SESSION_TOKEN} from "./Utils";
 
 export function LoginUser(username, password) {
+    const url = BASE_URL + "/perform_login"
 
     const data = {
         username: username,
         password: password
     };
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    };
-
-    return fetch(BASE_URL + "/perform_login", requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json()
-        })
+    return FetchRequest(url, POST_REQUEST, data, false)
         .then(data => {
             const sessionToken = JSON.stringify({
                 accessToken: data.accessToken,
@@ -54,68 +30,22 @@ export function RegisterUser(username, password, asAdmin) {
         password: password
     }
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, POST_REQUEST, data, false);
 }
 
 export function LogoutUser() {
     const url = BASE_URL + "/perform_logout"
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': getSessionToken(),
-        }
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            console.log(response)
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-        })
+    return FetchRequest(url, POST_REQUEST)
         .then(() => {
             localStorage.removeItem(SESSION_TOKEN)
         });
 }
 
 export function GetCurrentUser() {
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Authorization': getSessionToken(),
-        }
-    };
+    const url = BASE_URL + "/current_user";
 
-    return fetch(BASE_URL + "/current_user", requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        })
+    return FetchRequest(url, GET_REQUEST)
         .then(currentUserData => {
                 return {
                     username: currentUserData.username,

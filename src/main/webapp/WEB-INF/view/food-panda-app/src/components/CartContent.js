@@ -1,27 +1,29 @@
 import React from 'react'
 import {Alert, Button, Container, FormCheck, FormControl, FormGroup, FormLabel, ListGroup} from 'react-bootstrap'
-import {GetCurrentUser} from "../actions/UserActions";
 import CartItem from "./CartItem";
 import {ERROR, SUCCESS} from "../actions/Utils";
-import {LoadCustomerCart, PlaceOrder, RemoveFoodFromCart} from "../actions/CartActions";
+import {LoadCustomerCart, RemoveFoodFromCart} from "../actions/CartActions";
+import {PlaceOrder} from "../actions/OrderActions";
 
 class CartContent extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             cart: {
-                customerName: GetCurrentUser().username, foods: {}, totalPrice: 0,
-            }, orderDetails: {
+                foods: {},
+                totalPrice: 0,
+            },
+            orderDetails: {
                 orderNumber: "",
                 restaurant: "",
-                customer: GetCurrentUser().username,
                 orderStatus: "",
                 dateCreated: null,
                 orderedFoods: {},
                 deliveryAddress: "",
                 withCutlery: false,
                 remark: ""
-            }, notification: {
+            },
+            notification: {
                 show: false, message: "", type: ERROR,
             }
         }
@@ -46,7 +48,9 @@ class CartContent extends React.Component {
             .then(() => {
                 this.setState({
                     notification: {
-                        show: true, message: "The order was successfully created!", type: SUCCESS
+                        show: true,
+                        message: "The order was successfully created!",
+                        type: SUCCESS
                     }
                 });
                 this.loadCartContent();
@@ -54,7 +58,9 @@ class CartContent extends React.Component {
             .catch(error => {
                 this.setState({
                     ...this.state, notification: {
-                        show: true, message: error.message, type: ERROR
+                        show: true,
+                        message: error.message,
+                        type: ERROR
                     }
                 });
             });
@@ -62,32 +68,39 @@ class CartContent extends React.Component {
     }
 
     onRemoveFoodFromCart(foodName) {
-        const userSession = GetCurrentUser()
-        RemoveFoodFromCart(userSession.username, foodName)
+        RemoveFoodFromCart(foodName)
             .then(() => this.loadCartContent())
             .catch(error => {
                 this.setState({
-                    ...this.state, notification: {
-                        show: true, message: error.message, type: ERROR
+                    ...this.state,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
                     }
                 });
             });
     }
 
     loadCartContent() {
-        const userSession = GetCurrentUser();
-        LoadCustomerCart(userSession.username, this.state.name)
+        LoadCustomerCart()
             .then(data => {
                 this.setState({
-                    ...this.state, cart: data, orderDetails: {
-                        ...this.state.orderDetails, orderedFoods: data.foods,
+                    ...this.state,
+                    cart: data,
+                    orderDetails: {
+                        ...this.state.orderDetails,
+                        orderedFoods: data.foods,
                     }
                 })
             })
             .catch(error => {
                 this.setState({
-                    ...this.state, notification: {
-                        show: true, message: error.message, type: ERROR
+                    ...this.state,
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
                     }
                 });
             });
@@ -103,8 +116,10 @@ class CartContent extends React.Component {
         const withCutleryChecked = document.getElementById("withCutlery").checked;
 
         this.setState({
-            ...this.state, orderDetails: {
-                ...this.state.orderDetails, withCutlery: withCutleryChecked,
+            ...this.state,
+            orderDetails: {
+                ...this.state.orderDetails,
+                withCutlery: withCutleryChecked,
             }
         });
     }
@@ -115,8 +130,10 @@ class CartContent extends React.Component {
         const target = event.target
 
         this.setState({
-            ...this.state, orderDetails: {
-                ...this.state.orderDetails, [target.name]: target.value
+            ...this.state,
+            orderDetails: {
+                ...this.state.orderDetails,
+                [target.name]: target.value
             }, notification: {
                 show: false,
             }
@@ -138,10 +155,15 @@ class CartContent extends React.Component {
                     </ListGroup>
                     <form onSubmit={this.handleSubmit} className="card-body" id="create-order-form">
                         <h3 className="card-title">Order details</h3>
-                        {(this.state.notification.show) ? <Alert dismissible={true} onClose={this.hideNotification}
+                        {
+                            (this.state.notification.show) ?
+                            <Alert dismissible={true} onClose={this.hideNotification}
                                                                  className={this.state.notification.type}>
                             {this.state.notification.message}
-                        </Alert> : <div/>}
+                            </Alert>
+                            :
+                            <div/>
+                        }
                         <FormGroup className="mb-3" controlId="formBasicText">
                             <FormLabel>Total price: {this.state.cart.totalPrice} $</FormLabel>
                         </FormGroup>

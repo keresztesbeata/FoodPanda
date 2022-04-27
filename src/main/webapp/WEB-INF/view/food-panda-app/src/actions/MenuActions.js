@@ -1,4 +1,4 @@
-import {BASE_URL} from "./Utils";
+import {BASE_URL, FetchRequest, GET_REQUEST, GetSessionToken} from "./Utils";
 
 export function LoadMenuForRestaurantByCategory(restaurant, category) {
     let url;
@@ -19,39 +19,13 @@ export function LoadMenuForRestaurantByCategory(restaurant, category) {
 
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    };
-
-    return fetch(url,requestOptions)
-        .then(response => {
-            if(!response.ok) {
-                return response.json()
-                    .then(function(err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadFoodCategories() {
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
+    const url = BASE_URL + "/food/categories";
 
-    return fetch(BASE_URL + "/food/categories", requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function LoadFoodDetails(foodName) {
@@ -61,21 +35,7 @@ export function LoadFoodDetails(foodName) {
     }
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: {'Content-Type': 'application/json'}
-    };
-
-    return fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .then(function (err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }
 
 export function FindRestaurant(restaurantName) {
@@ -85,19 +45,5 @@ export function FindRestaurant(restaurantName) {
     };
     url.search = new URLSearchParams(params).toString();
 
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    };
-
-    return fetch(url,requestOptions)
-        .then(response => {
-            if(!response.ok) {
-                return response.json()
-                    .then(function(err) {
-                        throw new Error(err.message);
-                    });
-            }
-            return response.json();
-        });
+    return FetchRequest(url, GET_REQUEST);
 }

@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(String username) throws InvalidOperationException {
-
+    public void logout(User user) throws InvalidOperationException {
+        // todo
     }
 }

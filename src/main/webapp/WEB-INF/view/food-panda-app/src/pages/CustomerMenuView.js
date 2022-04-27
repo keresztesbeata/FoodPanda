@@ -3,7 +3,6 @@ import MenuItem from "../components/MenuItem";
 import {Alert, Button, Card, Col, Container, Form, FormControl, ListGroup, Navbar, Row} from "react-bootstrap";
 import {FindRestaurant, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
 import {ERROR} from "../actions/Utils";
-import {GetCurrentUser} from "../actions/UserActions";
 
 class CustomerMenuView extends React.Component {
     constructor(props, context) {
@@ -192,7 +191,7 @@ class CustomerMenuView extends React.Component {
                         <Container>
                             <Card className={(this.state.restaurant.name !== "") ? "visible" : "invisible"}>
                                 <Card.Text className="text-center">
-                                    <h1>{this.state.restaurant.name}</h1>
+                                    <b>{this.state.restaurant.name}</b>
                                 </Card.Text>
                                 <Card.Body>
                                     <Row>
