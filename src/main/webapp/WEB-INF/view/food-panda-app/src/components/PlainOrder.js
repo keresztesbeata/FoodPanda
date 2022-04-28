@@ -44,7 +44,7 @@ class PlainOrder extends React.Component {
                                 <b>Restaurant:</b> {this.state.restaurant}
                             </Card.Text>
                             <Card.Text>
-                                <b>Created at:</b> {this.state.dateCreated}
+                                <b>Created at:</b> {(new Date(this.state.dateCreated)).toLocaleDateString()}
                             </Card.Text>
                             <Card.Text>
                                 <b>Status:</b> {this.state.orderStatus}
