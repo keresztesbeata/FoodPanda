@@ -25,6 +25,7 @@ public interface UserService {
      * @param userDto contains all the relevant user related information.
      * @throws InvalidDataException when either the username or the password is missing or invalid
      * @throws DuplicateDataException when the username is already taken
+     * @pre username != null && password != null
      */
     void addUser(UserDto userDto) throws InvalidDataException, DuplicateDataException;
 }

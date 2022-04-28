@@ -4,7 +4,6 @@ import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
-import app.mapper.Mapper;
 import app.mapper.UserMapper;
 import app.model.Cart;
 import app.model.User;
@@ -12,9 +11,7 @@ import app.model.UserRole;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
 import app.service.api.UserService;
-import app.service.validator.DataValidator;
 import app.service.validator.UserDataValidator;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,19 +22,14 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CartRepository cartRepository;
+    private UserMapper userMapper = new UserMapper();
+    private UserDataValidator userDataValidator = new UserDataValidator();
+    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private UserDataValidator userDataValidator;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()

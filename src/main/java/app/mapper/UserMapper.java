@@ -3,6 +3,7 @@ package app.mapper;
 import app.dto.UserDto;
 import app.model.User;
 import app.model.UserRole;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
