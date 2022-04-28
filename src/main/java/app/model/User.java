@@ -26,9 +26,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @OneToOne(mappedBy = "user")
-    private UserSession userSession;
-
     @OneToOne(mappedBy = "customer")
     private Cart cart;
 

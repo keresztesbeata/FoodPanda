@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <File name="file" fileName="logs/delivery_service.log">
+        <File name="file" fileName="logs/foodpanda.log">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} %m %ex%n</Pattern>
             </PatternLayout>
         </File>
-        <File name="text-file" fileName="logs/delivery_service2.txt">
+        <File name="text-file" fileName="logs/foodpanda.txt">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
             </PatternLayout>

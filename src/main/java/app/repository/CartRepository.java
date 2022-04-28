@@ -13,6 +13,12 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
+    /**
+     * Find the cart of a customer.
+     *
+     * @param customerName the name of the customer whose cart is to be retrieved
+     * @return the existing cart wrapped in an Optional or an empty optional if the customer has no associated cart
+     */
     @Transactional
     @Query("SELECT cart from Cart cart left join cart.customer user where user.username = ?1")
     Optional<Cart> findByCustomer(String customerName);

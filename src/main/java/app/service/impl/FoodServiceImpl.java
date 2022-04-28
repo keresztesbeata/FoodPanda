@@ -35,9 +35,10 @@ public class FoodServiceImpl implements FoodService {
     private FoodDataValidator foodDataValidator;
 
     @Override
-    public Optional<FoodDto> getFoodByName(String food) {
+    public FoodDto getFoodByName(String food) throws EntityNotFoundException{
         return foodRepository.findByName(food)
-                .map(foodMapper::toDto);
+                .map(foodMapper::toDto)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

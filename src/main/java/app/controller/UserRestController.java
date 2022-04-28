@@ -5,7 +5,6 @@ import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
-import app.exceptions.InvalidOperationException;
 import app.mapper.UserMapper;
 import app.model.UserRole;
 import app.repository.UserRepository;

@@ -4,6 +4,7 @@ import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
+import app.mapper.Mapper;
 import app.mapper.UserMapper;
 import app.model.Cart;
 import app.model.User;
@@ -11,10 +12,15 @@ import app.model.UserRole;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
 import app.service.api.UserService;
+import app.service.validator.DataValidator;
 import app.service.validator.UserDataValidator;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,6 +38,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDataValidator userDataValidator;
+
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public UserDto getUserByUsername(String username) throws EntityNotFoundException {
