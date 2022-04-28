@@ -48,6 +48,9 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     @Autowired
     private OrderStateFactory orderStateFactory;
 
+    @Autowired
+    private BillGenerator billGenerator;
+
     @Override
     public List<String> getAllOrderStatuses() {
         return Arrays.stream(values()).map(Enum::name).collect(Collectors.toList());
@@ -120,7 +123,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         restaurantOrder.getCustomer().addOrder(restaurantOrder);
         restaurantOrder.getRestaurant().addOrder(restaurantOrder);
 
-        restaurantOrderRepository.save(restaurantOrder);
+        RestaurantOrder savedOrder = restaurantOrderRepository.save(restaurantOrder);
+        billGenerator.generateBill(savedOrder);
 
         cart.deleteAllFood();
         cartRepository.save(cart);

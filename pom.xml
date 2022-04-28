@@ -109,6 +109,58 @@
             <version>0.9.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <!--                    <artifactId>junit-jupiter-api</artifactId>-->
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -125,7 +177,40 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <tags>
+                        <tag>
+                            <name>pre</name>
+                            <placement>mc</placement>
+                            <head>Pre-condition:</head>
+                        </tag>
+                        <tag>
+                            <name>post</name>
+                            <placement>mc</placement>
+                            <head>Post-condition:</head>
+                        </tag>
+                        <tag>
+                            <name>invariant</name>
+                            <placement>mct</placement>
+                            <head>Invariant:</head>
+                        </tag>
+                        <tag>
+                            <name>noChange</name>
+                            <placement>mct</placement>
+                            <head>No Change:</head>
+                        </tag>
+                        <tag>
+                            <name>result</name>
+                            <placement>mct</placement>
+                            <head>Result:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
 
         </plugins>
     </build>
