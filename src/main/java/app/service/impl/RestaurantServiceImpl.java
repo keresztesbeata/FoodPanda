@@ -11,6 +11,8 @@ import app.model.User;
 import app.repository.RestaurantRepository;
 import app.service.api.RestaurantService;
 import app.service.validator.RestaurantDataValidator;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,11 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
-
     @Autowired
+    @Setter
     private RestaurantMapper restaurantMapper;
 
-    @Autowired
-    private RestaurantDataValidator restaurantDataValidator;
+    private RestaurantDataValidator restaurantDataValidator = new RestaurantDataValidator();
 
     @Override
     public List<RestaurantDto> getAllRestaurants() {

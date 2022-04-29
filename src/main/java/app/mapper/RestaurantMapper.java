@@ -6,6 +6,7 @@ import app.model.DeliveryZone;
 import app.model.Restaurant;
 import app.repository.DeliveryZoneRepository;
 import app.repository.UserRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,10 @@ public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
     private static final String INVALID_ADMIN_ERROR_MESSAGE = "The admin has no restaurants!";
 
     @Autowired
+    @Setter
     private DeliveryZoneRepository deliveryZoneRepository;
     @Autowired
+    @Setter
     private UserRepository userRepository;
 
     @Override

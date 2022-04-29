@@ -21,15 +21,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private CartRepository cartRepository;
-    private UserMapper userMapper = new UserMapper();
+    @Autowired
+    private UserMapper userMapper;
     private UserDataValidator userDataValidator = new UserDataValidator();
-    private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
-
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()

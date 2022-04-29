@@ -1,7 +1,6 @@
 package app.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -11,6 +10,9 @@ import java.util.Map;
 @Component
 @Setter
 @Getter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class RestaurantOrderDto {
     private String orderNumber;
     private String restaurant;

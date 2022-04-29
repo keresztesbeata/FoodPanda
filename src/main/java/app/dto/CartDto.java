@@ -1,9 +1,6 @@
 package app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -11,6 +8,7 @@ import java.util.Map;
 @Component
 @Setter
 @Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartDto {

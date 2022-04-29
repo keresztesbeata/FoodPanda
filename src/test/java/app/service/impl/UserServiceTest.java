@@ -1,4 +1,4 @@
-package app.service.api;
+package app.service.impl;
 
 import app.dto.UserDto;
 import app.exceptions.DuplicateDataException;
@@ -8,27 +8,19 @@ import app.model.User;
 import app.model.UserRole;
 import app.repository.CartRepository;
 import app.repository.UserRepository;
-import app.service.impl.UserServiceImpl;
-import app.service.validator.UserDataValidator;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 
-// todo : add pre & post condition to service classes => Design By Contract
+import static app.service.impl.TestUtils.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -37,6 +29,8 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Spy
     private CartRepository cartRepository;
+    @Spy
+    private UserMapper userMapper;
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -51,7 +45,7 @@ public class UserServiceTest {
         Assertions.assertDoesNotThrow(() -> userService.addUser(validUserDto));
 
         User validUser = convertUserDtoToEntity(validUserDto);
-        // after adding the user with the valid username, it will exist in the data source and it can be retrieved using the unique username
+        // after adding the user with the valid username, it will exist in the data source, and it can be retrieved using the unique username
         Mockito.when(userRepository.findByUsername(validUsername)).thenReturn(Optional.of(validUser));
 
         Assertions.assertDoesNotThrow(() -> userService.getUserByUsername(validUsername));
@@ -89,42 +83,4 @@ public class UserServiceTest {
         invalidUsersList.forEach(userDto -> userService.addUser(userDto));
     }
 
-    private static User createRandomUser(UserRole userRole) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = new User();
-        user.setId(50);
-        user.setUsername(generateRandomName(30));
-        user.setPassword(passwordEncoder.encode(generateRandomName(30)));
-        user.setUserRole(userRole);
-
-        return user;
-    }
-
-    private static User convertUserDtoToEntity(UserDto userDto) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        UserMapper userMapper = new UserMapper();
-
-        User user = userMapper.toEntity(userDto);
-        user.setId((new Random()).nextInt());
-        user.setPassword(passwordEncoder.encode(generateRandomName(30)));
-
-        return user;
-    }
-
-    private static UserDto createRandomUserDto(UserRole userRole) {
-        UserDto userDto = new UserDto();
-        userDto.setUsername(generateRandomName(30));
-        userDto.setPassword(generateRandomName(30));
-        userDto.setUserRole(userRole.name());
-
-        return userDto;
-    }
-
-    private static String generateRandomName(int length) {
-        return (new Random(0))
-                .ints(length)
-                .asLongStream()
-                .mapToObj(value -> String.valueOf(Character.charCount((int) (value % 255))))
-                .collect(Collectors.joining());
-    }
 }

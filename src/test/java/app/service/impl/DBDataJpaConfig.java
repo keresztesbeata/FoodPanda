@@ -1,4 +1,4 @@
-package app.service.api;
+package app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
