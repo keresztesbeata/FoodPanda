@@ -6,6 +6,7 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.mapper.UserMapper;
+import app.model.User;
 import app.model.UserRole;
 import app.repository.UserRepository;
 import app.service.api.UserService;
@@ -20,6 +21,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import static app.controller.Utils.getCurrentUser;
 
 
 @RestController
@@ -46,7 +49,7 @@ public class UserRestController {
     public ResponseEntity getLoggedInUser() {
         try {
             UserMapper userMapper = new UserMapper();
-            return ResponseEntity.ok().body(userMapper.toDto(Utils.getCurrentUser()));
+            return ResponseEntity.ok().body(userMapper.toDto(getCurrentUser()));
         } catch (EntityNotFoundException e) {
             log.error("UserRestController: getLoggedInUser {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);

@@ -1,5 +1,5 @@
-// base server url
 
+// base server url
 export const BASE_URL = 'http://localhost:8080/foodpanda';
 
 export const INFO = "alert-info";
@@ -15,14 +15,14 @@ export const GET_REQUEST = "GET"
 function GetSessionToken() {
     let sessionToken = JSON.parse(localStorage.getItem(SESSION_TOKEN));
     if (sessionToken === null) {
-        throw Error("You are not logged in!");
+        return ""
     }
     return sessionToken.tokenType + " " + sessionToken.accessToken;
 }
 
 function HandleErrorResponse(response, errorCode, errorMessage) {
     if (response.status === errorCode) {
-        window.location.href = "/error?message=" + errorMessage;
+        window.location.href = "/error?message=" + errorMessage
     } else {
         return response;
     }
@@ -41,12 +41,9 @@ export function FetchRequest(url, method, body = null, authorized = true, return
     }
 
     if (authorized) {
-        try {
-            requestOptions.headers["Authorization"] = GetSessionToken()
-        } catch(error) {
-            return new Promise(function (err) {
-                throw new Error(err.message);
-            });
+        const sessionToken = GetSessionToken()
+        if(sessionToken !== "") {
+            requestOptions.headers["Authorization"] = sessionToken
         }
     }
 
