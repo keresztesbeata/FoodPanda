@@ -15,10 +15,10 @@ import java.util.stream.IntStream;
 public class TestUtils {
 
     public static String generateRandomName(int length) {
-        return (new Random(0))
-                .ints(length)
+        return (new Random())
+                .ints(length, 26,51 )
                 .asLongStream()
-                .mapToObj(value -> String.valueOf(Character.charCount((int) (value % 255))))
+                .mapToObj(value -> String.valueOf(Character.toChars((int) (value % 255))))
                 .collect(Collectors.joining());
     }
 

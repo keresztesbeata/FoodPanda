@@ -43,15 +43,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void resetCart(User user) throws EntityNotFoundException {
+    public CartDto resetCart(User user) throws EntityNotFoundException {
         Cart cart = cartRepository.findByCustomer(user.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         cart.deleteAllFood();
-        cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+
+        return cartMapper.toDto(savedCart);
     }
 
     @Override
-    public void addFoodToCart(User user, String foodName, int quantity) throws EntityNotFoundException {
+    public CartDto addFoodToCart(User user, String foodName, int quantity) throws EntityNotFoundException {
         Cart cart = cartRepository.findByCustomer(user.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         Food food = foodRepository.findByName(foodName)
@@ -60,11 +62,13 @@ public class CartServiceImpl implements CartService {
             throw new InvalidDataException(NEGATIVE_QUANTITY_ERROR_MESSAGE);
         }
         cart.addFoodWithQuantity(food, quantity);
-        cartRepository.save(cart);
+        Cart savedCart = cartRepository.save(cart);
+
+        return cartMapper.toDto(savedCart);
     }
 
     @Override
-    public void removeFoodFromCart(User user, String foodName) throws EntityNotFoundException {
+    public CartDto removeFoodFromCart(User user, String foodName) throws EntityNotFoundException {
         Cart cart = cartRepository.findByCustomer(user.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         Food food = foodRepository.findByName(foodName)
@@ -73,7 +77,8 @@ public class CartServiceImpl implements CartService {
             throw new InvalidDataException(INEXISTENT_FOOD_IN_CART_ERROR_MESSAGE);
         }
         cart.deleteFood(food);
+        Cart savedCart = cartRepository.save(cart);
 
-        cartRepository.save(cart);
+        return cartMapper.toDto(savedCart);
     }
 }

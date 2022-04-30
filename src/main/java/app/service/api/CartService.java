@@ -22,8 +22,9 @@ public interface CartService {
      *
      * @param user the customer whose cart is to be emptied
      * @throws EntityNotFoundException of the customer has no associated cart
+     * @return the cart's content after it has been reset
      */
-    void resetCart(User user) throws EntityNotFoundException;
+    CartDto resetCart(User user) throws EntityNotFoundException;
 
     /**
      * Add a new food item to the cart of a customer.
@@ -33,8 +34,9 @@ public interface CartService {
      * @param quantity the number of items added of the given food
      * @throws InvalidDataException if the name of the food is null or the quantity is not a positive number
      * @throws EntityNotFoundException if the customer has no associated cart or no food was found with the given name
+     * @return the cart's content after the given food has been added to it
      */
-    void addFoodToCart(User user, String foodName, int quantity) throws InvalidDataException, EntityNotFoundException;
+    CartDto addFoodToCart(User user, String foodName, int quantity) throws InvalidDataException, EntityNotFoundException;
 
     /**
      * Remove a food item from the cart of a customer.
@@ -43,6 +45,7 @@ public interface CartService {
      * @param foodName the name of the food to be removed from the cart
      * @throws InvalidDataException if the name of the food is null
      * @throws EntityNotFoundException if the customer has no associated cart or no food was found with the given name
+     * @return the cart's content after the given food has been removed from it
      */
-    void removeFoodFromCart(User user, String foodName) throws InvalidDataException, EntityNotFoundException;
+    CartDto removeFoodFromCart(User user, String foodName) throws InvalidDataException, EntityNotFoundException;
 }

@@ -108,4 +108,29 @@ public class TestComponentFactory {
 
         return restaurantOrder;
     }
+
+    public static List<Category> createRandomCategoriesList(int size) {
+        List<Category> categories = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            categories.add(createRandomCategory());
+        }
+        return categories;
+    }
+
+    public static List<Food> createRandomFoodsList(Restaurant restaurant, int size) {
+        List<Food> foods = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            foods.add(createRandomFood(restaurant));
+        }
+        return foods;
+    }
+
+    public static Cart createRandomCart(User user) {
+        Cart cart = new Cart();
+        cart.setId(getRandomInt());
+        cart.setCustomer(user);
+        cart.setFoods(new HashMap<>());
+
+        return cart;
+    }
 }

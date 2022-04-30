@@ -10,7 +10,6 @@ import app.model.Restaurant;
 import app.repository.CategoryRepository;
 import app.repository.FoodRepository;
 import app.repository.RestaurantRepository;
-import app.service.api.FoodService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -141,22 +140,6 @@ public class FoodServiceTest {
                 .thenReturn(categories);
 
         Assertions.assertEquals(nrCategories, foodService.getAllFoodCategories().size());
-    }
-
-    private List<Food> createRandomFoodsList(Restaurant restaurant, int size) {
-        List<Food> foods = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            foods.add(createRandomFood(restaurant));
-        }
-        return foods;
-    }
-
-    private List<Category> createRandomCategoriesList(int size) {
-        List<Category> categories = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            categories.add(createRandomCategory());
-        }
-        return categories;
     }
 
     private long countFoodsOfCategory(List<Food> menu, Category category) {
