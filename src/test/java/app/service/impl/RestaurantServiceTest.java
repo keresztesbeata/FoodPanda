@@ -11,7 +11,6 @@ import app.model.User;
 import app.repository.DeliveryZoneRepository;
 import app.repository.RestaurantRepository;
 import app.repository.UserRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -20,13 +19,13 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static app.service.impl.TestUtils.createRandomRestaurant;
+import static app.service.impl.TestUtils.*;
+import static app.service.impl.TestComponentFactory.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestaurantServiceTest {
@@ -38,7 +37,6 @@ public class RestaurantServiceTest {
     private DeliveryZoneRepository deliveryZoneRepository;
     @Spy
     private RestaurantMapper restaurantMapper;
-
     @InjectMocks
     private RestaurantServiceImpl restaurantService;
 
@@ -117,8 +115,6 @@ public class RestaurantServiceTest {
                 .thenReturn(Optional.of(restaurant));
         Mockito.when(restaurantRepository.findByAdmin(restaurant.getAdmin().getUsername()))
                 .thenReturn(Optional.empty());
-        Mockito.when(userRepository.findByUsername(restaurant.getAdmin().getUsername()))
-                .thenReturn(Optional.ofNullable(restaurant.getAdmin()));
         restaurant.getDeliveryZones().forEach(
                 deliveryZone -> Mockito.when(deliveryZoneRepository.findByName(deliveryZone.getName()))
                         .thenReturn(Optional.of(deliveryZone)));
@@ -134,11 +130,11 @@ public class RestaurantServiceTest {
     }
 
     private List<Restaurant> createRandomRestaurantList(int size) {
-        List<Restaurant> allRestaurants = new ArrayList<>();
+        List<Restaurant> restaurants = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            allRestaurants.add(createRandomRestaurant());
+            restaurants.add(createRandomRestaurant());
         }
-        return allRestaurants;
+        return restaurants;
     }
 
     private boolean compareRestaurantLists(List<Restaurant> restaurants, List<RestaurantDto> restaurantDtos) {

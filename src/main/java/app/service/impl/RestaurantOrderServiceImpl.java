@@ -35,21 +35,13 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Autowired
     private RestaurantOrderRepository restaurantOrderRepository;
-
     @Autowired
     private CartRepository cartRepository;
-
     @Autowired
     private RestaurantOrderMapper restaurantOrderMapper;
-
-    @Autowired
-    private RestaurantOrderDataValidator restaurantOrderDataValidator;
-
-    @Autowired
-    private OrderStateFactory orderStateFactory;
-
-    @Autowired
-    private BillGenerator billGenerator;
+    private RestaurantOrderDataValidator restaurantOrderDataValidator = new RestaurantOrderDataValidator();
+    private BillGenerator billGenerator = new BillGenerator();
+    private OrderStateFactory orderStateFactory = new OrderStateFactory();
 
     @Override
     public List<String> getAllOrderStatuses() {

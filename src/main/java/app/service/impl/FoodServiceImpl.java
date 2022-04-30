@@ -24,15 +24,11 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodRepository foodRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Autowired
     private FoodMapper foodMapper;
-
-    @Autowired
-    private FoodDataValidator foodDataValidator;
+    private FoodDataValidator foodDataValidator = new FoodDataValidator();
 
     @Override
     public FoodDto getFoodByName(String food) throws EntityNotFoundException{

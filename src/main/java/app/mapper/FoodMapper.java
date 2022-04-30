@@ -5,6 +5,7 @@ import app.exceptions.EntityNotFoundException;
 import app.model.Food;
 import app.repository.CategoryRepository;
 import app.repository.RestaurantRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +18,11 @@ public class FoodMapper implements Mapper<Food, FoodDto> {
     private static final String RESTAURANT_NOT_FOUND_ERROR_MESSAGE = "No restaurant of the given name exists!";
 
     @Autowired
+    @Setter
     private CategoryRepository categoryRepository;
 
     @Autowired
+    @Setter
     private RestaurantRepository restaurantRepository;
 
     public Food toEntity(FoodDto foodDto) {

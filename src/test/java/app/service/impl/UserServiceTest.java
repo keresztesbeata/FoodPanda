@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static app.service.impl.TestUtils.*;
+import static app.service.impl.TestComponentFactory.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
