@@ -11,6 +11,7 @@ import app.repository.CategoryRepository;
 import app.repository.FoodRepository;
 import app.service.api.FoodService;
 import app.service.validator.FoodDataValidator;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class FoodServiceImpl implements FoodService {
     private static final String DUPLICATE_NAME_ERROR_MESSAGE = "Duplicate food name!\nThis name is already taken!";
 
@@ -71,6 +73,7 @@ public class FoodServiceImpl implements FoodService {
         Food food = foodMapper.toEntity(foodDto);
         food.getRestaurant().addFood(food);
         food.getCategory().addFood(food);
+        log.info("FoodServiceImpl: addFood: The food "+foodDto.getName() + " has been successfully added to the menu of the restaurant "+foodDto.getRestaurant() + "!");
 
         foodRepository.save(food);
     }

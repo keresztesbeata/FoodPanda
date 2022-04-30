@@ -1,7 +1,7 @@
 import React from 'react'
-import {Alert, Button, Card, Col, Container, Form, ListGroup, Navbar, Row} from "react-bootstrap";
-import {LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
-import {ERROR} from "../actions/Utils";
+import {Alert, Button, ButtonGroup, Card, Col, Container, Form, ListGroup, Navbar, Row} from "react-bootstrap";
+import {ExportMenu, LoadFoodCategories, LoadMenuForRestaurantByCategory} from "../actions/MenuActions";
+import {ERROR, SUCCESS} from "../actions/Utils";
 import PlainMenuItem from "../components/PlainMenuItem";
 import {LoadAdminsRestaurant} from "../actions/RestaurantActions";
 import {GetCurrentUser} from "../actions/UserActions";
@@ -30,6 +30,7 @@ class AdminMenuView extends React.Component {
         };
         this.onLoadRestaurantMenu = this.onLoadRestaurantMenu.bind(this);
         this.onLoadInitialData = this.onLoadInitialData.bind(this);
+        this.onExportMenu = this.onExportMenu.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.hideNotification = this.hideNotification.bind(this);
     }
@@ -40,6 +41,28 @@ class AdminMenuView extends React.Component {
                 this.setState({
                     ...this.state,
                     categories: data
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: error.message,
+                        type: ERROR
+                    }
+                });
+            });
+    }
+
+    onExportMenu() {
+        ExportMenu(this.state.restaurant.name)
+            .then(() => {
+                this.setState({
+                    notification: {
+                        show: true,
+                        message: "Menu exported successfully! You can find it in the local menus/ folder!",
+                        type: SUCCESS
+                    }
                 });
             })
             .catch(error => {
@@ -147,8 +170,12 @@ class AdminMenuView extends React.Component {
                                     )
                                 }
                             </Form.Select>
-                            <Button variant="success" onClick={this.onLoadRestaurantMenu}>Filter</Button>
+                            <Button className="mr-2" variant="success"
+                                    onClick={this.onLoadRestaurantMenu}>Filter</Button>
                         </Form>
+                    </Navbar>
+                    <Navbar className="justify-content-center">
+                        <Button className="mr-2" variant="success" onClick={this.onExportMenu}>Export as pdf</Button>
                     </Navbar>
                     <Container className="fluid">
                         <ListGroup variant="flush">

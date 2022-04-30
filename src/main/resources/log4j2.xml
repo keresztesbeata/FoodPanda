@@ -3,23 +3,18 @@
     <Appenders>
         <File name="file" fileName="logs/foodpanda.log">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} %m %ex%n</Pattern>
-            </PatternLayout>
-        </File>
-        <File name="text-file" fileName="logs/foodpanda.txt">
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+                <Pattern>%d %p %c [%t] %m %ex%n</Pattern>
             </PatternLayout>
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%m%n"/>
         </Console>
     </Appenders>
+
     <Loggers>
-        <Root level="trace">
-            <AppenderRef ref="file" level="INFO"/>
-            <AppenderRef ref="text-file" level="DEBUG"/>
-            <AppenderRef ref="STDOUT" level="INFO"/>
+        <Root level="all">
+            <AppenderRef ref="rolling-file" />
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 </Configuration>

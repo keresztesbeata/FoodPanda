@@ -12,6 +12,7 @@ import app.repository.CartRepository;
 import app.repository.UserRepository;
 import app.service.api.UserService;
 import app.service.validator.UserDataValidator;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class UserServiceImpl implements UserService {
     private static final String DUPLICATE_USERNAME_ERROR_MESSAGE = "Duplicate username!\nThis username is already taken!";
 
@@ -66,5 +68,7 @@ public class UserServiceImpl implements UserService {
             cart.setCustomer(savedUser);
             cartRepository.save(cart);
         }
+
+        log.info("UserServiceImpl: addUser: The user " + user.getUsername() + " with role " + user.getUserRole().name() + " has been successfully added!");
     }
 }

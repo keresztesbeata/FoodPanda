@@ -4,6 +4,7 @@ import app.dto.RestaurantOrderDto;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.RestaurantOrderService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static app.controller.Utils.getCurrentUser;
 
 @RestController
+@Log4j2
 public class RestaurantOrderRestController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class RestaurantOrderRestController {
             restaurantOrderService.addOrder(orderDetails);
             return ResponseEntity.ok().build();
         } catch (InvalidDataException e) {
+            log.error("RestaurantOrderRestController: addOrder {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }
@@ -45,6 +48,7 @@ public class RestaurantOrderRestController {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getOrderByOrderNumber(orderNumber));
         } catch (EntityNotFoundException e) {
+            log.error("RestaurantOrderRestController: getOrderByOrderNumber {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -70,8 +74,10 @@ public class RestaurantOrderRestController {
             restaurantOrderService.updateOrderStatus(orderNumber, orderStatus);
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
+            log.error("RestaurantOrderRestController: updateOrderStatus {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         } catch (EntityNotFoundException e) {
+            log.error("RestaurantOrderRestController: updateOrderStatus {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }

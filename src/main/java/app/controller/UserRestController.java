@@ -9,6 +9,7 @@ import app.mapper.UserMapper;
 import app.model.UserRole;
 import app.repository.UserRepository;
 import app.service.api.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@Log4j2
 public class UserRestController {
 
     @Autowired
@@ -46,6 +48,7 @@ public class UserRestController {
             UserMapper userMapper = new UserMapper();
             return ResponseEntity.ok().body(userMapper.toDto(Utils.getCurrentUser()));
         } catch (EntityNotFoundException e) {
+            log.error("UserRestController: getLoggedInUser {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -55,6 +58,7 @@ public class UserRestController {
         try {
             return ResponseEntity.ok().body(userService.getUserByUsername(username));
         } catch (EntityNotFoundException e) {
+            log.error("UserRestController: getUserByUsername {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -73,6 +77,7 @@ public class UserRestController {
 
             return ResponseEntity.ok().body(new JwtAuthenticationResponse(jwt));
         } catch (AuthenticationException e) {
+            log.error("UserRestController: authenticateUser {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -84,6 +89,7 @@ public class UserRestController {
             userService.addUser(userDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
         } catch (InvalidDataException | DuplicateDataException e) {
+            log.error("UserRestController: register {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
         }
     }

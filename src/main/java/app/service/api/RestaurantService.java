@@ -5,6 +5,7 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.exceptions.InvalidOperationException;
+import app.model.Restaurant;
 import app.model.User;
 
 import java.util.List;
@@ -52,4 +53,12 @@ public interface RestaurantService {
      * @throws InvalidOperationException if the admin already has a restaurant
      */
     void addRestaurant(RestaurantDto restaurantDto) throws InvalidDataException, DuplicateDataException, InvalidOperationException;
+
+    /**
+     * Export the menu of the restaurant in PDF format.
+     *
+     * @param restaurantName the name of the restaurant
+     * @throws EntityNotFoundException if no restaurant with the given name was found
+     */
+    void exportMenu(String restaurantName) throws EntityNotFoundException;
 }

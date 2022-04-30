@@ -1,0 +1,29 @@
+2022-04-30 14:32:26.535  INFO 10516 --- [main] app.FoodPandaApplication                 : Starting FoodPandaApplication using Java 17.0.2 on DESKTOP-7USMDKN with PID 10516 (D:\CTI_3rd_year_2\Software Design\FoodPanda\target\classes started by user in D:\CTI_3rd_year_2\Software Design\FoodPanda)
+2022-04-30 14:32:26.540  INFO 10516 --- [main] app.FoodPandaApplication                 : No active profile set, falling back to 1 default profile: "default"
+2022-04-30 14:32:27.513  INFO 10516 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-04-30 14:32:27.613  INFO 10516 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 93 ms. Found 7 JPA repository interfaces.
+2022-04-30 14:32:28.189  INFO 10516 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-30 14:32:28.195  INFO 10516 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-30 14:32:28.195  INFO 10516 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.58]
+2022-04-30 14:32:28.317  INFO 10516 --- [main] o.a.c.c.C.[.[localhost].[/foodpanda]     : Initializing Spring embedded WebApplicationContext
+2022-04-30 14:32:28.317  INFO 10516 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1716 ms
+2022-04-30 14:32:28.410  WARN 10516 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-04-30 14:32:28.543  INFO 10516 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-04-30 14:32:28.580  INFO 10516 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.5.Final
+2022-04-30 14:32:28.677  INFO 10516 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-04-30 14:32:28.756  INFO 10516 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-30 14:32:29.054  INFO 10516 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-30 14:32:29.072  INFO 10516 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-04-30 14:32:29.839  INFO 10516 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-04-30 14:32:29.846  INFO 10516 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-04-30 14:32:31.274  INFO 10516 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will not secure any request
+2022-04-30 14:32:31.584  WARN 10516 --- [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2022-04-30 14:32:31.677  INFO 10516 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path '/foodpanda'
+2022-04-30 14:32:31.689  INFO 10516 --- [main] app.FoodPandaApplication                 : Started FoodPandaApplication in 5.646 seconds (JVM running for 6.719)
+2022-04-30 14:32:46.841  INFO 10516 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[localhost].[/foodpanda]     : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-30 14:32:46.842  INFO 10516 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-30 14:32:46.843  INFO 10516 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-04-30 14:32:48.059  INFO 10516 --- [http-nio-8080-exec-10] app.service.impl.RestaurantServiceImpl   : RestaurantServiceImpl: exportMenu: The menu of the restaurant La casa has been successfully created!
+2022-04-30 14:34:08.083  INFO 10516 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-04-30 14:34:08.084  INFO 10516 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-04-30 14:34:08.089  INFO 10516 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

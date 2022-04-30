@@ -11,6 +11,7 @@ import app.repository.CartRepository;
 import app.repository.RestaurantOrderRepository;
 import app.service.api.RestaurantOrderService;
 import app.service.validator.RestaurantOrderDataValidator;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import static app.model.OrderStatus.PENDING;
 import static app.model.OrderStatus.values;
 
 @Service
+@Log4j2
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     private static final String INEXISTENT_CART_ERROR_MESSAGE = "The order cannot be created! The user has no cart!";
@@ -120,6 +122,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
         cart.deleteAllFood();
         cartRepository.save(cart);
+
+        log.info("RestaurantOrderServiceImpl: addOrder: The order with order number " + orderNumber + " has been successfully created for customer " + restaurantOrderDto.getCustomer() + "!");
     }
 
     @Override
@@ -157,6 +161,9 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                 break;
             }
         }
-        restaurantOrderRepository.save(orderState.getOrder());
+        RestaurantOrder updatedOrder = restaurantOrderRepository.save(orderState.getOrder());
+
+        log.info("RestaurantOrderServiceImpl: updateOrderStatus: The status of the order with order number" + orderNumber +
+                " has been successfully updated from " + restaurantOrder.getOrderStatus() + " to " + updatedOrder.getOrderStatus() + "!");
     }
 }

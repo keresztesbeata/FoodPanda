@@ -8,6 +8,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
@@ -22,22 +23,15 @@ import java.util.Map;
  * It is responsible for generating a bill or order invoice after an order was created.
  */
 @Component
+@Log4j2
 public class BillGenerator {
-    /**
-     * Represents the path to the directory where the bills are stored.
-     */
+    // Represents the path to the directory where the bills are stored.
     private static final String billDirPath = "bills/";
-    /**
-     * Represent some predefined fonts used to style the text of the pdf
-     */
+    // Represent some predefined fonts used to style the text of the pdf
     private static final Font FOOTER_FONT = FontFactory.getFont(FontFactory.TIMES, 20, Font.NORMAL, BaseColor.DARK_GRAY);
     private static final Font HEADER_FONT = FontFactory.getFont(FontFactory.TIMES, 12, Font.ITALIC, BaseColor.BLACK);
     private static final Font TITLE_FONT = FontFactory.getFont(FontFactory.TIMES, 18, Font.BOLD, BaseColor.BLACK);
     private static final Font SECTION_FONT = FontFactory.getFont(FontFactory.TIMES, 14, Font.BOLD, BaseColor.BLACK);
-    /**
-     * The logger instance which allows writing log messages.
-     */
-    protected static final Logger LOGGER = LogManager.getLogger(BillGenerator.class);
 
     /**
      * It creates a pdf with the relevant details of the order.
@@ -85,7 +79,7 @@ public class BillGenerator {
 
             document.close();
         } catch (FileNotFoundException | DocumentException e) {
-            LOGGER.error("BillGenerator: generateBill {}", e.getMessage());
+            log.error("BillGenerator: generateBill {}", e.getMessage());
         }
     }
 

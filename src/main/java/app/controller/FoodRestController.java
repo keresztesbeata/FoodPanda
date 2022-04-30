@@ -5,12 +5,14 @@ import app.exceptions.DuplicateDataException;
 import app.exceptions.EntityNotFoundException;
 import app.exceptions.InvalidDataException;
 import app.service.api.FoodService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Log4j2
 public class FoodRestController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class FoodRestController {
         try {
             return ResponseEntity.ok().body(foodService.getAllFoodsByRestaurant(restaurant));
         }catch(EntityNotFoundException e) {
+            log.error("FoodRestController: getMenuOfRestaurant {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -35,6 +38,7 @@ public class FoodRestController {
         try {
             return ResponseEntity.ok().body(foodService.getFoodsByRestaurantAndCategory(restaurant, category));
         }catch(EntityNotFoundException e) {
+            log.error("FoodRestController: getFoodByRestaurantAndCategory {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -44,6 +48,7 @@ public class FoodRestController {
         try{
             return ResponseEntity.ok().body(foodService.getFoodByName(food));
         }catch(EntityNotFoundException e) {
+            log.error("FoodRestController: getFoodByName {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -53,6 +58,7 @@ public class FoodRestController {
         try {
             return ResponseEntity.ok().body(foodService.getFoodByNameAndRestaurant(food, restaurant));
         }catch(EntityNotFoundException e) {
+            log.error("FoodRestController: getFoodByNameAndRestaurant {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -63,6 +69,7 @@ public class FoodRestController {
             foodService.addFood(food);
             return ResponseEntity.ok().build();
         }catch(InvalidDataException | DuplicateDataException e) {
+            log.error("FoodRestController: addFood {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }

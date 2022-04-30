@@ -10,10 +10,12 @@ import app.model.User;
 import app.repository.CartRepository;
 import app.repository.FoodRepository;
 import app.service.api.CartService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class CartServiceImpl implements CartService {
 
     private static final String CART_NOT_FOUND_ERROR_MESSAGE = "The user has no cart!";
@@ -35,6 +37,7 @@ public class CartServiceImpl implements CartService {
         return cartMapper.toDto(
                 cartRepository.findByCustomer(user.getUsername())
                         .orElseGet(() -> {
+                            log.warn("CartServiceImpl: getCartOfCustomer: The customer "+user.getUsername()+" had no cart so we created a new one!");
                             Cart newCart = new Cart();
                             newCart.setCustomer(user);
                             return cartRepository.save(newCart);
@@ -48,6 +51,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new EntityNotFoundException(CART_NOT_FOUND_ERROR_MESSAGE));
         cart.deleteAllFood();
         Cart savedCart = cartRepository.save(cart);
+        log.info("CartServiceImpl: resetCart: The cart of customer " + user.getUsername() + "has been successfully reset!");
 
         return cartMapper.toDto(savedCart);
     }
@@ -63,6 +67,7 @@ public class CartServiceImpl implements CartService {
         }
         cart.addFoodWithQuantity(food, quantity);
         Cart savedCart = cartRepository.save(cart);
+        log.info("CartServiceImpl: addFoodToCart: The food "+foodName + " has been successfully added to the cart of customer "+user.getUsername() + "!");
 
         return cartMapper.toDto(savedCart);
     }
@@ -78,6 +83,7 @@ public class CartServiceImpl implements CartService {
         }
         cart.deleteFood(food);
         Cart savedCart = cartRepository.save(cart);
+        log.info("CartServiceImpl: removeFoodFromCart: The food "+foodName + " has been successfully removed from the cart of customer "+user.getUsername() + "!");
 
         return cartMapper.toDto(savedCart);
     }

@@ -1,4 +1,4 @@
-import {BASE_URL, FetchRequest, GET_REQUEST} from "./Utils";
+import {BASE_URL, FetchRequest, FetchRequestWithNoReturnData, GET_REQUEST, POST_REQUEST} from "./Utils";
 
 export function LoadMenuForRestaurantByCategory(restaurant, category) {
     let url;
@@ -46,4 +46,14 @@ export function FindRestaurant(restaurantName) {
     url.search = new URLSearchParams(params).toString();
 
     return FetchRequest(url, GET_REQUEST);
+}
+
+export function ExportMenu(restaurantName) {
+    const url = new URL(BASE_URL + "/admin/restaurant/menu/export")
+    const params = {
+        restaurant: restaurantName
+    };
+    url.search = new URLSearchParams(params).toString();
+
+    return FetchRequestWithNoReturnData(url, POST_REQUEST);
 }
