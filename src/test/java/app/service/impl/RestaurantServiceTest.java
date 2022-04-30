@@ -24,8 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static app.service.impl.TestUtils.*;
-import static app.service.impl.TestComponentFactory.*;
+import static app.service.impl.TestComponentFactory.createRandomRestaurant;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestaurantServiceTest {
@@ -115,9 +114,6 @@ public class RestaurantServiceTest {
                 .thenReturn(Optional.of(restaurant));
         Mockito.when(restaurantRepository.findByAdmin(restaurant.getAdmin().getUsername()))
                 .thenReturn(Optional.empty());
-        restaurant.getDeliveryZones().forEach(
-                deliveryZone -> Mockito.when(deliveryZoneRepository.findByName(deliveryZone.getName()))
-                        .thenReturn(Optional.of(deliveryZone)));
 
         Assertions.assertThrows(DuplicateDataException.class, () -> restaurantService.addRestaurant(restaurantMapper.toDto(restaurant)));
 

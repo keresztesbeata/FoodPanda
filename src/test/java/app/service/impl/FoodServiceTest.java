@@ -19,9 +19,9 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static app.service.impl.TestComponentFactory.*;
 
@@ -78,7 +78,9 @@ public class FoodServiceTest {
         long nrFoodsInCategory = countFoodsOfCategory(menu, category);
 
         Mockito.when(foodRepository.findByRestaurantAndCategory(restaurant.getName(), category.getName()))
-                .thenReturn(menu);
+                .thenReturn(menu.stream()
+                        .filter(food -> food.getCategory().equals(category))
+                        .collect(Collectors.toList()));
 
         Assertions.assertEquals(nrFoodsInCategory, foodService.getFoodsByRestaurantAndCategory(restaurant.getName(), category.getName()).size());
     }
