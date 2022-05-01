@@ -195,39 +195,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
                 <configuration>
-                    <tags>
-                        <tag>
-                            <name>pre</name>
-                            <placement>mc</placement>
-                            <head>Pre-condition:</head>
-                        </tag>
-                        <tag>
-                            <name>post</name>
-                            <placement>mc</placement>
-                            <head>Post-condition:</head>
-                        </tag>
-                        <tag>
-                            <name>invariant</name>
-                            <placement>mct</placement>
-                            <head>Invariant:</head>
-                        </tag>
-                        <tag>
-                            <name>noChange</name>
-                            <placement>mct</placement>
-                            <head>No Change:</head>
-                        </tag>
-                        <tag>
-                            <name>result</name>
-                            <placement>mct</placement>
-                            <head>Result:</head>
-                        </tag>
-                    </tags>
+                    <reportOutputDirectory>docs</reportOutputDirectory>
+                    <destDir>apidocs</destDir>
                 </configuration>
             </plugin>
             <plugin>
