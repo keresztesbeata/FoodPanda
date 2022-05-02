@@ -31,7 +31,7 @@ public class RestaurantRestController {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantByName(name));
         } catch (EntityNotFoundException e) {
-            log.error("RestaurantRestController: getRestaurantByName {} ", e.getMessage());
+            log.warn("RestaurantRestController: getRestaurantByName {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -41,7 +41,7 @@ public class RestaurantRestController {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantsByDeliveryZone(deliveryZoneName));
         } catch (EntityNotFoundException e) {
-            log.error("RestaurantRestController: getRestaurantByDeliveryZone {} ", e.getMessage());
+            log.warn("RestaurantRestController: getRestaurantByDeliveryZone {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -51,7 +51,7 @@ public class RestaurantRestController {
         try {
             return ResponseEntity.ok().body(restaurantService.getRestaurantOfAdmin(getCurrentUser()));
         } catch (EntityNotFoundException e) {
-            log.error("RestaurantRestController: getRestaurantOfAdmin {} ", e.getMessage());
+            log.warn("RestaurantRestController: getRestaurantOfAdmin {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -59,6 +59,7 @@ public class RestaurantRestController {
     @PostMapping(value = "/admin/restaurant/new")
     public ResponseEntity addRestaurant(@RequestBody RestaurantDto restaurantDto) {
         try {
+            restaurantDto.setAdmin(getCurrentUser().getUsername());
             restaurantService.addRestaurant(restaurantDto);
             return ResponseEntity.ok().build();
         } catch (InvalidDataException | DuplicateDataException | InvalidOperationException e) {

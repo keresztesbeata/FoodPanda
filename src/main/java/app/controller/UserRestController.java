@@ -51,7 +51,7 @@ public class UserRestController {
             UserMapper userMapper = new UserMapper();
             return ResponseEntity.ok().body(userMapper.toDto(getCurrentUser()));
         } catch (EntityNotFoundException e) {
-            log.error("UserRestController: getLoggedInUser {} ", e.getMessage());
+            log.warn("UserRestController: getLoggedInUser {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }
@@ -61,7 +61,7 @@ public class UserRestController {
         try {
             return ResponseEntity.ok().body(userService.getUserByUsername(username));
         } catch (EntityNotFoundException e) {
-            log.error("UserRestController: getUserByUsername {} ", e.getMessage());
+            log.warn("UserRestController: getUserByUsername {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }

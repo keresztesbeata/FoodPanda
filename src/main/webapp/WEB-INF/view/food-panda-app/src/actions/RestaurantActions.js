@@ -15,7 +15,7 @@ export function LoadAdminsRestaurant() {
 export function AddRestaurant(restaurant) {
     const url = BASE_URL + "/admin/restaurant/new";
 
-    return FetchRequest(url, POST_REQUEST, restaurant)
+    return FetchRequestWithNoReturnData(url, POST_REQUEST, restaurant)
         .then(response => {
             window.location.href = "/admin/restaurant"
         });

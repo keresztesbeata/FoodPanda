@@ -35,7 +35,7 @@ class AddFoodView extends React.Component {
     componentDidMount() {
         LoadFoodCategories()
             .then(foodCategories => {
-                LoadAdminsRestaurant(GetCurrentUser().username)
+                LoadAdminsRestaurant()
                     .then(restaurantData => {
                         this.setState({
                             ...this.state,

@@ -119,6 +119,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
         RestaurantOrder savedOrder = restaurantOrderRepository.save(restaurantOrder);
         billGenerator.generateBill(savedOrder);
+        sendMail(orderNumber);
 
         cart.deleteAllFood();
         cartRepository.save(cart);
@@ -137,33 +138,39 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
         AbstractOrderState orderState = orderStateFactory.getOrderState(restaurantOrder);
         switch (OrderStatus.valueOf(orderStatus)) {
-            case ACCEPTED: {
+            case ACCEPTED -> {
                 orderState.accept();
-                break;
             }
-            case DECLINED: {
+            case DECLINED -> {
                 orderState.decline();
-                break;
             }
-            case IN_DELIVERY: {
+            case IN_DELIVERY -> {
                 orderState.setInDelivery();
-                break;
             }
-            case DELIVERED: {
+            case DELIVERED -> {
                 orderState.setDelivered();
-                break;
             }
-            case PENDING: {
+            case PENDING -> {
                 orderState.resetToPending();
-                break;
             }
-            default: {
-                break;
+            default -> {
             }
         }
         RestaurantOrder updatedOrder = restaurantOrderRepository.save(orderState.getOrder());
 
         log.info("RestaurantOrderServiceImpl: updateOrderStatus: The status of the order with order number" + orderNumber +
                 " has been successfully updated from " + restaurantOrder.getOrderStatus() + " to " + updatedOrder.getOrderStatus() + "!");
+    }
+
+    private void sendMail(String orderNumber) throws EntityNotFoundException {
+        RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
+
+        User customer = restaurantOrder.getCustomer();
+        User admin = restaurantOrder.getRestaurant().getAdmin();
+
+        EmailService emailService = new EmailService(customer);
+        EmailMessageBuilder emailMessageBuilder = new EmailMessageBuilder(restaurantOrder);
+        emailService.sendMessage(admin.getUsername(), emailMessageBuilder.buildTitle(), emailMessageBuilder.buildContent());
     }
 }

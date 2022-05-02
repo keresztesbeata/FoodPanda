@@ -66,7 +66,7 @@ public class FoodServiceImpl implements FoodService {
     public void addFood(FoodDto foodDto) throws InvalidDataException, DuplicateDataException {
         foodDataValidator.validate(foodDto);
 
-        if (foodRepository.findByNameAndRestaurant(foodDto.getName(), foodDto.getRestaurant()).isPresent()) {
+        if (foodRepository.findByName(foodDto.getName()).isPresent()) {
             throw new DuplicateDataException(DUPLICATE_NAME_ERROR_MESSAGE);
         }
 

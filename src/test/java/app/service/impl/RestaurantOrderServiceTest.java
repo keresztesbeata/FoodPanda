@@ -22,7 +22,7 @@ import java.util.Optional;
 import static app.service.impl.TestComponentFactory.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RestaurantOrderTest {
+public class RestaurantOrderServiceTest {
 
     @Spy
     private UserRepository userRepository;

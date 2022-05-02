@@ -48,7 +48,7 @@ public class RestaurantOrderRestController {
         try {
             return ResponseEntity.ok().body(restaurantOrderService.getOrderByOrderNumber(orderNumber));
         } catch (EntityNotFoundException e) {
-            log.error("RestaurantOrderRestController: getOrderByOrderNumber {} ", e.getMessage());
+            log.warn("RestaurantOrderRestController: getOrderByOrderNumber {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
     }

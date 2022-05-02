@@ -13,7 +13,6 @@ class AddRestaurantView extends React.Component {
             restaurant: {
                 name: "",
                 address: "",
-                admin: GetCurrentUser().username,
                 deliveryZones: [],
                 openingHour: 0,
                 closingHour: 0,
@@ -104,16 +103,6 @@ class AddRestaurantView extends React.Component {
 
     handleSubmit() {
         AddRestaurant(this.state.restaurant)
-            .then(() => {
-                this.setState({
-                    ...this.state,
-                    notification: {
-                        show: true,
-                        message: "The restaurant has been successfully added!",
-                        type: SUCCESS
-                    }
-                });
-            })
             .catch(error => {
                 this.setState({
                     notification: {
