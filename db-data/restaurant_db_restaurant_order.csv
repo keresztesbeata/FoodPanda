@@ -1,7 +1,26 @@
-15,2022-04-08,Anna's home,778956,IN_DELIVERY,Hurry! I'm hungry!,60.7,true,10,5
+15,2022-04-08,Anna's home,778956,DELIVERED,Hurry! I'm hungry!,60.7,true,10,5
 34,2022-04-08,Anna's home,514622,IN_DELIVERY,"",69.9,true,10,26
-45,2022-04-08,Dori's sweet home,898943,PENDING,I would like to receive my lunch before it gets cold!,90.7,true,19,5
+45,2022-04-08,Dori's sweet home,898943,DECLINED,I would like to receive my lunch before it gets cold!,90.7,true,19,5
 46,2022-04-08,Dori's home in Cluj,398794,DELIVERED,"I am very hungry, please hurry!",53.5,false,19,26
 47,2022-04-08,Dori's home,767741,IN_DELIVERY,none,62.5,true,19,37
 49,2022-04-08,Anna's home,948021,DECLINED,"Careful, I don't want my salad mixed up!",58.5,true,10,37
 55,2022-04-08,Dori's home town,941788,PENDING,Bring it in 10 min!,26.2,true,19,26
+61,2022-04-11,Anna's home,467571,PENDING,You should allow me to order from multiple restaurants at the same time! :(,33.7,false,10,5
+65,2022-04-11,Cluj-Napoca,622924,ACCEPTED,"",42.7,true,10,5
+66,2022-04-11,Home,568216,PENDING,Bring some napkins too!,83.5,true,10,37
+73,2022-04-11,Home,404373,PENDING,none,114.7,false,70,5
+74,2022-04-11,Home,332403,IN_DELIVERY,"",40.7,false,70,5
+85,2022-04-27,fvn,522220,DECLINED,"",32.7,false,10,5
+86,2022-04-28,Zilah,832697,PENDING,none,41.8,true,10,26
+88,2022-04-28,"Otthon, edes otthon",709214,PENDING,Hozd melegen!,60.7,true,10,5
+89,2022-04-28,Otthon edes otthon,995892,PENDING,Hozd melegen!,60.7,true,10,5
+90,2022-04-28,Otthon,527588,PENDING,Semmi,60.7,true,10,5
+91,2022-04-28,home,864343,PENDING,none,38.7,false,10,5
+92,2022-04-28,"Otthon, edes otthon",173313,PENDING,Siess!!!!,60.7,true,10,5
+93,2022-04-28,Anna's Home,586736,PENDING,Hurry! I'm starving!,51.8,true,10,26
+94,2022-04-28,home,318397,PENDING,"",46.7,false,10,5
+95,2022-04-30,Home,746074,PENDING,"",48.7,false,10,5
+96,2022-04-30,Home,732733,PENDING,"",60.7,false,10,5
+100,2022-05-02,h,996626,PENDING,"",38.7,false,10,5
+121,2022-05-02,Bear's home,718381,PENDING,"",80,true,116,119
+122,2022-05-02,Panda's home in China,843074,PENDING,Hurry! I don't want my food to get cold!,85,true,116,119
