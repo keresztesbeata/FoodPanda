@@ -132,7 +132,9 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         RestaurantOrder restaurantOrder = restaurantOrderRepository.findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(INEXISTENT_ORDER_ERROR_MESSAGE));
 
-        if (OrderStatus.valueOf(orderStatus).equals(restaurantOrder.getOrderStatus())) {
+        OrderStatus oldStatus = restaurantOrder.getOrderStatus();
+
+        if (OrderStatus.valueOf(orderStatus).equals(oldStatus)) {
             throw new IllegalStateException(STATE_UNCHANGED_ERROR_MESSAGE);
         }
 
@@ -159,7 +161,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         RestaurantOrder updatedOrder = restaurantOrderRepository.save(orderState.getOrder());
 
         log.info("RestaurantOrderServiceImpl: updateOrderStatus: The status of the order with order number" + orderNumber +
-                " has been successfully updated from " + restaurantOrder.getOrderStatus() + " to " + updatedOrder.getOrderStatus() + "!");
+                " has been successfully updated from " + oldStatus + " to " + updatedOrder.getOrderStatus() + "!");
     }
 
     private void sendMail(String orderNumber) throws EntityNotFoundException {

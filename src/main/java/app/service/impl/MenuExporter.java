@@ -45,7 +45,7 @@ public class MenuExporter {
             String documentName = restaurant.getName() + "_menu.pdf";
             PdfWriter.getInstance(document, new FileOutputStream(menuDirPath + documentName));
             document.open();
-            Chunk title = new Chunk("Bill");
+            Chunk title = new Chunk("Menu");
             title.setFont(TITLE_FONT);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(title);
@@ -60,7 +60,7 @@ public class MenuExporter {
             restaurantParagraph.add(getDataOfRestaurant(restaurant));
             document.add(restaurantParagraph);
 
-            document.add(createParagraphWithData("Menu"));
+            document.add(createParagraphWithData("Food Selection:"));
             for (Category category : categoryRepository.findAll()) {
                 Paragraph categoryParagraph = createParagraphWithData(category.getName());
 

@@ -109,7 +109,7 @@ public class FoodServiceTest {
 
         Assertions.assertDoesNotThrow(() -> foodService.addFood(foodDto));
 
-        Mockito.when(foodRepository.findByNameAndRestaurant(food.getName(), restaurant.getName()))
+        Mockito.when(foodRepository.findByName(food.getName()))
                 .thenReturn(Optional.of(food));
         Assertions.assertThrows(DuplicateDataException.class, () -> foodService.addFood(foodDto));
 

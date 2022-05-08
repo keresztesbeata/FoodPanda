@@ -82,6 +82,8 @@ public class RestaurantOrderServiceTest {
 
         Mockito.when(restaurantOrderRepository.findByOrderNumber(orderNumber))
                 .thenReturn(Optional.of(restaurantOrder));
+        Mockito.when(restaurantOrderRepository.save(restaurantOrder))
+                .thenReturn(restaurantOrder);
 
         restaurantOrder.setOrderStatus(OrderStatus.PENDING);
         Assertions.assertThrows(IllegalStateException.class, () -> restaurantOrderService.updateOrderStatus(orderNumber, OrderStatus.IN_DELIVERY.name()));
